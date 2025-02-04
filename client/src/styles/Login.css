@@ -10,6 +10,8 @@ body {
     justify-content: center;
     align-items: center;
     overflow-y: auto; 
+    background: rgba(0, 123, 255, 0.4);  
+    
   }
   
   .login-container {
@@ -76,18 +78,30 @@ body {
   .input-group input:focus {
     border-color: #007bff;
   }
-  
-  .password-group {
+  .password-group{
     position: relative;
+  }
+  .password-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    font-size: 16px;
+    outline: none;
+    border-top-left-radius: 8px; 
+    border-bottom-left-radius: 8px; 
+    border-top-right-radius: 0; 
+    border-bottom-right-radius: 0; 
   }
   
   .eye-icon {
     position: absolute;
     right: 10px;
-    top: 12px;
+    top: 50%;
+    transform: translateY(-50%);
     cursor: pointer;
-    font-size: 18px;
+    z-index: 10;
   }
+  
   
   .btn {
     background-color: #007bff;

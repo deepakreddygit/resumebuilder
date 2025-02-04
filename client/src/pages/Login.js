@@ -38,11 +38,11 @@ function Login() {
   };
 
   return (
-    <div className="login-page">
-      <div className="login-container">
+    <div className="login-page d-flex align-items-center justify-content-center" style={{ height: "100vh" }}>
+      <div className="login-container row w-100 w-md-75">
         
         {/* Left Section - Login Form */}
-        <div className="login-left">
+        <div className="login-left col-12 col-md-6 p-4">
           <div className="login-box">
             <h2 className="text-center">Login</h2>
             <form onSubmit={handleLogin}>
@@ -53,15 +53,17 @@ function Login() {
                   onChange={(e) => setEmail(e.target.value)} 
                   placeholder="Email" 
                   required 
+                  className="form-control"
                 />
               </div>
-              <div className="input-group password-group">
+              <div className="input-group password-group mt-3">
                 <input 
                   type={passwordVisible ? "text" : "password"}  
                   value={password} 
                   onChange={(e) => setPassword(e.target.value)} 
                   placeholder="Password" 
                   required 
+                  className="form-control"
                 />
                 <span 
                   className="eye-icon" 
@@ -70,10 +72,10 @@ function Login() {
                   {passwordVisible ? <FaEyeSlash /> : <FaEye />}
                 </span>
               </div>
-              <button type="submit" className="btn btn-primary w-100">Login</button>
+              <button type="submit" className="btn btn-primary w-100 mt-3">Login</button>
 
               {/* Error Message */}
-              <div className="error-message-container">
+              <div className="error-message-container mt-3">
                 {errorMsg && (
                   <div className="alert alert-danger text-center" role="alert">
                     {errorMsg}
@@ -86,10 +88,10 @@ function Login() {
         </div>
 
         {/* Right Section - Welcome Message */}
-        <div className="login-right">
-          <h1>Welcome Back!</h1>
-          <p>Log in to access your personalized resume builder. Create professional, recruiter-approved resumes in minutes!</p>
-          <p>Don't have an account? <Link to="/signup">Sign up now.</Link></p>
+        <div className="login-right col-12 col-md-6 p-4 d-flex align-items-center justify-content-center flex-column">
+          <h1 className="text-center">Welcome Back!</h1>
+          <p className="text-center">Log in to access your personalized resume builder. Create professional, recruiter-approved resumes in minutes!</p>
+          <p className="text-center">Don't have an account? <Link to="/signup">Sign up now.</Link></p>
         </div>
 
       </div>

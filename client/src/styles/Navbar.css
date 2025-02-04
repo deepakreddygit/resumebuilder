@@ -29,17 +29,36 @@ body {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
   }
   
-  
-  .logout-btn {
-    font-size: 14px; 
-    font-weight: bold;
-    margin-left: auto; 
-    padding: 8px 16px; 
-    max-width: 150px; 
-    transition: background-color 0.3s ease-in-out;
-  }
-  
-  .logout-btn:hover {
-    background-color: #e0e0e0; 
-  }
+/* Logout Button */
+.logout-btn {
+  font-size: 16px;                 
+  background-color: #007bff;      
+  color: #fff;                      
+  border: 2px solid #007bff;        
+  border-radius: 30px;              
+  font-weight: bold;               
+  cursor: pointer;                
+  transition: background-color 0.3s, transform 0.3s ease;  
+}
+
+/* Hover Effect */
+.logout-btn:hover {
+  background-color: #0056b3;      
+  border-color: #0056b3;            
+  transform: scale(1.05);          
+}
+
+/* Focus Effect */
+.logout-btn:focus {
+  outline: none;               
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); 
+}
+
+
+.logout-btn:active {
+  transform: scale(0.98);           
+  background-color: #004085;         
+  border-color: #004085;            
+}
+
   
