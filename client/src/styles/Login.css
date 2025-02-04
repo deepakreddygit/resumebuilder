@@ -1,0 +1,259 @@
+body {
+    background: rgba(0, 123, 255, 0.4);  
+    margin: 0;
+    padding: 0;
+}
+/* Login Page */
+.login-page {
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    overflow-y: auto; 
+  }
+  
+  .login-container {
+    display: flex;
+    width: 100%;
+    max-width: 1200px;
+    height: 70%;
+    border-radius: 8px;
+    
+  }
+
+  .text-center{
+    font-weight: bold;
+  }
+  
+  .login-left, .login-right {
+    width: 50%;
+    padding: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .login-left {
+    padding-right: 20px;
+  }
+  
+  .login-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding-left: 20px;
+  }
+  
+  .login-box {
+    width: 100%;
+    max-width: 400px;
+    padding: 40px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  h2 {
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .input-group {
+    margin-bottom: 20px;
+    position: relative;
+  }
+  
+  .input-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    outline: none;
+  }
+  
+  .input-group input:focus {
+    border-color: #007bff;
+  }
+  
+  .password-group {
+    position: relative;
+  }
+  
+  .eye-icon {
+    position: absolute;
+    right: 10px;
+    top: 12px;
+    cursor: pointer;
+    font-size: 18px;
+  }
+  
+  .btn {
+    background-color: #007bff;
+    border: none;
+    padding: 12px;
+    font-size: 16px;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn:hover {
+    background-color: #0056b3;
+  }
+  
+  .error-message-container {
+    margin-top: 10px;
+  }
+  
+  .alert {
+    padding: 10px;
+    font-size: 14px;
+    border-radius: 5px;
+  }
+  
+  .login-right h1 {
+    font-size: 36px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .login-right p {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  .login-right a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .login-right a:hover {
+    text-decoration: underline;
+  }
+  
+/* Mobile Version */
+@media (max-width: 768px) {
+  
+    .login-container {
+        flex-direction: column;
+        height: auto;
+        padding-top: 130px;
+        overflow-y: auto; 
+    }
+
+   
+    .login-left, .login-right {
+        width: 100%;
+        padding: 20px;
+    }
+
+   
+    .login-box {
+        max-width: 100%;
+        padding: 30px;
+    }
+
+    
+    .login-right {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding-top: 20px;
+        margin-bottom: 80px;
+    }
+
+
+    .login-right h1 {
+        font-size: 28px;
+    }
+
+    .login-right p {
+        font-size: 16px;
+        margin-bottom: 10px;
+    }
+
+    .login-right a {
+        font-size: 14px;
+    }
+
+   
+    .input-group input {
+        font-size: 14px;
+    }
+
+  
+    .btn {
+        font-size: 14px;
+    }
+
+    
+    .login-page {
+        overflow-y: auto; 
+    }
+}
+
+@media (max-width: 480px) {
+   
+    .login-right h1 {
+        font-size: 24px;
+    }
+
+    .login-right p {
+        font-size: 14px;
+        margin-bottom: 8px;
+    }
+
+    .login-right a {
+        font-size: 12px;
+    }
+
+    
+    .input-group input {
+        font-size: 12px;
+    }
+
+    
+    .btn {
+        font-size: 12px;
+    }
+
+  
+    .login-container {
+        padding-top: 70px;
+    }
+}
+
+
+html, body {
+    height: 100%; 
+    overflow-x: hidden; 
+}
+
+.login-page {
+    height: 100%; 
+    overflow-y: hidden; 
+}
+
+ 
+  .error-message-container {
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    visibility: hidden;
+    margin-top: 10px;
+}
+
+.error-message-container .alert {
+    visibility: visible;
+    margin: 0;
+    padding: 8px;
+}

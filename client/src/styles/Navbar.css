@@ -1,0 +1,45 @@
+
+body {
+    margin: 0;
+    padding: 0;
+   overflow-x: hidden;
+   overflow-y: hidden;
+  }
+
+
+@media (max-width: 768px) {
+    .app-container {
+      height: 100vh;
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+    
+   
+    .dashboard-container {
+      margin-top: 80px; 
+    }
+  }
+
+.top-nav {
+    /* position: fixed; */
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  }
+  
+  
+  .logout-btn {
+    font-size: 14px; 
+    font-weight: bold;
+    margin-left: auto; 
+    padding: 8px 16px; 
+    max-width: 150px; 
+    transition: background-color 0.3s ease-in-out;
+  }
+  
+  .logout-btn:hover {
+    background-color: #e0e0e0; 
+  }
+  
