@@ -3,6 +3,7 @@ import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/Navbar.css";
+import Logo from "../components/Logo.png"
 
 function Navbar() {
   const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
@@ -19,7 +20,7 @@ function Navbar() {
     <nav className="top-nav navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container-fluid">
         {/* Brand on the left */}
-        <div className="navbar-brand">Resume Builder</div>
+        <div className="navbar-brand "><img src={Logo} alt="Logo" style={{ height: "50px", width: "auto" }} /></div>
 
         {/* Logout button on the right */}
         {isAuthenticated && (

@@ -19,6 +19,12 @@ function Signup() {
 
     const handleSignup = async (e) => {
         e.preventDefault();
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\-]).{8,}$/;
+        if(!passwordRegex.test(password)){
+            setMessage("A password should have atleast 8 Characters and special character");
+            navigate("/signup");
+            return;
+        }
 
         if (password !== confirmPassword) {
             setMessage("Passwords do not match!");
