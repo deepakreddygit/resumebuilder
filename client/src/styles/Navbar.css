@@ -58,8 +58,8 @@ body {
   border-color: rgba(0, 123, 255, 0.8)!important;
 }
 .navbar-logo {
-  height: 40px; 
-  width: auto;
+  height: 50px;
+  width: 200px;
   max-width: 150px;
 }
 

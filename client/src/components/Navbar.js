@@ -6,21 +6,28 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/Navbar.css";
 
 function Navbar() {
-  const { isAuthenticated, logout } = useContext(AuthContext);  // Use logout from AuthContext
+  const { isAuthenticated, logout } = useContext(AuthContext);  
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
 
   const handleLogout = () => {
     setShowModal(false); // Hide modal immediately
     logout(); // Use logout from context to update the authentication state
-    navigate("/login", { replace: true }); // Redirect to login page
+    navigate("/login", { replace: true }); 
   };
 
   return (
     <>
       <nav className="top-nav navbar navbar-expand-lg navbar-dark bg-dark custom-navbar">
         <div className="container-fluid">
-          <div className="navbar-brand">Resume Builder</div>
+          {/* Logo */}
+          <div className="navbar-brand">
+            <img 
+              src="/assets/images/logos/Logo.png" 
+              alt="Resume Builder Logo" 
+              className="navbar-logo"
+            />
+          </div>
 
           {isAuthenticated && (
             <button className="btn btn-outline-light logout-btn" onClick={() => setShowModal(true)}>

@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { FaTachometerAlt, FaFolderOpen, FaFileAlt, FaUser, FaQuestionCircle, FaAngleLeft, FaAngleRight } from "react-icons/fa";
 import { NavLink, useLocation } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";  // Import AuthContext
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/Sidebar.css";
 
 function Sidebar() {
   const [isMinimized, setIsMinimized] = useState(false);
   const location = useLocation();
+  const { userId } = useContext(AuthContext);  // Get userId from AuthContext
 
   useEffect(() => {
     console.log("Current route:", location.pathname);
@@ -39,7 +41,8 @@ function Sidebar() {
             </NavLink>
           </li>
           <li>
-            <NavLink to="/profile" className={({ isActive }) => (isActive ? "active-link" : "")}>
+            {/* Use dynamic userId in Profile link */}
+            <NavLink to={`/profile/${userId}`} className={({ isActive }) => (isActive ? "active-link" : "")}>
               <FaUser className="sidebar-icon" />
               {!isMinimized && <span className="sidebar-text">Profile</span>}
             </NavLink>

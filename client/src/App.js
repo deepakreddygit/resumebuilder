@@ -19,7 +19,7 @@ function App() {
   useEffect(() => {
     const token = localStorage.getItem("token");
     const userName = localStorage.getItem("userName");
-    let userId = localStorage.getItem("userId");
+    const userId = localStorage.getItem("userId");
 
     console.log("App.js - Loaded Auth Data from localStorage:");
     console.log("Token:", token);
@@ -28,7 +28,6 @@ function App() {
 
     if (token && userName && userId) {
       console.log("User is authenticated!");
-      localStorage.setItem("userId", userId); // Ensure userId is correctly set
     } else {
       console.log("User is not authenticated!");
     }
@@ -58,15 +57,9 @@ function AppContent() {
     console.log("AppContent Rendered");
     console.log("User ID from AuthContext:", userId);  // Log the userId from AuthContext
 
-    if (isAuthenticated) {
-      console.log("User is authenticated");
-      console.log("Navigating to profile with userId:", userId);
-
-      if (location.pathname === "/profile" && userId) {
-        navigate(`/profile/${userId}`, { replace: true });
-      }
-    } else {
-      console.log("User is not authenticated, redirecting to login");
+    if (isAuthenticated && location.pathname === "/") {
+      console.log("User is authenticated, redirecting to dashboard");
+      navigate("/dashboard", { replace: true });
     }
   }, [isAuthenticated, userId, location.pathname, navigate]);
 
