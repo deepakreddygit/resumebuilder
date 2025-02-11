@@ -15,25 +15,54 @@ function Signup() {
     const [message, setMessage] = useState("");
     const [passwordVisible, setPasswordVisible] = useState(false);
     const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
+    const [messageStyle, setMessageStyle] = useState({});
     const navigate = useNavigate();
+
+    const validatePassword = (password) => {
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+        return passwordRegex.test(password);
+    };
 
     const handleSignup = async (e) => {
         e.preventDefault();
-
-        if (password !== confirmPassword) {
-            setMessage("Passwords do not match!");
+    
+        // Validate password format
+        if (!validatePassword(password)) {
+            setMessage("Password must be at least 8 characters, include an uppercase letter, a lowercase letter, a number, and a special character.");
+            setMessageStyle({ color: "red" });
             return;
         }
-
+    
+        // Check if passwords match
+        if (password !== confirmPassword) {
+            setMessage("Passwords do not match!");
+            setMessageStyle({ color: "red" });
+            return;
+        }
+    
+        // Send signup request to backend
         const response = await signupUser({ name, email, password, confirmPassword });
-
+    
+        // Check the response from the backend
         if (response.message === "User created successfully!") {
             setMessage("Signup successful! Redirecting to login...");
+            setMessageStyle({ color: "green" });
             setTimeout(() => navigate("/login"), 1500);
         } else {
-            setMessage(response.message || "Error signing up!");
+            // Handle error if the user already exists
+            if (response.message === "User already exists!") {
+                setMessage("This email is already registered. Please use a different email.");
+                setMessageStyle({ color: "red" });
+            } else {
+                // If any other error message occurs
+                setMessage(response.message || "Error signing up!");
+                setMessageStyle({ color: "red" });
+            }
         }
     };
+    
+    
+    
 
     return (
         <div className="auth-container">
@@ -55,7 +84,7 @@ function Signup() {
                         {/* Error Message Container */}
                         <div className="error-message-container">
                             {message && (
-                                <div className="alert text-center">
+                                <div className="alert text-center" style={messageStyle}>
                                     {message}
                                 </div>
                             )}

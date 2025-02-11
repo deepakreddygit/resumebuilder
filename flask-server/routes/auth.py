@@ -1,8 +1,13 @@
 from flask import Blueprint, request, jsonify
+from flask_cors import CORS  
 from db import users_collection
 import bcrypt
+from bson import ObjectId  
 
 auth_bp = Blueprint('auth', __name__)
+
+
+CORS(auth_bp, origins="http://localhost:3000")
 
 # Home route
 @auth_bp.route('/')
@@ -68,10 +73,24 @@ def login():
         print(f"[SERVER] Login failed: Incorrect password for user '{email}'")
         return jsonify({"error": "Invalid credentials!"}), 400
 
-    # Successful login
     print(f"[SERVER] Login successful for user: {user['name']} ({email})")  
     return jsonify({
         "message": "Login successful!",
         "user": user['name'], 
-        "token": "some-jwt-token-here" 
+        "user_id": str(user['_id']),  
+    }), 200
+
+# Get user by ID route 
+@auth_bp.route('/user/<user_id>', methods=['GET'])
+def get_user_by_id(user_id):
+
+    user = users_collection.find_one({"_id": ObjectId(user_id)})
+    
+    if not user:
+        return jsonify({"error": "User not found!"}), 404
+
+    return jsonify({
+        "user_id": str(user['_id']),
+        "name": user['name'],
+        "email": user['email']
     }), 200

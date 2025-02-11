@@ -1,24 +1,27 @@
-import React, { useState, useContext, useEffect } from "react";
-import { AuthContext } from "../context/AuthContext";
+import React, { useState, useEffect, useContext } from "react";
+import { AuthContext } from "../context/AuthContext";  
 import { useNavigate, Link } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/Login.css";
-import { loginUser } from "../api"; 
+import { loginUser } from "../api";  
 
 function Login() {
-  const { isAuthenticated, setIsAuthenticated, setUserName } = useContext(AuthContext);
+  const { login } = useContext(AuthContext);  
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
   const navigate = useNavigate();
 
+
   useEffect(() => {
-    if (isAuthenticated) {
+
+    if (localStorage.getItem("token")) {
       navigate("/dashboard", { replace: true });
     }
-  }, [isAuthenticated, navigate]);
+  }, [navigate]);
+
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -26,11 +29,19 @@ function Login() {
 
     const data = await loginUser({ email, password });
 
+
     if (data.message === "Login successful!") {
-      setIsAuthenticated(true);
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("userName", data.user);
-      setUserName(data.user);
+      const { user, user_id, token } = data;
+
+      localStorage.setItem("token", token);
+      localStorage.setItem("userName", user);
+      localStorage.setItem("userId", user_id);
+
+      login(user, user_id, token);
+
+      console.log("User ID from loginUser:", user_id);  
+
+      // Redirect to dashboard
       navigate("/dashboard", { replace: true });
     } else {
       setErrorMsg(data.error || "Invalid credentials!");
@@ -40,7 +51,6 @@ function Login() {
   return (
     <div className="login-page d-flex align-items-center justify-content-center" style={{ height: "100vh" }}>
       <div className="login-container row w-100 w-md-75">
-        
         {/* Left Section - Login Form */}
         <div className="login-left col-12 col-md-6 p-4">
           <div className="login-box">
@@ -82,18 +92,16 @@ function Login() {
                   </div>
                 )}
               </div>
-
             </form>
           </div>
         </div>
 
-        {/* Right Section - Welcome Message */}
+
         <div className="login-right col-12 col-md-6 p-4 d-flex align-items-center justify-content-center flex-column">
           <h1 className="text-center">Welcome Back!</h1>
           <p className="text-center">Log in to access your personalized resume builder. Create professional, recruiter-approved resumes in minutes!</p>
           <p className="text-center">Don't have an account? <Link to="/signup">Sign up now.</Link></p>
         </div>
-
       </div>
     </div>
   );

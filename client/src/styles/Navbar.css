@@ -4,20 +4,19 @@ body {
     padding: 0;
    overflow-x: hidden;
    overflow-y: hidden;
+   color: #495057;
   }
 
 
 @media (max-width: 768px) {
     .app-container {
       height: 100vh;
-      overflow-y: auto;
+      overflow-y: hidden !important;
       overflow-x: hidden;
     }
     
    
-    .dashboard-container {
-      margin-top: 80px; 
-    }
+   
   }
 
 .top-nav {
@@ -29,36 +28,42 @@ body {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
   }
   
-/* Logout Button */
+
 .logout-btn {
-  font-size: 16px;                 
-  background-color: #007bff;      
-  color: #fff;                      
-  border: 2px solid #007bff;        
-  border-radius: 30px;              
-  font-weight: bold;               
-  cursor: pointer;                
-  transition: background-color 0.3s, transform 0.3s ease;  
+  font-size: 14px; 
+  padding: 6px 12px; 
+  background-color: rgba(0, 123, 255, 0.4) !important; 
+  color: #fff; 
+  border: 2px solid rgba(0, 123, 255, 0.4) !important; 
+  border-radius: 20px; 
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-/* Hover Effect */
+
 .logout-btn:hover {
-  background-color: #0056b3;      
-  border-color: #0056b3;            
-  transform: scale(1.05);          
+  background-color: rgba(0, 123, 255, 0.6) !important; 
+  border-color: rgba(0, 123, 255, 0.6)!important;
+  transform: scale(1.05);
 }
 
-/* Focus Effect */
-.logout-btn:focus {
-  outline: none;               
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); 
-}
+
+
 
 
 .logout-btn:active {
-  transform: scale(0.98);           
-  background-color: #004085;         
-  border-color: #004085;            
+  transform: scale(0.95);
+  background-color: rgba(0, 123, 255, 0.8)!important; 
+  border-color: rgba(0, 123, 255, 0.8)!important;
+}
+.navbar-logo {
+  height: 40px; 
+  width: auto;
+  max-width: 150px;
 }
 
+.custom-navbar {
+  background-color: #343a40 !important;
+}
   

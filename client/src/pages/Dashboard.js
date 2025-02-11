@@ -1,13 +1,21 @@
 import React, { useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
-import "bootstrap/dist/css/bootstrap.min.css"; 
+import { AuthContext } from "../context/AuthContext"; 
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Dashboard() {
-  const { userName } = useContext(AuthContext);
+  const { isAuthenticated, userName } = useContext(AuthContext); 
+
+  if (!isAuthenticated) {
+
+    window.location.href = "/login";
+  }
 
   return (
-    <div className="container d-flex justify-content-center align-items-center vh-100">
-      <h1 className="fw-bold">Welcome, {userName}!</h1>
+    <div className="d-flex justify-content-center align-items-center vh-100">
+
+      <div className="text-center">
+        <h1>Welcome, {userName}!</h1> 
+      </div>
     </div>
   );
 }

@@ -1,0 +1,30 @@
+/* Profile.css */
+.profile-container {
+    padding: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  
+  .profile-image {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  .profile-header {
+    font-size: 2rem;
+    margin-top: 10px;
+    font-weight: bold;
+  }
+  
+  .profile-info {
+    margin-top: 20px;
+    font-size: 1.2rem;
+  }
+  
+  .profile-info span {
+    font-weight: bold;
+  }
+  
