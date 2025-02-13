@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation, useNavigate } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
 import Login from "./pages/Login";
@@ -8,31 +9,21 @@ import Dashboard from "./pages/Dashboard";
 import Templates from "./pages/Templates";
 import TemplatePage from "./pages/TemplatePage";
 import Profile from "./pages/Profile";
-import { AuthContext } from "./context/AuthContext"; 
+import ResumeBuilder from "./pages/ResumeBuilder";
+import SavedResumes from "./pages/SavedResumes";
+import { AuthContext } from "./context/AuthContext";
 import { AuthProvider } from "./context/AuthContext";
-import 'bootstrap/dist/css/bootstrap.min.css';
 import "./App.css";
 
 function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    const userName = localStorage.getItem("userName");
-    const userId = localStorage.getItem("userId");
+    console.log("App.js - Loading Auth Data from localStorage...");
 
-    console.log("App.js - Loaded Auth Data from localStorage:");
-    console.log("Token:", token);
-    console.log("User Name:", userName);
-    console.log("User ID:", userId);
-
-    if (token && userName && userId) {
-      console.log("User is authenticated!");
-    } else {
-      console.log("User is not authenticated!");
-    }
-
-    setLoading(false);
+    setTimeout(() => {
+      setLoading(false);
+    }, 500); // Simulate loading time (optional)
   }, []);
 
   if (loading) {
@@ -49,19 +40,19 @@ function App() {
 }
 
 function AppContent() {
-  const { isAuthenticated, userName, userId } = useContext(AuthContext);
+  const { isAuthenticated, userName } = useContext(AuthContext);
   const location = useLocation();
   const navigate = useNavigate();
 
   useEffect(() => {
     console.log("AppContent Rendered");
-    console.log("User ID from AuthContext:", userId);  // Log the userId from AuthContext
 
     if (isAuthenticated && location.pathname === "/") {
-      console.log("User is authenticated, redirecting to dashboard");
       navigate("/dashboard", { replace: true });
     }
-  }, [isAuthenticated, userId, location.pathname, navigate]);
+  }, [isAuthenticated, location.pathname, navigate]);
+
+  if (isAuthenticated === null) return <div>Loading user data...</div>; // Prevent rendering if auth state is unknown
 
   return (
     <div className="app-container">
@@ -72,11 +63,29 @@ function AppContent() {
           <Route path="/" element={<Navigate replace to={isAuthenticated ? "/dashboard" : "/login"} />} />
           <Route path="/login" element={isAuthenticated ? <Navigate replace to="/dashboard" /> : <Login />} />
           <Route path="/signup" element={isAuthenticated ? <Navigate replace to="/dashboard" /> : <Signup />} />
-          <Route path="/dashboard" element={isAuthenticated ? <Dashboard /> : <Navigate replace to="/login" />} />
-          <Route path="/templates" element={isAuthenticated ? <Templates /> : <Navigate replace to="/login" />} />
-          <Route path="/template/:templateNumber" element={isAuthenticated ? <TemplatePage /> : <Navigate replace to="/login" />} />
-          <Route path="/profile/:userId" element={isAuthenticated ? <Profile /> : <Navigate replace to="/login" />} />
+
+          {/* Protected Routes */}
+          {isAuthenticated ? (
+            <>
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/templates" element={<Templates />} />
+              <Route path="/template/:templateNumber" element={<TemplatePage />} />
+              <Route path="/profile/:userId" element={<Profile />} />
+
+              {/* ✅ Resume Builder - Supports Multiple Templates */}
+              <Route path="/resume-builder/:templateNumber" element={<ResumeBuilder />} />
+              <Route path="/resume/edit/:resumeId/:templateNumber?" element={<ResumeBuilder />} />
+
+              {/* ✅ Saved Resumes Page */}
+              <Route path="/saved-resumes" element={<SavedResumes />} />
+            </>
+          ) : (
+            <Route path="*" element={<Navigate replace to="/login" />} />
+          )}
         </Routes>
+
+        {/* ✅ Place ToastContainer Here (Only Load Once) */}
+        <ToastContainer position="top-right" autoClose={3000} />
       </div>
     </div>
   );

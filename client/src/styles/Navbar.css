@@ -1,69 +1,124 @@
-
+/* 🌟 Global Reset */
 body {
-    margin: 0;
-    padding: 0;
-   overflow-x: hidden;
-   overflow-y: hidden;
-   color: #495057;
-  }
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  color: #495057;
+}
 
+/* ✅ Fix: Allow scrolling in main content */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
 
-@media (max-width: 768px) {
-    .app-container {
-      height: 100vh;
-      overflow-y: hidden !important;
-      overflow-x: hidden;
-    }
-    
-   
-   
-  }
+.content-container {
+  flex-grow: 1;
+  overflow-y: auto;
 
+}
+
+/* ✅ Navbar Stays at the Top with Increased Height */
 .top-nav {
-    /* position: fixed; */
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 100;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-  }
-  
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 75px; /* 🔥 Increased height from 60px to 75px */
+  background-color: #343a40;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2px;
+  z-index: 1050;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
 
+/* ✅ Navbar Logo */
+.navbar-logo {
+  height: 55px; /* Adjusted for better proportion */
+  width: auto;
+  max-width: 170px;
+}
+
+/* ✅ Logout Button */
 .logout-btn {
-  font-size: 14px; 
-  padding: 6px 12px; 
-  background-color: rgba(0, 123, 255, 0.4) !important; 
-  color: #fff; 
-  border: 2px solid rgba(0, 123, 255, 0.4) !important; 
-  border-radius: 20px; 
+  font-size: 14px;
+  padding: 10px 18px;
+  background-color: rgba(0, 123, 255, 0.5) !important;
+  color: white;
+  border: 2px solid rgba(0, 123, 255, 0.5) !important;
+  border-radius: 20px;
   font-weight: bold;
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-
 .logout-btn:hover {
-  background-color: rgba(0, 123, 255, 0.6) !important; 
-  border-color: rgba(0, 123, 255, 0.6)!important;
+  background-color: rgba(0, 123, 255, 0.7) !important;
+  border-color: rgba(0, 123, 255, 0.7) !important;
   transform: scale(1.05);
 }
 
-
-
-
-
 .logout-btn:active {
   transform: scale(0.95);
-  background-color: rgba(0, 123, 255, 0.8)!important; 
-  border-color: rgba(0, 123, 255, 0.8)!important;
-}
-.navbar-logo {
-  height: 50px;
-  width: 200px;
-  max-width: 150px;
+  background-color: rgba(0, 123, 255, 0.9) !important;
+  border-color: rgba(0, 123, 255, 0.9) !important;
 }
 
-.custom-navbar {
-  background-color: #343a40 !important;
+/* ✅ Modal Styling */
+.modal-footer .btn-danger {
+  background-color: #dc3545;
+  border-color: #dc3545;
+  font-weight: bold;
+  padding: 10px 18px;
+  transition: all 0.3s ease;
 }
-  
+
+.modal-footer .btn-danger:hover {
+  background-color: #b52b3a;
+  border-color: #a02633;
+}
+
+.modal-header,
+.modal-footer {
+  border: none;
+}
+
+.modal-header .btn-close {
+  background: none !important;
+  box-shadow: none;
+  opacity: 1;
+}
+
+/* ✅ Hide Hamburger on Large Screens */
+.hamburger-menu {
+  position: absolute;
+  top: 20px; /* Adjusted for better alignment */
+  left: 15px;
+  font-size: 2rem; /* Slightly larger for better visibility */
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  z-index: 1100;
+  display: none; /* Hides by default */
+}
+
+/* ✅ Show Hamburger Only on Mobile Screens */
+@media (max-width: 768px) {
+  .hamburger-menu {
+    display: block;
+  }
+
+  .top-nav {
+    height: 80px; /* Slightly more height for mobile */
+    padding: 0 15px;
+  }
+
+  .logout-btn {
+    font-size: 12px;
+    padding: 8px 14px;
+  }
+}

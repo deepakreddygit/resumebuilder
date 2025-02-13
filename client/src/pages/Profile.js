@@ -1,19 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
+import { getUserProfile } from "../api"; // Fetch profile API
 import "../styles/Profile.css";
-
 
 function Profile() {
   const navigate = useNavigate();
-  const { userId, userName } = useContext(AuthContext);
-  const [userData, setUserData] = useState(null);
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  console.log("Profile Component Loaded");
-  console.log("User ID from AuthContext:", userId);
+  const { userId } = useContext(AuthContext);
+  const [userProfile, setUserProfile] = useState({ name: "", email: "" });
 
   useEffect(() => {
     if (!userId) {
@@ -22,49 +16,32 @@ function Profile() {
       return;
     }
 
-    console.log(`Fetching user data from API: http://localhost:5001/user/${userId}`);
-
-    axios
-      .get(`http://localhost:5001/user/${userId}`)
-      .then((response) => {
-        console.log("User data fetched from API:", response.data);
-        setUserData(response.data);
-        setLoading(false);
+    console.log(`Fetching user profile for userId: ${userId}`);
+    getUserProfile(userId)
+      .then((data) => {
+        console.log("🔹 User Profile Data:", data);
+        setUserProfile({ name: data.name, email: data.email });
       })
       .catch((error) => {
-        console.error("Error fetching user data:", error);
-        setError("Failed to fetch user data. Please try again.");
-        setLoading(false);
+        console.error("❌ Error fetching user profile:", error);
       });
   }, [userId, navigate]);
 
-  if (loading) return <div className="loading">Loading user profile...</div>;
-  if (error) return <div className="error-message">{error}</div>;
-
   return (
-    <div className="profile-container">
-      <h1 className="text-center mb-4">Profile Information</h1>
-      <div className="row justify-content-center">
-        {/* Profile Card */}
-        <div className="col-md-6 col-lg-4">
-          <div className="card">
-          <img
-  src={userData.profilePicture || "/assets/images/default_profile.jpg"}
-  alt="Profile"
-  className="card-img-top rounded-circle mx-auto mt-4"
-  style={{ width: "150px", height: "150px", objectFit: "cover" }}
-/>
+    <div className="profile-page-container">
+      <div className="profile-card">
+        <img
+          src="/assets/images/default_profile.jpg"
+          alt="Profile"
+          className="profile-img"
+        />
+        <h5>{userProfile.name || "Unknown User"}</h5>
+        <p><strong>Email:</strong> {userProfile.email || "N/A"}</p>
 
-
-            <div className="card-body">
-              <h5 className="card-title text-center">{userData.name || userName}</h5>
-              <p className="card-text">
-                <strong>Email:</strong> {userData.email || "N/A"}
-              </p>
-             
-            </div>
-          </div>
-        </div>
+        {/* Button to View Saved Resumes */}
+        <button className="view-resumes-btn" onClick={() => navigate("/saved-resumes")}>
+          View Saved Resumes
+        </button>
       </div>
     </div>
   );

@@ -1,0 +1,134 @@
+/* 🔹 Main Layout */
+.resume-builder-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 20px;
+    height: auto; /* Adjusts dynamically based on content */
+    margin-top: 80px; /* Leaves exactly 20px below navbar */
+}
+
+/* 🔹 Resume Content Layout */
+.resume-builder-content {
+    display: flex;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    gap: 20px;
+    align-items: stretch; /* Both sides will expand equally */
+}
+
+/* 🔹 Left Side (Form Inputs) */
+.resume-inputs {
+    width: 40%;
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    min-height: 100%; /* Ensures full height with right preview */
+}
+
+/* 🔹 Right Side (Live Resume Preview) */
+.resume-preview {
+    width: 60%;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    min-height: 100%; /* Matches left side */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+/* 🔹 Input Field Styling */
+input, textarea {
+    width: 100%;
+    margin-bottom: 15px;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: all 0.2s ease-in-out;
+}
+
+/* 🔹 Focus Effect on Inputs */
+input:focus, textarea:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0px 0px 5px rgba(0, 123, 255, 0.3);
+}
+
+/* 🔹 Increase the height of the summary field */
+textarea[name="summary"] {
+    height: 120px;
+    resize: none;
+}
+
+/* 🔹 Button Styling */
+.save-btn, .add-btn {
+    background-color: #007bff;
+    color: white;
+    font-size: 16px;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 10px;
+    transition: background-color 0.2s ease-in-out;
+}
+
+/* 🔹 Hover Effect for Buttons */
+.save-btn:hover, .add-btn:hover {
+    background-color: #0056b3;
+}
+
+/* 🔹 Disabled Button Style */
+.save-btn:disabled {
+    background-color: #b0b0b0;
+    cursor: not-allowed;
+}
+
+/* 🔹 Section Containers */
+.section-container {
+    margin-top: 20px;
+    padding: 15px;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 🔹 Labels & Headers */
+h4 {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+/* 🔹 Entry Boxes */
+.entry-box {
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background: #f9f9f9;
+}
+
+/* 🔹 Fix spacing */
+.resume-builder-content > * {
+    margin-bottom: 20px;
+}
+
+/* 🔹 Responsive Fixes */
+@media screen and (max-width: 1024px) {
+    .resume-builder-content {
+        flex-direction: column;
+    }
+    
+    .resume-inputs, .resume-preview {
+        width: 100%;
+    }
+}

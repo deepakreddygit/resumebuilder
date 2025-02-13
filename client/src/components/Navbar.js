@@ -11,8 +11,8 @@ function Navbar() {
   const [showModal, setShowModal] = useState(false);
 
   const handleLogout = () => {
-    setShowModal(false); // Hide modal immediately
-    logout(); // Use logout from context to update the authentication state
+    setShowModal(false); 
+    logout(); 
     navigate("/login", { replace: true }); 
   };
 
@@ -45,7 +45,7 @@ function Navbar() {
         <Modal.Body>Are you sure you want to log out?</Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShowModal(false)}>Cancel</Button>
-          <Button variant="danger" onClick={handleLogout}>Logout</Button>
+          <Button className="btn-danger" onClick={handleLogout}>Logout</Button>
         </Modal.Footer>
       </Modal>
     </>
