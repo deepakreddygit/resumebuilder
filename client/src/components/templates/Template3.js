@@ -1,77 +1,113 @@
 import React from "react";
-import "../../styles/ResumeTemplate.css";
-
+import "../../styles/Template3.css"; // Import the specific CSS for Template 3
 
 function Template3({ resumeData }) {
   return (
-    <div className="resume-template">
-      <div className="resume-header">
-        <h1>{resumeData.name || "Your Name"}</h1>
-        <p className="summary">{resumeData.summary || "Your professional summary..."}</p>
-        <div className="contact-info">
-          <p>📧 {resumeData.email || "your@email.com"}</p>
-          <p>📞 {resumeData.phone || "Your Phone Number"}</p>
-        </div>
-      </div>
+    <div className="resume-container">
+      {/* Header Section */}
+      <header>
+        <h1 id="name">{resumeData.name || "Your Name"}</h1>
+        <p id="email">
+          {resumeData.email || "your.email@example.com"} |{" "}
+          <span id="phone">{resumeData.phone || "123-456-7890"}</span>
+        </p>
+        <p id="summary">
+          {resumeData.summary ||
+            "A brief professional summary highlighting your key strengths and career goals."}
+        </p>
+      </header>
 
-      <div className="resume-section">
-        <h2>📌 Work Experience</h2>
+      {/* Work Experience */}
+      <section>
+        <h2>Work Experience</h2>
         {resumeData.experience.map((exp, index) => (
-          <div key={index} className="experience-item">
-            <h3>{exp.jobTitle || "Job Title"}</h3>
-            <p className="company">{exp.company || "Company Name"} ({exp.years || "Years"})</p>
-            <p className="responsibilities">{exp.responsibilities || "Job Responsibilities"}</p>
+          <div className="experience" key={index}>
+            <div className="flex-container">
+              <h3 id="job-title">{exp.jobTitle || "Job Title"}</h3>
+              <span className="years" id="job-years">
+                {exp.years || "Years"}
+              </span>
+            </div>
+            <p>
+              <strong id="company">{exp.company || "Company Name"}</strong>
+            </p>
+            <p id="job-responsibilities">{exp.responsibilities || "Job Responsibilities"}</p>
           </div>
         ))}
-      </div>
+      </section>
 
-      <div className="resume-section">
-        <h2>🎓 Education</h2>
+      {/* Education */}
+      <section>
+        <h2>Education</h2>
         {resumeData.education.map((edu, index) => (
-          <div key={index} className="education-item">
-            <h3>{edu.degree || "Degree"}</h3>
-            <p>{edu.institution || "Institution"} ({edu.year || "Year"})</p>
+          <div className="education" key={index}>
+            <div className="flex-container">
+              <h3 id="degree">{edu.degree || "Degree"}</h3>
+              <span className="years" id="grad-year">
+                {edu.year || "Year"}
+              </span>
+            </div>
+            <p>
+              <strong id="university">{edu.institution || "Institution"}</strong>
+            </p>
           </div>
         ))}
-      </div>
+      </section>
 
-      <div className="resume-section">
-        <h2>🛠 Skills</h2>
-        <div className="skills-list">
+      {/* Skills */}
+      <section>
+        <h2>Skills</h2>
+        <ul id="skills">
           {resumeData.skills.map((skill, index) => (
-            skill.skill && <span key={index} className="skill-badge">{skill.skill}</span>
+            <li key={index}>{skill || "Skill"}</li>
           ))}
-        </div>
-      </div>
+        </ul>
+      </section>
 
-      <div className="resume-section">
-        <h2>📜 Certifications</h2>
+      {/* Certifications */}
+      <section>
+        <h2>Certifications</h2>
         {resumeData.certifications.map((cert, index) => (
-          <div key={index} className="certification-item">
-            <h3>{cert.title || "Certification Title"}</h3>
-            <p>{cert.issuer || "Issuer"} ({cert.year || "Year"})</p>
+          <div className="certification" key={index}>
+            <div className="flex-container">
+              <h3 id="cert-title">{cert.title || "Certification Title"}</h3>
+              <span className="years" id="cert-year">
+                {cert.year || "Year"}
+              </span>
+            </div>
+            <p>
+              <strong id="cert-issuer">{cert.issuer || "Issuer"}</strong>
+            </p>
           </div>
         ))}
-      </div>
+      </section>
 
-      <div className="resume-section">
-        <h2>🚀 Projects</h2>
-        {resumeData.projects.map((project, index) => (
-          <div key={index} className="project-item">
-            <h3>{project.title || "Project Title"}</h3>
-            <p>{project.description || "Project description..."}</p>
+      {/* Projects */}
+      <section>
+        <h2>Projects</h2>
+        {resumeData.projects.map((proj, index) => (
+          <div className="project" key={index}>
+            <h3 id="project-title">{proj.title || "Project Title"}</h3>
+            <p id="project-description">{proj.description || "Project Description"}</p>
           </div>
         ))}
-      </div>
+      </section>
 
-      <div className="resume-section">
-        <h2>🌎 Languages</h2>
-        {resumeData.languages.map((lang, index) => (
-          <p key={index}>{lang.language || "Language"} - {lang.proficiency || "Proficiency Level"}</p>
-        ))}
-      </div>
+      {/* Languages */}
+      <section>
+        <h2>Languages</h2>
+        <ul id="languages">
+          {resumeData.languages.map((lang, index) => (
+            <li key={index}>
+              {lang.language || "Language"} - {lang.proficiency || "Proficiency Level"}
+            </li>
+          ))}
+        </ul>
+      </section>
     </div>
   );
 }
 
 export default Template3;
+
+

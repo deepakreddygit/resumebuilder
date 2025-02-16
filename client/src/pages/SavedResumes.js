@@ -1,10 +1,11 @@
+
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { getUserResumes, deleteResume } from "../api";
 import { toast } from "react-toastify";
 import { Modal, Button } from "react-bootstrap";
-import { FaEdit, FaTrashAlt } from "react-icons/fa";
+import { FaEdit, FaTrashAlt, FaEye } from "react-icons/fa";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/SavedResumes.css";
 
@@ -19,20 +20,16 @@ function SavedResumes() {
 
   useEffect(() => {
     if (!userId) {
-      console.warn("User ID is missing! Redirecting to login...");
       navigate("/login");
       return;
     }
 
-    console.log(`Fetching resumes for user: ${userId}`);
     getUserResumes(userId)
       .then((res) => {
-        console.log("📜 User Resumes Data:", res);
         setResumes(res);
         setLoading(false);
       })
-      .catch((error) => {
-        console.error("❌ Error fetching resumes:", error);
+      .catch(() => {
         setError("Failed to load resumes. Please try again.");
         setLoading(false);
       });
@@ -63,6 +60,22 @@ function SavedResumes() {
     }
   };
 
+  const handleEdit = (resume) => {
+    if (!resume.templateNumber) {
+      toast.error("Template selection is missing!");
+      return;
+    }
+    navigate(`/resume/edit/${resume.resume_id}/${resume.templateNumber}`);
+  };
+
+  const handlePreview = (resume) => {
+    if (!resume.templateNumber) {
+      toast.error("Template selection is missing!");
+      return;
+    }
+    navigate(`/resume-preview/${resume.resume_id}/${resume.templateNumber}`);
+  };
+
   if (loading) return <div>Loading saved resumes...</div>;
   if (error) return <div className="error-message">{error}</div>;
 
@@ -81,7 +94,10 @@ function SavedResumes() {
               </div>
 
               <div className="resume-actions">
-                <button className="small-btn edit-btn" onClick={() => navigate(`/resume/edit/${resume.resume_id}`)}>
+                <button className="small-btn preview-btn" onClick={() => handlePreview(resume)}>
+                  <FaEye className="icon" /> Preview
+                </button>
+                <button className="small-btn edit-btn" onClick={() => handleEdit(resume)}>
                   <FaEdit className="icon" /> Edit
                 </button>
                 <button className="small-btn delete-btn" onClick={() => handleShowModal(resume.resume_id)}>
@@ -112,3 +128,6 @@ function SavedResumes() {
 }
 
 export default SavedResumes;
+
+
+

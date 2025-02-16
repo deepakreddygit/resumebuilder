@@ -1,5 +1,5 @@
 import React from "react";
-import "../../styles/ResumeTemplate.css";
+import "../../styles/Template7.css";
 
 
 function Template7({ resumeData }) {

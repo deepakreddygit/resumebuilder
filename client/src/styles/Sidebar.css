@@ -1,34 +1,25 @@
-/* 🌟 Sidebar Styling */
+
 .side-menu-container {
   position: fixed;
-  top: 70px; /* 🔥 Stays below navbar */
-  left: 0;
-  height: calc(100vh - 70px);
-  width: 90px; /* 🔥 Default width */
+  top: 70px;
+  left: -250px; 
+  height: 100vh;
+  width: 100px; 
   background-color: #343a40;
   color: white;
-  transition: all 0.3s ease-in-out;
+  transition: left 0.3s ease-in-out;
   z-index: 1000;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 15px; /* 🔥 Added padding for spacing */
+  padding-top: 20px;
 }
 
-/* ✅ Minimized Sidebar (Icons Only) */
-.side-menu-container.minimized {
-  width: 60px; /* 🔥 Reduced width */
+
+.side-menu-container.open {
+  left: 0; 
 }
 
-.side-menu-container.minimized .sidebar-text {
-  display: none;
-}
-
-.side-menu-container.minimized .active-link {
-  width: 60px !important; /* 🔥 Active menu matches minimized width */
-}
-
-/* ✅ Sidebar List */
 .side-menu ul {
   padding: 0;
   margin: 0;
@@ -42,104 +33,82 @@
   align-items: center;
 }
 
-/* 🔥 Sidebar Links - Text Below Icons */
+
 .side-menu a {
   color: white !important;
   text-decoration: none !important;
-  font-weight: 500;
+  font-weight: 400;
   display: flex;
-  flex-direction: column; /* 🔥 Moves text below icon */
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 15px 0;
+  padding: 20px 8px 8px 8px;
   width: 100%;
   border-radius: 8px;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  font-size: 1rem;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
 }
 
-/* 🔥 Sidebar Icons */
 .sidebar-icon {
-  font-size: 1.5rem; /* 🔥 Perfect size */
-  margin-bottom: 5px; /* 🔥 Space between icon and text */
+  font-size: 2rem; 
+  margin-bottom: 5px;
+  transition: transform 0.2s ease;
 }
 
-/* 🔥 Sidebar Text */
-.sidebar-text {
-  font-size: 0.8rem;
-  text-align: center;
-  transition: opacity 0.3s ease;
+
+.side-menu a:hover .sidebar-icon {
+  transform: scale(1.1);
 }
 
-/* ✅ Active Menu */
+
+.side-menu a:hover {
+  transform: scale(1.05);
+}
+
+
 .side-menu .active-link {
-  background-color: white; /* 🔥 White background */
-  color: #343a40 !important; /* 🔥 Dark text for contrast */
+  background-color: white;
+  color: #343a40 !important;
   font-weight: bold;
-  width: 90px !important;
+  width: 100% !important;
 }
 
-/* ✅ Adjust Active Menu when Minimized */
-.side-menu-container.minimized .active-link {
-  width: 60px !important; /* 🔥 When minimized, active menu also gets 60px */
-}
-
-/* ✅ Sidebar Toggle Button */
-.toggle-btn {
-  position: absolute;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: none;
-  border: none;
+.hamburger-menu {
+  position: fixed;
+  top: 8px; 
+  left: 8px;
+  font-size: 1.6rem; 
+  background: none !important;
+  border: none !important;
   color: white;
-  font-size: 1.5rem;
   cursor: pointer;
+  z-index: 1100;
+  transition: transform 0.2s ease-in-out;
 }
 
-.toggle-btn:hover {
-  transform: translateX(-50%) scale(1.2);
+.hamburger-menu:hover,
+.hamburger-menu:focus {
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+  transform: scale(1.1);
 }
 
-/* ✅ Mobile Sidebar (Hidden by Default) */
-@media (max-width: 768px) {
-  .side-menu-container {
-    left: -90px;
-    transition: left 0.3s ease-in-out;
-  }
 
-  .side-menu-container.mobile-open {
-    left: 0;
-  }
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
 
-  /* ✅ Updated Hamburger Menu */
+
+@media (min-width: 1024px) {
   .hamburger-menu {
-    position: absolute;
-    top: 9px;
-    left: 3px; /* 🔥 Moves too left */
-    font-size: 1.5rem; /* 🔥 Smaller size */
-    background: none !important;
-    border: none !important;
-    color: white;
-    cursor: pointer;
-    z-index: 1100;
-  }
-
-  /* 🚫 No Background on Hover */
-  .hamburger-menu:hover {
-    background: none !important;
-    border: none !important;
-    transform: none !important;
-  }
-
-  /* ✅ Overlay when Mobile Menu is Open */
-  .mobile-menu-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 999;
-    display: block;
+    display: block; 
   }
 }

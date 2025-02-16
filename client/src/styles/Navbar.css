@@ -37,10 +37,12 @@ body {
 
 /* ✅ Navbar Logo */
 .navbar-logo {
-  height: 55px; /* Adjusted for better proportion */
+  margin-left: 30px;
+  height: 55px;
   width: auto;
   max-width: 170px;
 }
+
 
 /* ✅ Logout Button */
 .logout-btn {
@@ -103,7 +105,7 @@ body {
   color: white;
   cursor: pointer;
   z-index: 1100;
-  display: none; /* Hides by default */
+  display: block; /* Hides by default */
 }
 
 /* ✅ Show Hamburger Only on Mobile Screens */

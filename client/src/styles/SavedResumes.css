@@ -1,4 +1,4 @@
-/* Full-page container with scrolling */
+
 .saved-resumes-container {
     height: calc(100vh - 60px);
     overflow-y: auto;
@@ -6,17 +6,19 @@
     flex-direction: column;
     align-items: center;
     padding: 20px;
+    background-color: #f8f9fa;
+    margin-top: 50px;
 }
 
-/* Page Title */
+
 .saved-resumes-title {
     font-size: 2rem;
     font-weight: bold;
     text-align: center;
     margin-bottom: 20px;
+    color: #333;
 }
 
-/* Resume Grid */
 .saved-resumes-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
@@ -27,7 +29,7 @@
     padding: 20px;
 }
 
-/* Resume Card */
+
 .resume-card {
     background: white;
     padding: 20px;
@@ -44,7 +46,6 @@
     transform: translateY(-5px);
 }
 
-/* Resume Name */
 .resume-name {
     font-size: 1.3rem;
     font-weight: bold;
@@ -53,34 +54,47 @@
     text-align: center;
 }
 
-/* Resume Details */
 .resume-details {
     font-size: 1rem;
     color: #555;
     margin-bottom: 5px;
 }
 
-/* Buttons Container */
+
 .resume-actions {
     display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-    margin-top: auto;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 15px;
 }
 
-/* Edit Button */
+
 .small-btn {
     display: flex;
     align-items: center;
-    gap: 5px;
+    justify-content: center;
     font-size: 0.9rem;
     font-weight: bold;
-    padding: 6px 10px;
+    padding: 10px 15px;
     border: none;
-    border-radius: 5px;
+    border-radius: 6px;
     cursor: pointer;
     transition: background-color 0.3s ease-in-out, transform 0.2s ease;
+    width: 120px; 
+    height: 40px;  
+    gap: 8px;
 }
+
+
+.preview-btn {
+    background-color: #6c757d;
+    color: white;
+}
+
+.preview-btn:hover {
+    background-color: #5a6268;
+}
+
 
 .edit-btn {
     background-color: #007bff;
@@ -91,7 +105,6 @@
     background-color: #0056b3;
 }
 
-/* Delete Button */
 .delete-btn {
     background-color: #dc3545;
     color: white;
@@ -101,7 +114,7 @@
     background-color: #a71d2a;
 }
 
-/* "Create a new one!" Link */
+
 .no-resumes-text {
     font-size: 1.2rem;
     color: #555;
@@ -119,7 +132,7 @@
     text-decoration: underline;
 }
 
-/* Responsive Design */
+
 @media (max-width: 768px) {
     .saved-resumes-grid {
         grid-template-columns: 1fr;
@@ -127,6 +140,13 @@
 
     .resume-actions {
         flex-direction: row;
-        justify-content: flex-end;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .small-btn {
+        width: 100px;
+        height: 38px;
+        font-size: 0.85rem;
     }
 }

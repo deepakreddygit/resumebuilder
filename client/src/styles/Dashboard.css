@@ -1,102 +1,66 @@
-
-.template-card {
-  width: 90%; 
-  border-radius: 8px;
-  overflow: hidden;
-  background-color: white;
-  transition: transform 0.3s ease-in-out;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.template-card:hover {
-  transform: translateY(-10px);
-}
-
-.template-img {
-  height: 200px;
-  object-fit: cover;
-  width: 100%;
-}
-
-
-.template-info {
-  background-color: #f8f9fa;
-  border-top: 1px solid #ddd;
-  padding: 15px;
+.dashboard-container {
   text-align: center;
-  margin-bottom: 20px;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+  padding: 40px;
 }
 
-
-.template-info h5 {
-  font-size: 1.25rem;
-  font-weight: 600;
+.welcome-text {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #333;
   margin-bottom: 10px;
 }
 
-
-.template-info p {
-  font-size: 0.9rem;
+.sub-text {
+  font-size: 1.2rem;
   color: #555;
-  margin-bottom: 15px;
+  max-width: 600px;
 }
 
 
-.btn-secondary {
-  background-color: #6c757d;
-  border-color: #6c757d;
-  padding: 10px;
+.button-group {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.action-btn {
+  padding: 12px 20px;
+  font-size: 1rem;
   font-weight: bold;
+  border-radius: 30px;
+  min-width: 180px;
+  transition: all 0.3s ease-in-out;
 }
 
-.btn-secondary:hover {
-  background-color: #5a6268;
-  border-color: #545b62;
+.btn-primary {
+  background-color: #007bff;
+  border: none;
 }
 
-
-@media (max-width: 768px) {
-  .template-card {
-    max-width: 100%;
-  }
+.btn-primary:hover {
+  background-color: #0056b3;
 }
 
-
-.dashboard-container {
-  max-height: 100vh;
-  overflow-y: auto;
-  padding: 20px;
-  padding-bottom: 100px; 
-  margin-left: 80px; 
+.btn-outline-primary {
+  border: 2px solid #007bff;
+  color: #007bff;
 }
 
-
-.dashboard-container.sidebar-open .content-area {
-  margin-left: 250px; 
-}
-
-
-.dashboard-container h3 {
-  font-size: 1.5rem;
-  margin-bottom: 30px;
-}
-
-.dashboard-container .templates-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr); 
-  gap: 20px;
-  transition: all 0.5s ease;
-}
-
-
-@media (max-width: 1024px) {
-  .dashboard-container .templates-grid {
-    grid-template-columns: repeat(2, 1fr); 
-  }
+.btn-outline-primary:hover {
+  background-color: #007bff;
+  color: white;
 }
 
 @media (max-width: 768px) {
-  .dashboard-container .templates-grid {
-    grid-template-columns: 1fr; 
+  .button-group {
+      flex-direction: column;
+      gap: 10px;
+  }
+
+  .stats-container {
+      flex-direction: column;
+      gap: 15px;
   }
 }

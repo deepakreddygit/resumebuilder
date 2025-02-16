@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useContext } from "react";
-import { FaTachometerAlt, FaFolderOpen, FaFileAlt, FaUser, FaQuestionCircle, FaAngleLeft, FaAngleRight, FaBars } from "react-icons/fa";
+import { FaTachometerAlt, FaFolderOpen, FaFileAlt, FaUser, FaQuestionCircle, FaBars } from "react-icons/fa";
 import { NavLink, useLocation } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import "../styles/Sidebar.css";
 
 function Sidebar() {
-  const [isMinimized, setIsMinimized] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const location = useLocation();
   const { userId } = useContext(AuthContext);
 
@@ -15,67 +14,62 @@ function Sidebar() {
   }, [location]);
 
   const toggleSidebar = () => {
-    setIsMinimized(!isMinimized);
+    setIsSidebarOpen(!isSidebarOpen);
   };
 
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
+  const closeSidebar = () => {
+    setIsSidebarOpen(false);
   };
 
   return (
     <>
-      {/* 🔥 Mobile Hamburger Menu Button (Positioned Inside Navbar) */}
-      <button className="hamburger-menu" onClick={toggleMobileMenu}>
+      {/* 🔥 Hamburger Menu Button (Always Visible) */}
+      <button className="hamburger-menu" onClick={toggleSidebar}>
         <FaBars />
       </button>
 
-      {/* ✅ Sidebar (Desktop & Mobile) */}
-      <div className={`side-menu-container ${isMinimized ? "minimized" : ""} ${isMobileMenuOpen ? "mobile-open" : ""}`}>
+      {/* ✅ Sidebar (Hidden by Default) */}
+      <div className={`side-menu-container ${isSidebarOpen ? "open" : ""}`}>
         <div className="side-menu">
           <ul className="list-unstyled">
             <li>
-              <NavLink to="/dashboard" className={({ isActive }) => (isActive ? "active-link" : "")}>
+              <NavLink to="/dashboard" className={({ isActive }) => (isActive ? "active-link" : "")} onClick={closeSidebar}>
                 <FaTachometerAlt className="sidebar-icon" />
-                {!isMinimized && <span className="sidebar-text">Dashboard</span>}
+                <span className="sidebar-text">Dashboard</span>
               </NavLink>
             </li>
             <li>
-              <NavLink to="/saved-resumes" className={({ isActive }) => (isActive ? "active-link" : "")}>
+              <NavLink to="/saved-resumes" className={({ isActive }) => (isActive ? "active-link" : "")} onClick={closeSidebar}>
                 <FaFolderOpen className="sidebar-icon" />
-                {!isMinimized && <span className="sidebar-text">Saved</span>}
+                <span className="sidebar-text">Saved</span>
               </NavLink>
             </li>
             <li>
-              <NavLink to="/templates" className={({ isActive }) => (isActive ? "active-link" : "")}>
+              <NavLink to="/templates" className={({ isActive }) => (isActive ? "active-link" : "")} onClick={closeSidebar}>
                 <FaFileAlt className="sidebar-icon" />
-                {!isMinimized && <span className="sidebar-text">Templates</span>}
+                <span className="sidebar-text">Templates</span>
               </NavLink>
             </li>
-            <li>
-              {userId && (
-                <NavLink to={`/profile/${userId}`} className={({ isActive }) => (isActive ? "active-link" : "")}>
+            {userId && (
+              <li>
+                <NavLink to={`/profile/${userId}`} className={({ isActive }) => (isActive ? "active-link" : "")} onClick={closeSidebar}>
                   <FaUser className="sidebar-icon" />
-                  {!isMinimized && <span className="sidebar-text">Profile</span>}
+                  <span className="sidebar-text">Profile</span>
                 </NavLink>
-              )}
-            </li>
+              </li>
+            )}
             <li>
-              <NavLink to="/help" className={({ isActive }) => (isActive ? "active-link" : "")}>
+              <NavLink to="/help" className={({ isActive }) => (isActive ? "active-link" : "")} onClick={closeSidebar}>
                 <FaQuestionCircle className="sidebar-icon" />
-                {!isMinimized && <span className="sidebar-text">Help</span>}
+                <span className="sidebar-text">Help</span>
               </NavLink>
             </li>
           </ul>
-
-          {/* ✅ Sidebar Toggle Button */}
-          <button className="toggle-btn" onClick={toggleSidebar}>
-            {isMinimized ? <FaAngleRight /> : <FaAngleLeft />}
-          </button>
         </div>
       </div>
 
-      {/* 🔥 Overlay when Mobile Menu is open */}
-      {isMobileMenuOpen && <div className="mobile-menu-overlay" onClick={toggleMobileMenu}></div>}
+      {/* ✅ Overlay when Sidebar is Open */}
+      {isSidebarOpen && <div className="sidebar-overlay" onClick={closeSidebar}></div>}
     </>
   );
 }

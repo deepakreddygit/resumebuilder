@@ -6,7 +6,7 @@ from routes.resume import resume_bp
 
 app = Flask(__name__)
 
-# Allow CORS for React frontend running on localhost:3000
+
 CORS(app, origins=["http://localhost:3000"])
 
 app.register_blueprint(auth_bp)

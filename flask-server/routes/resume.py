@@ -1,17 +1,20 @@
+
+
+
 from flask import Blueprint, request, jsonify
 from flask_cors import CORS
 from db import users_collection
 from bson import ObjectId
-import uuid  # To generate unique resume IDs
+import uuid  
 
 resume_bp = Blueprint("resume", __name__)
 CORS(resume_bp, origins="http://localhost:3000")
 
-# Save a resume (Now supports multiple resumes per user)
+# Save a resume (Now includes templateNumber)
 @resume_bp.route("/resume/save/<user_id>", methods=["POST"])
 def save_resume(user_id):
     data = request.json
-    resume_id = str(uuid.uuid4())[:8]  # Generate a short unique ID for the resume
+    resume_id = str(uuid.uuid4())[:8]  
 
     new_resume = {
         "resume_id": resume_id,
@@ -22,22 +25,23 @@ def save_resume(user_id):
         "experience": data.get("experience", []),
         "education": data.get("education", []),
         "skills": data.get("skills", []),
-        "certifications": data.get("certifications", []),  # ✅ NEW FIELD
-        "projects": data.get("projects", []),  # ✅ NEW FIELD
-        "languages": data.get("languages", [])  # ✅ NEW FIELD
+        "certifications": data.get("certifications", []),
+        "projects": data.get("projects", []),
+        "languages": data.get("languages", []),
+        "templateNumber": data.get("templateNumber", "1")  
     }
 
     # Update the user document by pushing new resumes to the array
     users_collection.update_one(
         {"_id": ObjectId(user_id)},
-        {"$push": {"resumes": new_resume}},  # Add new resume to array
+        {"$push": {"resumes": new_resume}},  
         upsert=True
     )
 
     print(f"[SERVER] Resume saved successfully for user: {user_id} with Resume ID: {resume_id}")
     return jsonify({"message": "Resume saved successfully!", "resume_id": resume_id}), 200
 
-# Fetch all resumes for a user
+# Fetch all resumes for a user (Includes templateNumber)
 @resume_bp.route("/resume/all/<user_id>", methods=["GET"])
 def get_all_resumes(user_id):
     user = users_collection.find_one({"_id": ObjectId(user_id)}, {"resumes": 1, "_id": 0})
@@ -51,13 +55,19 @@ def get_all_resumes(user_id):
 def get_resume(resume_id):
     """ Fetch a specific resume by ID """
     user = users_collection.find_one({"resumes.resume_id": resume_id}, {"resumes.$": 1})
-    
+
     if not user:
         return jsonify({"error": "Resume not found!"}), 404
 
-    return jsonify(user["resumes"][0]), 200
+    resume = user["resumes"][0]
+    
+    # Ensure `templateNumber` is included
+    if "templateNumber" not in resume:
+        resume["templateNumber"] = "1"  
 
-# Update a resume
+    return jsonify(resume), 200
+
+# Update a resume 
 @resume_bp.route('/resume/update/<resume_id>', methods=['PUT'])
 def update_resume(resume_id):
     """ Update the resume details in MongoDB """
@@ -82,9 +92,10 @@ def update_resume(resume_id):
                 "resumes.$.experience": data.get("experience", []),
                 "resumes.$.education": data.get("education", []),
                 "resumes.$.skills": data.get("skills", []),
-                "resumes.$.certifications": data.get("certifications", []),  # ✅ NEW FIELD
-                "resumes.$.projects": data.get("projects", []),  # ✅ NEW FIELD
-                "resumes.$.languages": data.get("languages", [])  # ✅ NEW FIELD
+                "resumes.$.certifications": data.get("certifications", []),
+                "resumes.$.projects": data.get("projects", []),
+                "resumes.$.languages": data.get("languages", []),
+                "resumes.$.templateNumber": data.get("templateNumber", "1")  # ✅ Ensure template is updated
             }}
         )
 
@@ -93,7 +104,6 @@ def update_resume(resume_id):
     except Exception as e:
         print(f"[ERROR] {str(e)}")
         return jsonify({"error": "Failed to update resume!"}), 500
-    
 
 # DELETE Resume by ID
 @resume_bp.route('/resume/delete/<resume_id>', methods=['DELETE'])
@@ -118,4 +128,4 @@ def delete_resume(resume_id):
 
     except Exception as e:
         print(f"[ERROR] {str(e)}")
-        return jsonify({"error": "Failed to delete resume!"}), 500   
+        return jsonify({"error": "Failed to delete resume!"}), 500

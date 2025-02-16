@@ -54,7 +54,7 @@ export const AuthProvider = ({ children }) => {
     setUserId(userId);
   };
 
-  // Logout function clears context and localStorage
+
   const logout = () => {
     console.log("Logging Out...");
     localStorage.removeItem("token");
@@ -72,3 +72,5 @@ export const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   );
 };
+
+

@@ -1,0 +1,154 @@
+.resume-preview-container {
+  margin-top: 50px !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #f4f7f9;  
+  min-height: 100vh;
+  padding: 30px;
+}
+
+
+.resume-preview {
+  background: white;
+  width: 210mm; 
+  min-height: 297mm; 
+  padding: 40px;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Arial', sans-serif;
+  line-height: 1.6;
+  color: #333;
+}
+
+
+.resume-header {
+  text-align: center;
+  border-bottom: 4px solid #007bff;
+  padding-bottom: 15px;
+  margin-bottom: 20px;
+}
+
+.resume-header h1 {
+  font-size: 30px;
+  font-weight: bold;
+  color: #2c3e50;
+  margin-bottom: 5px;
+  text-transform: uppercase;
+}
+
+.resume-header p {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 4px;
+}
+
+/* ✅ Section Styling */
+.resume-section {
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+}
+
+.resume-section h2 {
+  font-size: 20px;
+  font-weight: bold;
+  text-transform: uppercase;
+  border-bottom: 3px solid #007bff;
+  padding-bottom: 5px;
+  margin-bottom: 10px;
+  color: #007bff;
+}
+
+.work-experience, .education, .projects, .certifications, .languages {
+  margin-bottom: 15px;
+}
+
+.work-experience h3,
+.education h3,
+.projects h3 {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.work-experience p,
+.education p,
+.projects p {
+  font-size: 15px;
+  color: #444;
+}
+
+.skills ul, 
+.languages ul {
+  list-style-type: none;
+  padding-left: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.skills li, 
+.languages li {
+  display: inline-block;
+  background: #007bff;
+  color: white;
+  padding: 6px 12px;
+  margin: 4px 0;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.save-btn {
+  width: auto;  
+  min-width: 200px;  
+  max-width: 300px;  
+  padding: 12px 24px;
+  background: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 5px;
+  margin-top: 20px;
+  text-align: center;
+  transition: background 0.3s ease;
+  display: block; 
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.save-btn:hover {
+  background: #0056b3;
+}
+
+@media print {
+  .save-btn {
+      display: none;
+  }
+}
+
+
+@media print {
+  body {
+      background: none;
+  }
+  .resume-preview-container {
+      background: none;
+      box-shadow: none;
+  }
+  .resume-preview {
+      box-shadow: none;
+      width: 100%;
+      min-height: 100vh;
+      padding: 20px;
+  }
+  .save-btn {
+      display: none;
+  }
+}

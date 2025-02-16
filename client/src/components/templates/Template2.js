@@ -1,5 +1,4 @@
 import React from "react";
-import "../../styles/ResumeTemplate.css"; 
 import "../../styles/Template2.css";
 
 const Template2 = ({ resumeData }) => {
