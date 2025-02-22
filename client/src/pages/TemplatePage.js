@@ -8,7 +8,7 @@ function TemplatePage() {
   const navigate = useNavigate();
 
   const handleCreateResume = () => {
-    navigate(`/resume-builder/${templateNumber}`); // ✅ Pass templateNumber to ResumeBuilder
+    navigate(`/resume-builder/${templateNumber}`); 
   };
 
   return (

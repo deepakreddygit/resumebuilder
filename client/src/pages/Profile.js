@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
-import { getUserProfile } from "../api"; // Fetch profile API
+import { getUserProfile } from "../api";
 import "../styles/Profile.css";
 
 function Profile() {
@@ -11,7 +11,7 @@ function Profile() {
 
   useEffect(() => {
     if (!userId) {
-      console.warn("User ID is missing! Redirecting to login...");
+      console.warn("User ID is missing! Redirecting back to the login screen.");
       navigate("/login");
       return;
     }
@@ -23,7 +23,7 @@ function Profile() {
         setUserProfile({ name: data.name, email: data.email });
       })
       .catch((error) => {
-        console.error("❌ Error fetching user profile:", error);
+        console.error(" Error fetching user profile:", error);
       });
   }, [userId, navigate]);
 

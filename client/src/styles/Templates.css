@@ -71,14 +71,16 @@
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
     width: 100%;
-    padding-left: 135px;
+    padding-left: 95px;
     /* padding-top: 100px; */
   }
   
   @media (max-width: 1024px) {
+    .templates-container{
+      margin-top: 5vh;
+    }
     .templates-grid {
         grid-template-columns: repeat(2, 1fr);
-        margin-top: 55vh;
     }
 
 }
@@ -86,7 +88,7 @@
 @media (max-width: 768px) {
   .templates-grid {
       grid-template-columns: 1fr;
-      margin-top: 125vh;
+      /* margin-top: 125vh; */
 
   }
 }

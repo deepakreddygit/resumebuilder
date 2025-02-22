@@ -23,7 +23,7 @@ function Sidebar() {
 
   return (
     <>
-      {/* 🔥 Hamburger Menu Button (Always Visible) */}
+
       <button className="hamburger-menu" onClick={toggleSidebar}>
         <FaBars />
       </button>
@@ -68,7 +68,6 @@ function Sidebar() {
         </div>
       </div>
 
-      {/* ✅ Overlay when Sidebar is Open */}
       {isSidebarOpen && <div className="sidebar-overlay" onClick={closeSidebar}></div>}
     </>
   );

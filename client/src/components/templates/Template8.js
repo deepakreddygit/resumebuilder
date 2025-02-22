@@ -15,7 +15,7 @@ function Template8({ resumeData }) {
       </div>
 
       <div className="resume-section">
-        <h2>📌 Work Experience</h2>
+        <h2>📌 Work Experience in years </h2>
         {resumeData.experience.map((exp, index) => (
           <div key={index} className="experience-item">
             <h3>{exp.jobTitle || "Job Title"}</h3>
@@ -36,7 +36,7 @@ function Template8({ resumeData }) {
       </div>
 
       <div className="resume-section">
-        <h2>🛠 Skills</h2>
+        <h2>🛠 Skills - please enter your skills</h2>
         <div className="skills-list">
           {resumeData.skills.map((skill, index) => (
             skill.skill && <span key={index} className="skill-badge">{skill.skill}</span>
@@ -45,7 +45,7 @@ function Template8({ resumeData }) {
       </div>
 
       <div className="resume-section">
-        <h2>📜 Certifications</h2>
+        <h2>📜 Certifications - please enter your certifications </h2>
         {resumeData.certifications.map((cert, index) => (
           <div key={index} className="certification-item">
             <h3>{cert.title || "Certification Title"}</h3>
@@ -65,7 +65,7 @@ function Template8({ resumeData }) {
       </div>
 
       <div className="resume-section">
-        <h2>🌎 Languages</h2>
+        <h2>🌎 Languages - these are just basic languages </h2>
         {resumeData.languages.map((lang, index) => (
           <p key={index}>{lang.language || "Language"} - {lang.proficiency || "Proficiency Level"}</p>
         ))}

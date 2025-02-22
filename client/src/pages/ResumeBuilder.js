@@ -1,7 +1,6 @@
 
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-
 import { getResumeById } from "../api";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -22,7 +21,7 @@ function ResumeBuilder() {
     skills: [""],
     certifications: [{ title: "", issuer: "", year: "" }],
     projects: [{ title: "", description: "" }],
-    languages: [{ language: "", proficiency: "" }],  // ✅ Languages Section Added
+    languages: [{ language: "", proficiency: "" }], 
     templateNumber: templateNumber || "1", 
   });
 
@@ -52,7 +51,6 @@ function ResumeBuilder() {
       const updatedSection = [...resumeData[section]];
   
       if (section === "skills") {
-        // ✅ Fix: Ensure `skills` are stored as strings, not objects
         updatedSection[index] = value;
       } else {
         updatedSection[index] = { ...updatedSection[index], [name]: value };
@@ -78,7 +76,7 @@ function ResumeBuilder() {
       return;
     }
 
-    console.log("🔄 Sending Resume Data to Preview:", resumeData);
+    console.log("Sending Resume Data to Preview:", resumeData);
     navigate(`/resume-preview/${resumeId || "new"}/${resumeData.templateNumber}`, {
       state: { resumeData: { ...resumeData } },
     });
@@ -195,4 +193,8 @@ function ResumeBuilder() {
 }
 
 export default ResumeBuilder;
+
+
+
+
 

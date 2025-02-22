@@ -173,6 +173,7 @@ function AppContent() {
               {/* ✅ Resume Builder - Create & Edit Resumes */}
               <Route path="/resume-builder/:templateNumber" element={<ResumeBuilder />} />
               <Route path="/resume/edit/:resumeId/:templateNumber?" element={<ResumeBuilder />} />
+            
 
               {/* ✅ Resume Preview - Uses URL Params */}
               <Route path="/resume-preview/:resumeId/:templateNumber" element={<ResumePreview />} />
@@ -185,7 +186,6 @@ function AppContent() {
           )}
         </Routes>
 
-        {/* ✅ Place ToastContainer Here (Only Load Once) */}
         <ToastContainer position="top-right" autoClose={3000} />
       </div>
     </div>

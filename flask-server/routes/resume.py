@@ -10,6 +10,7 @@ import uuid
 resume_bp = Blueprint("resume", __name__)
 CORS(resume_bp, origins="http://localhost:3000")
 
+
 # Save a resume (Now includes templateNumber)
 @resume_bp.route("/resume/save/<user_id>", methods=["POST"])
 def save_resume(user_id):
