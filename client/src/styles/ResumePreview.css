@@ -127,59 +127,52 @@
   background: #0056b3;
 }
 
-/* Dropdown Container */
-.template-selector {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-/* Label Styling */
-.template-selector label {
+#template-select {
+  width: 90%;
+  max-width: 400px;
+  padding-top: 0px;
+  padding-left: 10px;
+  padding-right: 10px;
   font-size: 18px;
-  font-weight: 600;
-  color: #333;
-  margin-bottom: 8px;
-}
-
-/* Select Dropdown */
-.template-selector select {
-  width: 260px;
-  padding: 12px;
-  font-size: 16px;
-  font-weight: 600;
-  color: #007bff; /* Blue Text */
-  background: #ffffff; /* White Background */
-  border: 2px solid #007bff;
-  border-radius: 8px;
-  cursor: pointer;
+  font-weight: bold;
+  text-align: center;
+  border-radius: 10px;
+  border: 2px solid #0056b3;
+  background-color: white;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease-in-out;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath fill='%23000' d='M0 0l5 6 5-6z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 15px center; 
+  background-size: 12px;
+
+
+  height: 50px;
+  line-height: 50px; 
+  padding-right: 40px; 
+  margin-bottom: 15px;
+}
+
+/* 🖱️ Hover Effect */
+#template-select:hover {
+  border-color: #003c7a;
+  background-color: #f0f8ff;
+}
+
+/* 🔵 Focus Effect */
+#template-select:focus {
   outline: none;
-  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1);
-  
-
-  
-
-}
-
-.template-selector select:hover {
-  border-color: #0056b3;
-  background: #f8f9fa; 
+  border-color: #002b5e;
+  box-shadow: 0px 0px 10px rgba(0, 43, 94, 0.5);
 }
 
 
-.template-selector select:focus {
-  border-color: #0056b3;
-  box-shadow: 0px 0px 10px rgba(0, 91, 187, 0.3);
-}
 
-.template-selector select option {
-  font-size: 16px;
-  font-weight: 500;
-  background: #ffffff;
-  color: #007bff;
-}
 
 @media (max-width: 768px) {
   .template-selector select {

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
@@ -61,7 +60,7 @@ function SavedResumes() {
   };
 
   const handleEdit = (resume) => {
-    if (!resume.templateNumber) {
+    if (!resume.resume_id || !resume.templateNumber) {
       toast.error("Template selection is missing!");
       return;
     }
@@ -69,11 +68,32 @@ function SavedResumes() {
   };
 
   const handlePreview = (resume) => {
-    if (!resume.templateNumber) {
+    if (!resume.resume_id || !resume.templateNumber) {
       toast.error("Template selection is missing!");
       return;
     }
-    navigate(`/resume-preview/${resume.resume_id}/${resume.templateNumber}`);
+    navigate(`/resume-preview/${resume.resume_id}/${resume.templateNumber}`, {
+      state: { resumeData: resume },
+    });
+  };
+
+  // Role icons and names mapping
+  const roleIcons = {
+    "software-engineer": { icon: "💻", name: "Software Engineer" },
+    "financial-manager": { icon: "📊", name: "Financial Manager" },
+    "marketing-manager": { icon: "📢", name: "Marketing Manager" },
+  };
+
+  // Template names mapping
+  const templateNames = {
+    "1": "Modern",
+    "2": "Professional",
+    "3": "Creative",
+    "4": "Elegant",
+    "5": "Minimal",
+    "6": "Compact",
+    "7": "Stylish",
+    "8": "Classic",
   };
 
   if (loading) return <div>Loading saved resumes...</div>;
@@ -85,27 +105,38 @@ function SavedResumes() {
 
       <div className="saved-resumes-grid">
         {resumes.length > 0 ? (
-          resumes.map((resume, index) => (
-            <div key={resume.resume_id} className="resume-card">
-              <div className="resume-content">
-                <h5 className="resume-name">{resume.name || `Resume ${index + 1}`}</h5>
-                <p className="resume-details"><strong>Phone:</strong> {resume.phone}</p>
-                <p className="resume-details"><strong>Summary:</strong> {resume.summary}</p>
-              </div>
+          resumes.map((resume, index) => {
+            const roleData = roleIcons[resume.role] || { icon: "❓", name: "Unknown Role" };
+            const templateName = templateNames[resume.templateNumber] || "Unknown Template";
 
-              <div className="resume-actions">
-                <button className="small-btn preview-btn" onClick={() => handlePreview(resume)}>
-                  <FaEye className="icon" /> Preview
-                </button>
-                <button className="small-btn edit-btn" onClick={() => handleEdit(resume)}>
-                  <FaEdit className="icon" /> Edit
-                </button>
-                <button className="small-btn delete-btn" onClick={() => handleShowModal(resume.resume_id)}>
-                  <FaTrashAlt className="icon" /> Delete
-                </button>
+            return (
+              <div key={resume.resume_id} className="resume-card">
+                <div className="resume-content">
+                  <h5 className="resume-name">{resume.name || `Resume ${index + 1}`}</h5>
+                  <p className="resume-role">
+                    <strong>{roleData.icon} {roleData.name}</strong>
+                  </p>
+                  <p className="resume-template">
+                    <strong>Template:</strong> {templateName}
+                  </p>
+                  <p className="resume-details"><strong>Phone:</strong> {resume.phone}</p>
+                  <p className="resume-details"><strong>Summary:</strong> {resume.summary}</p>
+                </div>
+
+                <div className="resume-actions">
+                  <button className="small-btn preview-btn" onClick={() => handlePreview(resume)}>
+                    <FaEye className="icon" /> Preview
+                  </button>
+                  <button className="small-btn edit-btn" onClick={() => handleEdit(resume)}>
+                    <FaEdit className="icon" /> Edit
+                  </button>
+                  <button className="small-btn delete-btn" onClick={() => handleShowModal(resume.resume_id)}>
+                    <FaTrashAlt className="icon" /> Delete
+                  </button>
+                </div>
               </div>
-            </div>
-          ))
+            );
+          })
         ) : (
           <p className="text-center no-resumes-text">
             No resumes found. <Link to="/templates" className="create-new-link">Create a new one!</Link>
@@ -128,6 +159,3 @@ function SavedResumes() {
 }
 
 export default SavedResumes;
-
-
-
