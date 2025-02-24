@@ -1,49 +1,119 @@
+/* 🎨 Global Styles - Clean & Modern */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif; /* Clean, professional font */
+  background: linear-gradient(to right, #E3F2FD, #BBDEFB); 
+  color: #333;
+}
+
+/* ✅ Global Container */
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: auto;
+}
+
+/* ✅ Navbar Styling */
+/* .navbar {
+  background: #2C3E50; 
+  padding: 15px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: white;
+}
+
+.navbar a {
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 500;
+  transition: 0.3s ease;
+}
+
+.navbar a:hover {
+  color: #A3C9FF; 
+} */
+
+/* ✅ Buttons - Consistent Styling */
+/* button,
+.btn {
+  background: #007BFF;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+}
+
+button:hover,
+.btn:hover {
+  background: #0056b3;
+} */
+
+/* ✅ Resume Preview Box */
+.resume-preview-container {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+  max-width: 900px;
+  margin: auto;
+  margin-top: 40px;
+}
+
+
+/* 🔽 Fixes issue for Safari browsers */
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  .template-selector select {
+    padding-right: 35px;
+    margin-bottom: 20px;
   }
-  
-  h1, h2, h3 {
-    color: #333;
+}
+
+.template-selector select:hover,
+.template-selector select:focus {
+  border-color: #999; /* Slightly darker gray */
+  background: white; /* Ensures no background change */
+  outline: none; 
+  box-shadow: none; 
+}
+
+
+/* ✅ Save Button */
+.save-btn {
+  width: 100%;
+  max-width: 250px;
+  margin: auto;
+  display: block;
+  text-align: center;
+}
+
+/* ✅ Footer */
+.footer {
+  background: #ffffff;
+  color: white;
+  text-align: center;
+  padding: 15px 0;
+  margin-top: 40px;
+}
+
+/* ✅ Mobile Responsiveness */
+@media (max-width: 768px) {
+  .resume-preview-container {
+    padding: 20px;
+    width: 95%;
   }
-  
-  nav {
-    background-color: #333;
-    padding: 10px;
+
+  .navbar {
+    flex-direction: column;
+    text-align: center;
   }
-  
-  nav a {
-    color: white;
-    padding: 10px;
-    text-decoration: none;
-    margin-right: 10px;
+
+  .save-btn {
+    max-width: 100%;
   }
-  
-  nav a:hover {
-    background-color: #555;
-  }
-  
-  form {
-    margin-top: 20px;
-  }
-  
-  input {
-    padding: 10px;
-    margin: 5px;
-    width: 200px;
-  }
-  
-  button {
-    padding: 10px;
-    background-color: #333;
-    color: white;
-    border: none;
-    cursor: pointer;
-  }
-  
-  button:hover {
-    background-color: #555;
-  }
-  
+}

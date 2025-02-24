@@ -15,6 +15,17 @@ import Template6 from "../components/templates/Template6";
 import Template7 from "../components/templates/Template7";
 import Template8 from "../components/templates/Template8";
 
+//import all css
+import "../styles/Template1.css";
+import "../styles/Template2.css";
+import "../styles/Template3.css";
+import "../styles/Template4.css";
+import "../styles/Template5.css";
+import "../styles/Template6.css";
+import "../styles/Template7.css";
+import "../styles/Template8.css";
+
+
 function ResumePreview() {
   const { userId } = useContext(AuthContext);
   const { resumeId: paramResumeId, templateNumber } = useParams();
@@ -182,13 +193,11 @@ function ResumePreview() {
         <button className="save-btn" onClick={handleSaveOrUpdate}>
           {resumeId && resumeId !== "new" && resumeId !== null ? "Update Resume" : "Save Resume"}
         </button>
-
-        <button className="btn btn-secondary" onClick={() => navigate("/saved-resumes")}>
-          Go Back
-        </button>
       </div>
     </div>
   );
 }
 
 export default ResumePreview;
+
+

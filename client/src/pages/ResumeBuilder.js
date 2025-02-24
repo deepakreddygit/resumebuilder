@@ -105,7 +105,7 @@ function ResumeBuilder() {
               <textarea name="responsibilities" placeholder="Responsibilities" value={exp.responsibilities} onChange={(e) => handleChange(e, index, "experience")}></textarea>
             </div>
           ))}
-          <button onClick={() => addField("experience", { jobTitle: "", company: "", years: "", responsibilities: "" })}>+ Add Experience</button>
+          <button className="add-btn" onClick={() => addField("experience", { jobTitle: "", company: "", years: "", responsibilities: "" })}>+ Add Experience</button>
         </div>
 
         {/* Education (Common for all roles) */}
@@ -118,7 +118,7 @@ function ResumeBuilder() {
               <input type="text" name="year" placeholder="Year" value={edu.year} onChange={(e) => handleChange(e, index, "education")} />
             </div>
           ))}
-          <button onClick={() => addField("education", { degree: "", institution: "", year: "" })}>+ Add Education</button>
+          <button className="add-btn" onClick={() => addField("education", { degree: "", institution: "", year: "" })}>+ Add Education</button>
         </div>
 
 {/*  Skills (Common for all roles) */}
@@ -139,7 +139,7 @@ function ResumeBuilder() {
       />
     </div>
   ))}
-  <button onClick={() => addField("skills", "")}>+ Add Skill</button>
+  <button className="add-btn" onClick={() => addField("skills", "")}>+ Add Skill</button>
 </div>
 
 
@@ -155,7 +155,7 @@ function ResumeBuilder() {
           <textarea name="description" placeholder="Project Description" value={proj.description} onChange={(e) => handleChange(e, index, "projects")}></textarea>
         </div>
       ))}
-      <button onClick={() => addField("projects", { title: "", description: "" })}>+ Add Project</button>
+      <button className="add-btn" onClick={() => addField("projects", { title: "", description: "" })}>+ Add Project</button>
     </div>
 
     <div className="section-container">
@@ -167,7 +167,7 @@ function ResumeBuilder() {
           <input type="text" name="year" placeholder="Year" value={cert.year} onChange={(e) => handleChange(e, index, "certifications")} />
         </div>
       ))}
-      <button onClick={() => addField("certifications", { title: "", issuer: "", year: "" })}>+ Add Certification</button>
+      <button className="add-btn" onClick={() => addField("certifications", { title: "", issuer: "", year: "" })}>+ Add Certification</button>
     </div>
   </>
 )}
@@ -183,7 +183,7 @@ function ResumeBuilder() {
           <textarea name="impact" placeholder="Impact (e.g., Increased engagement by 30%)" value={strategy.impact} onChange={(e) => handleChange(e, index, "marketingStrategies")}></textarea>
         </div>
       ))}
-      <button onClick={() => addField("marketingStrategies", { strategy: "", impact: "" })}>+ Add Strategy</button>
+      <button className="add-btn" onClick={() => addField("marketingStrategies", { strategy: "", impact: "" })}>+ Add Strategy</button>
     </div>
 
     <div className="section-container">
@@ -194,7 +194,7 @@ function ResumeBuilder() {
           <textarea name="results" placeholder="Results (e.g., 10k followers increase)" value={campaign.results} onChange={(e) => handleChange(e, index, "socialMedia")}></textarea>
         </div>
       ))}
-      <button onClick={() => addField("socialMedia", { platform: "", results: "" })}>+ Add Campaign</button>
+      <button className="add-btn" onClick={() => addField("socialMedia", { platform: "", results: "" })}>+ Add Campaign</button>
     </div>
   </>
 )}
@@ -211,7 +211,7 @@ function ResumeBuilder() {
           <input type="text" name="years" placeholder="Years of Experience" value={inv.years} onChange={(e) => handleChange(e, index, "investments")} />
         </div>
       ))}
-      <button onClick={() => addField("investments", { type: "", amount: "", years: "" })}>+ Add Investment</button>
+      <button className="add-btn" onClick={() => addField("investments", { type: "", amount: "", years: "" })}>+ Add Investment</button>
     </div>
 
     <div className="section-container">
@@ -219,7 +219,7 @@ function ResumeBuilder() {
       {resumeData.financialTools.map((tool, index) => (
         <input key={index} type="text" placeholder="Financial Tool" value={tool.name} onChange={(e) => handleChange(e, index, "financialTools")} />
       ))}
-      <button onClick={() => addField("financialTools", { name: "" })}>+ Add Financial Tool</button>
+      <button className="add-btn" onClick={() => addField("financialTools", { name: "" })}>+ Add Financial Tool</button>
     </div>
 
     <div className="section-container">
@@ -255,12 +255,14 @@ function ResumeBuilder() {
       />
     </div>
   ))}
-  <button onClick={() => addField("languages", { language: "", proficiency: "" })}>+ Add Language</button>
+  <button className="add-btn" onClick={() => addField("languages", { language: "", proficiency: "" })}>+ Add Language</button>
 </div>
 
       </div>
 
-      <button className="preview-btn" onClick={handlePreview}>Preview Resume</button>
+      <div className="d-flex justify-content-center">
+            <button className="btn btn-primary" onClick={handlePreview}>Preview Resume</button>
+          </div>
     </div>
   );
 }

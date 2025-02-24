@@ -1,0 +1,103 @@
+/* ✅ Resume Container */
+.template7.resume-container {
+    background: #F8F6F2; /* Light cream background */
+    max-width: 850px;
+    margin: auto;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    font-family: "Georgia", serif;
+    color: #333;
+  }
+  
+  .template7 .color-picker {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+  }
+  
+  .template7 .color-picker label {
+    font-weight: bold;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #2c2c2c;
+  }
+  
+  .template7 .color-input {
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    outline: none;
+    padding: 0;
+  }
+  
+  /* ✅ Remove default border when focused */
+  .template7 .color-input::-webkit-color-swatch {
+    border-radius: 50%;
+    border: none;
+  }
+  
+  .template7 .color-input::-moz-color-swatch {
+    border-radius: 50%;
+    border: none;
+  }
+  
+  /* ✅ Header Section */
+  .template7 .resume-header {
+    text-align: center;
+    border-bottom: 2px solid;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .template7 .name {
+    font-size: 32px;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  
+  .template7 .profession {
+    font-size: 16px;
+    font-style: italic;
+    color: #666;
+  }
+  
+  /* ✅ Resume Sections */
+  .template7 .resume-section {
+    margin-bottom: 25px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid;
+  }
+  
+  .template7 h2 {
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  /* ✅ Skills */
+  .template7 .skill-badge {
+    display: inline-block;
+    padding: 5px 10px;
+    margin-right: 5px;
+    color: rgb(0, 0, 0);
+    border-radius: 5px;
+  }
+  
+  /* ✅ Responsive */
+  @media (max-width: 768px) {
+    .template7.resume-container {
+      padding: 20px;
+    }
+  }
+  

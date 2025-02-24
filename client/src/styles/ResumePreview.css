@@ -1,230 +1,131 @@
-.resume-preview-container {
-  margin-top: 50px !important;
+/* 📌 Resume Template Base - Full Layout Fix */
+.template1 {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background-color: #f4f7f9;  
-  min-height: 100vh;
-  padding: 30px;
-}
-
-
-.resume-preview {
-  background: white;
-  width: 210mm; 
-  min-height: 297mm; 
-  padding: 40px;
-  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.25);
+  width: 100%;
+  max-width: 1200px;  /* Ensures it doesn't stretch too wide */
+  margin: auto;
+  background: #ffffff;
   border-radius: 8px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+  font-family: "Arial", sans-serif;
+  color: #333;
+  align-items: stretch;  /* Ensures both columns take equal height */
+}
+
+/* ✅ Left Sidebar */
+.template1 .resume_left {
+  background: #2C3E50;
+  color: white;
+  padding: 30px;
+  width: 35%;
   display: flex;
   flex-direction: column;
-  font-family: 'Arial', sans-serif;
-  line-height: 1.6;
-  color: #333;
+  justify-content: flex-start;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+  align-items: center;
 }
 
-
-.resume-header {
+/* ✅ Fix Profile Header Spacing */
+.template1 .profile-header {
   text-align: center;
-  border-bottom: 4px solid #007bff;
-  padding-bottom: 15px;
-  margin-bottom: 20px;
+  width: 100%;
 }
 
-.resume-header h1 {
-  font-size: 30px;
-  font-weight: bold;
-  color: #2c3e50;
-  margin-bottom: 5px;
-  text-transform: uppercase;
-}
-
-.resume-header p {
-  font-size: 16px;
-  color: #555;
-  margin-bottom: 4px;
-}
-
-/* ✅ Section Styling */
-.resume-section {
-  margin-bottom: 20px;
-  padding-bottom: 10px;
-}
-
-.resume-section h2 {
-  font-size: 20px;
+.template1 .profile-header h2 {
+  font-size: 22px;
   font-weight: bold;
   text-transform: uppercase;
-  border-bottom: 3px solid #007bff;
-  padding-bottom: 5px;
-  margin-bottom: 10px;
-  color: #007bff;
-}
-
-.work-experience, .education, .projects, .certifications, .languages {
   margin-bottom: 15px;
 }
 
-.work-experience h3,
-.education h3,
-.projects h3 {
-  font-size: 18px;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 5px;
-}
-
-.work-experience p,
-.education p,
-.projects p {
-  font-size: 15px;
-  color: #444;
-}
-
-.skills ul, 
-.languages ul {
-  list-style-type: none;
-  padding-left: 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.skills li, 
-.languages li {
-  display: inline-block;
-  background: #007bff;
-  color: white;
-  padding: 6px 12px;
-  margin: 4px 0;
-  border-radius: 5px;
-  font-size: 14px;
-  font-weight: bold;
-}
-
-.save-btn {
-  width: auto;  
-  min-width: 200px;  
-  max-width: 300px;  
-  padding: 12px 24px;
-  background: #007bff;
+/* ✅ Fix Contact, Skills, Certifications Boxes */
+.template1 .contact-card,
+.template1 .skills-card,
+.template1 .certifications-card,
+.template1 .languages-card {
+  background: #34495E;
   color: white;
   border: none;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: bold;
+  padding: 15px;
+  margin-top: 15px;
   border-radius: 5px;
-  margin-top: 20px;
+  width: 100%;
   text-align: center;
-  transition: background 0.3s ease;
-  display: block; 
-  margin-left: auto;
-  margin-right: auto;
 }
 
-.save-btn:hover {
-  background: #0056b3;
+/* ✅ Right Main Content */
+.template1 .resume_right {
+  flex-grow: 1; /* Makes the right section take up remaining space */
+  padding: 30px;
+  width: 65%;
+  background: white;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
 }
 
-#template-select {
-  width: 90%;
-  max-width: 400px;
-  padding-top: 0px;
-  padding-left: 10px;
-  padding-right: 10px;
-  font-size: 18px;
-  font-weight: bold;
-  text-align: center;
-  border-radius: 10px;
-  border: 2px solid #0056b3;
-  background-color: white;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease-in-out;
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
+/* ✅ Work Experience, Education, and Projects */
+.template1 .experience-card,
+.template1 .education-card,
+.template1 .projects-card {
+  border: 1px solid #2C3E50;
+  border-radius: 5px;
+  padding: 15px;
+  margin-top: 10px;
+  width: 100%;
+  box-sizing: border-box;
+}
 
+/* ✅ Ensure Grid Layout Doesn't Break */
+.template1 .resume-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
 
-  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath fill='%23000' d='M0 0l5 6 5-6z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 15px center; 
-  background-size: 12px;
-
-
-  height: 50px;
-  line-height: 50px; 
-  padding-right: 40px; 
+/* ✅ Work Item Spacing Fix */
+.template1 .work-item,
+.template1 .education-item,
+.template1 .project-item {
   margin-bottom: 15px;
+  width: 100%;
 }
 
-/* 🖱️ Hover Effect */
-#template-select:hover {
-  border-color: #003c7a;
-  background-color: #f0f8ff;
+/* ✅ Fix Full-Screen Stretching Issue */
+.template1 .resume-preview-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 }
 
-/* 🔵 Focus Effect */
-#template-select:focus {
-  outline: none;
-  border-color: #002b5e;
-  box-shadow: 0px 0px 10px rgba(0, 43, 94, 0.5);
+/* ✅ Responsive Fixes */
+@media (max-width: 1024px) {
+  .template1 {
+    flex-direction: column;
+    max-width: 90%;
+  }
+
+  .template1 .resume_left {
+    width: 100%;
+    border-radius: 8px 8px 0 0;
+  }
+
+  .template1 .resume_right {
+    width: 100%;
+    border-radius: 0 0 8px 8px;
+  }
 }
-
-
-
 
 @media (max-width: 768px) {
-  .template-selector select {
-      width: 100%;
-      font-size: 14px;
-      padding: 10px;
+  .template1 {
+    flex-direction: column;
+    max-width: 100%;
   }
-}
 
-
-
-@media (max-width: 768px) {
-  .template-selector select {
-      width: 100%;
-      font-size: 14px;
-      padding: 10px;
-  }
-}
-
-
-/* Responsive Adjustments */
-@media (max-width: 768px) {
-  .template-selector select {
-      width: 90%;
-      font-size: 14px;
-      padding: 10px;
-  }
-}
-
-
-@media print {
-  .save-btn {
-      display: none;
-  }
-}
-
-
-@media print {
-  body {
-      background: none;
-  }
-  .resume-preview-container {
-      background: none;
-      box-shadow: none;
-  }
-  .resume-preview {
-      box-shadow: none;
-      width: 100%;
-      min-height: 100vh;
-      padding: 20px;
-  }
-  .save-btn {
-      display: none;
+  .template1 .resume_left,
+  .template1 .resume_right {
+    width: 100%;
+    padding: 20px;
   }
 }

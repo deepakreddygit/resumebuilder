@@ -144,16 +144,23 @@ function SavedResumes() {
         )}
       </div>
 
+
       <Modal show={showModal} onHide={() => setShowModal(false)} centered>
-        <Modal.Header closeButton>
-          <Modal.Title>Confirm Delete</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>Are you sure you want to delete this resume?</Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowModal(false)}>Cancel</Button>
-          <Button variant="danger" onClick={handleDelete}>Delete</Button>
-        </Modal.Footer>
-      </Modal>
+  <Modal.Header closeButton>
+    <Modal.Title>Confirm Delete</Modal.Title>
+  </Modal.Header>
+  <Modal.Body>Are you sure you want to delete this resume?</Modal.Body>
+  <Modal.Footer className="d-flex justify-content-end">
+    <Button variant="secondary" className="px-3" onClick={() => setShowModal(false)}>Cancel</Button>
+    <Button variant="danger" className="px-3 ms-2" onClick={handleDelete}>Delete</Button>
+  </Modal.Footer>
+</Modal>
+
+
+
+
+
+
     </div>
   );
 }

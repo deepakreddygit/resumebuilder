@@ -1,120 +1,130 @@
-
-.resume-builder-container {
-    max-width: 900px;
-    margin: 40px auto;
-    padding: 30px;
-    background: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-
-.resume-title {
+/* Resume Builder Styling */
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(to right, #E3F2FD, #BBDEFB);
+    margin: 0;
+    padding: 0;
+  }
+  
+  .resume-builder-container {
+    max-width: 800px;
+    margin: 50px auto;
+    background: white;
+    padding: 46px;
+    border-radius: 12px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 0.8s ease-in-out;
+  }
+  
+  .resume-title {
     text-align: center;
     font-size: 28px;
-    font-weight: bold;
-    color: #333;
+    font-weight: 600;
+    color: #1976D2;
     margin-bottom: 20px;
-}
-
-/* Resume Inputs Container */
-.resume-inputs {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-/* Section Container */
-.section-container {
-    background: #f9f9f9;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: inset 0px 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-/* Section Title */
-.section-container h4 {
+  }
+  
+  /* Form Inputs */
+  .resume-inputs input,
+  .resume-inputs textarea,
+  .resume-inputs select {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: 0.3s;
+  }
+  
+  .resume-inputs input:focus,
+  .resume-inputs textarea:focus,
+  .resume-inputs select:focus {
+    border-color: #1976D2;
+    box-shadow: 0px 4px 8px rgba(25, 118, 210, 0.2);
+    outline: none;
+  }
+  
+  /* Section Titles */
+  .section-container h4 {
     font-size: 20px;
     font-weight: 600;
-    color: #222;
-    margin-bottom: 15px;
-}
-
-/* Input Fields */
-input[type="text"], 
-input[type="email"],
-textarea {
-    width: 100%;
-    padding: 10px;
+    color: #1565C0;
+    margin-bottom: 12px;
+  }
+  
+  /* Section Boxes */
+  .section-container {
+    background: #F5F5F5;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.05);
+  }
+  
+/* 🎨 Specific Styling for Resume Form Buttons */
+.resume-builder-container .resume-inputs button {
+    width: auto; /* Prevents full-width stretching */
+    background: #1976D2; /* Primary Blue */
+    color: white;
     font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    transition: all 0.3s ease-in-out;
-}
-
-input[type="text"]:focus, 
-input[type="email"]:focus,
-textarea:focus {
-    border-color: #007bff;
-    outline: none;
-    box-shadow: 0px 0px 5px rgba(0, 123, 255, 0.3);
-}
-
-/* Entry Box (For sections like Experience, Education, Skills, etc.) */
-.entry-box {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 15px;
-}
-
-/* Add Field Button */
-button {
-    padding: 10px 15px;
-    font-size: 16px;
-    font-weight: 500;
+    font-weight: 600;
+    padding: 10px 16px;
     border: none;
+    border-radius: 6px;
     cursor: pointer;
     transition: 0.3s ease-in-out;
-    border-radius: 5px;
-}
+    margin-top: 10px;
+    display: inline-block; /* Prevents full-width buttons */
+  }
+  
+  /* 🟡 Hover Effect */
+  .resume-builder-container .resume-inputs button:hover {
+    background: #0D47A1; /* Darker Blue */
+    transform: scale(1.05);
+  }
+  
+  /* 🔵 Add Button Styling */
+  .resume-builder-container .resume-inputs button.add-btn {
+    background: #43A047; /* Green for Add */
+  }
+  
+  .resume-builder-container .resume-inputs button.add-btn:hover {
+    background: #2E7D32; /* Darker Green */
+  }
+  
+  /* 🔴 Remove Button Styling */
+  .resume-builder-container .resume-inputs button.remove-btn {
+    background: #D32F2F; /* Red for Remove */
+  }
+  
+  .resume-builder-container .resume-inputs button.remove-btn:hover {
+    background: #B71C1C; /* Darker Red */
+  }
+  
+  
+  /* Skill Input */
+  .skill-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .skill-item input {
+    flex-grow: 1;
+  }
+  
 
-button:hover {
-    opacity: 0.9;
-}
-
-/* Add Buttons */
-button.add-btn {
-    background: #28a745;
-    color: #fff;
-}
-
-button.add-btn:hover {
-    background: #218838;
-}
-
-
-.preview-btn, .save-btn {
-    width: 100%;
-    background: #007bff;
-    color: #fff;
-    font-size: 18px;
-
-}
-
-.preview-btn:hover, .save-btn:hover {
-    background: #0056b3;
-}
-
-
-@media (max-width: 768px) {
-    .resume-builder-container {
-        padding: 20px;
-        width: 90%;
+  
+  /* Fade-In Animation */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-15px);
     }
-
-    .preview-btn, .save-btn {
-        font-size: 16px;
-        padding: 12px;
+    to {
+      opacity: 1;
+      transform: translateY(0);
     }
-}
+  }
+  

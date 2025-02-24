@@ -1,5 +1,5 @@
 body {
-    background: rgba(0, 123, 255, 0.4);  
+  background: linear-gradient(to right, #E3F2FD, #BBDEFB);
     margin: 0;
     padding: 0;
 }
@@ -10,7 +10,7 @@ body {
     justify-content: center;
     align-items: center;
     overflow-y: auto; 
-    background: rgba(0, 123, 255, 0.4);  
+    background: linear-gradient(to right, #E3F2FD, #BBDEFB); 
     
   }
   

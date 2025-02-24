@@ -46,28 +46,6 @@ function Template4({ resumeData = {} }) {
         </div>
       </div>
 
-      {/* ✅ Certifications (CFA, CPA, etc.) */}
-      {/* <div className="resume-section">
-        <h2>📜 Certifications</h2>
-        {(resumeData.certifications || []).map((cert, index) => (
-          <div key={index} className="certification-item">
-            <h3>{cert.title || "Certification Title"}</h3>
-            <p>{cert.issuer || "Issuer"} ({cert.year || "Year"})</p>
-          </div>
-        ))}
-      </div>
-
-      {/* ✅ Financial Management Projects */}
-      {/* <div className="resume-section">
-        <h2>📊 Finance Projects</h2>
-        {(resumeData.projects || []).map((project, index) => (
-          <div key={index} className="project-item">
-            <h3>{project.title || "Project Title"}</h3>
-            <p>{project.description || "Project description..."}</p>
-          </div>
-        ))}
-      </div> */} 
-
       {/* ✅ Financial Tools & Analysis */}
       <div className="resume-section">
         <h2>Financial Tools & Analysis</h2>

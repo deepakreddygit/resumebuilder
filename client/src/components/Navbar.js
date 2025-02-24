@@ -30,9 +30,34 @@ function Navbar() {
           </div>
 
           {isAuthenticated && (
-            <button className="btn btn-outline-light logout-btn" onClick={() => setShowModal(true)}>
-              Logout
-            </button>
+           <button
+           className="btn btn-outline-light logout-btn"
+           onClick={() => setShowModal(true)}
+           style={{
+             padding: "10px 20px",
+             fontSize: "16px",
+             fontWeight: "600",
+             borderRadius: "8px",
+             border: "2px solid white",
+             color: "white",
+             backgroundColor: "transparent",
+             transition: "all 0.3s ease-in-out",
+             display: "flex",
+             alignItems: "center",
+             cursor: "pointer",
+           }}
+           onMouseOver={(e) => {
+             e.target.style.backgroundColor = "white";
+             e.target.style.color = "#333";
+           }}
+           onMouseOut={(e) => {
+             e.target.style.backgroundColor = "transparent";
+             e.target.style.color = "white";
+           }}
+         >
+           <i className="fas fa-sign-out-alt"></i> Logout
+         </button>
+         
           )}
         </div>
       </nav>

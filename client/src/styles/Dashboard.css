@@ -1,6 +1,6 @@
 .dashboard-container {
   text-align: center;
-  background-color: #f8f9fa;
+  background: linear-gradient(to right, #E3F2FD, #BBDEFB); 
   min-height: 100vh;
   padding: 40px;
 }
