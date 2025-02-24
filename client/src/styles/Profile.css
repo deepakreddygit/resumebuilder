@@ -29,7 +29,7 @@
   object-fit: cover;
   margin: 0 auto 15px auto;
   display: block;
-  border: 3px solid #007bff;
+  border: 3px solid  #222;
 }
 
 /* Name & Email Styling */
@@ -46,7 +46,7 @@
 
 /* Button */
 .view-resumes-btn {
-  background-color: #007bff;
+  background: linear-gradient(135deg, #444, #222);
   color: white;
   border: none;
   padding: 10px 20px;

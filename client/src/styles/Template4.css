@@ -1,0 +1,154 @@
+/* ✅ Apply styles only to Template4 */
+.template4 {
+    font-family: "Arial", sans-serif;
+    background: #f8f8f8;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 900px;
+    margin: auto;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* ✅ Color Picker Section */
+.color-picker-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.color-circle {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid #333;
+    cursor: pointer;
+}
+
+.color-input-hidden {
+    display: none;
+}
+
+.save-color-btn {
+    background: white;
+    border: 1px solid black;
+    padding: 5px 10px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.save-color-btn:hover {
+    background: black;
+    color: white;
+}
+
+/* ✅ Header */
+.resume-header {
+    text-align: center;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.resume-header h1 {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.resume-header .tagline {
+    font-style: italic;
+    color: gray;
+    font-size: 14px;
+}
+
+/* ✅ Resume Body Layout */
+.resume-body {
+    display: flex;
+    margin-top: 20px;
+    gap: 20px;
+}
+
+/* ✅ Sidebar */
+.resume-sidebar {
+    width: 30%;
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* ✅ Sidebar Section Titles */
+.resume-sidebar h3 {
+    font-size: 14px;
+    text-transform: uppercase;
+    font-weight: bold;
+    margin-bottom: 10px;
+    border-bottom: 2px solid black;
+    padding-bottom: 5px;
+}
+
+/* ✅ Sidebar Content */
+.resume-sidebar p {
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.resume-sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.resume-sidebar li {
+    background: #dfe6e9;
+    padding: 6px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+/* ✅ Main Content */
+.resume-main {
+    width: 70%;
+}
+
+/* ✅ Section Titles */
+.resume-main h2 {
+    font-size: 14px;
+    text-transform: uppercase;
+    font-weight: bold;
+    margin-bottom: 10px;
+    border-bottom: 2px solid black;
+    padding-bottom: 5px;
+}
+
+/* ✅ Sections */
+.resume-section {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px;
+}
+
+/* ✅ Work Experience & Investments Formatting */
+.experience-item, .investment-item {
+    margin-bottom: 10px;
+}
+
+.experience-item h3, .investment-item h3 {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.experience-item p, .investment-item p {
+    font-size: 13px;
+}
+
+/* ✅ Spacing for Text */
+p {
+    font-size: 14px;
+    line-height: 1.5;
+}

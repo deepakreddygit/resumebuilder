@@ -101,3 +101,46 @@
     }
   }
   
+
+
+   /* ✅ Color Picker Styling */
+   .template7.color-picker-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 20px 0;
+    
+  }
+  
+  .template7.color-preview {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  
+  .template7.color-input {
+    border: none;
+    padding: 4px;
+   width: 24px;
+    height: 24px;
+    cursor: pointer;
+    border-radius: 50%;
+  }
+  
+  .template7.save-color-btn {
+    background: #2c3e50;
+    color: white;
+    padding: 6px 10px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 12px;
+    transition: 0.3s ease;
+  }
+  
+  .template7.save-color-btn:hover {
+    background: #1a252f;
+  }
+  

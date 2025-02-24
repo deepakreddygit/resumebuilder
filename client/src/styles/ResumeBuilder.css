@@ -26,9 +26,19 @@ body {
   
   /* Form Inputs */
   .resume-inputs input,
-  .resume-inputs textarea,
   .resume-inputs select {
     width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: 0.3s;
+  }
+
+  .resume-inputs textarea{
+    width: 100%;
+    height: 150px !important;
     padding: 12px;
     margin: 8px 0;
     border: 1px solid #ccc;

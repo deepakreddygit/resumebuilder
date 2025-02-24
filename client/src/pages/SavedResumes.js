@@ -116,9 +116,9 @@ function SavedResumes() {
                   <p className="resume-role">
                     <strong>{roleData.icon} {roleData.name}</strong>
                   </p>
-                  <p className="resume-template">
+                  {/* <p className="resume-template">
                     <strong>Template:</strong> {templateName}
-                  </p>
+                  </p> */}
                   <p className="resume-details"><strong>Phone:</strong> {resume.phone}</p>
                   <p className="resume-details"><strong>Summary:</strong> {resume.summary}</p>
                 </div>

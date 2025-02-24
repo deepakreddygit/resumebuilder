@@ -1,0 +1,126 @@
+/* General Styling */
+.template2 {
+    font-family: "Arial", sans-serif;
+    max-width: 800px;
+    margin: 40px auto;
+    background: #ffffff;
+    padding: 30px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+  }
+  
+  /* Header Styling */
+  .template2 header {
+    text-align: center;
+    border-bottom: 3px solid #2c3e50;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+  }
+  
+  .template2 h1 {
+    font-size: 28px;
+    color: #2c3e50;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  .template2 p {
+    font-size: 14px;
+    color: #555;
+    margin: 5px 0;
+  }
+  
+  /* Sections Styling */
+  .template2 section {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: #f9f9f9;
+    border-radius: 6px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.05);
+  }
+  
+  .template2 h2 {
+    font-size: 20px;
+    color: #2c3e50;
+    border-bottom: 2px solid #2c3e50;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+  }
+  
+  /* Work Experience & Education */
+  .template2 .experience,
+  .template2 .education,
+  .template2 .certification,
+  .template2 .project {
+    margin-top: 10px;
+  }
+  
+  .template2 .flex-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .template2 h3 {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 3px;
+    font-weight: bold;
+  }
+  
+  .template2 .years {
+    font-size: 14px;
+    color: #888;
+    font-weight: bold;
+  }
+  
+  /* Skills List */
+  .template2 ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .template2 ul li {
+    background: #2c3e50;
+    color: #ffffff;
+    padding: 8px 12px;
+    border-radius: 5px;
+    margin: 5px;
+    font-size: 14px;
+  }
+  
+  /* Projects */
+  .template2 .project {
+    padding: 10px;
+    background: #eef2f3;
+    border-radius: 6px;
+    margin-top: 10px;
+  }
+  
+  /* Certifications */
+  .template2 .certification {
+    padding: 10px;
+    background: #f0f8ff;
+    border-radius: 6px;
+    margin-top: 10px;
+  }
+  
+  /* Languages */
+  .template2 #languages {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .template2 #languages li {
+    background: #27ae60;
+    color: #ffffff;
+    padding: 8px 12px;
+    border-radius: 5px;
+    margin: 5px;
+    font-size: 14px;
+  }
+  

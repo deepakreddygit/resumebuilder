@@ -214,13 +214,26 @@ function ResumeBuilder() {
       <button className="add-btn" onClick={() => addField("investments", { type: "", amount: "", years: "" })}>+ Add Investment</button>
     </div>
 
-    <div className="section-container">
-      <h4>Financial Tools</h4>
-      {resumeData.financialTools.map((tool, index) => (
-        <input key={index} type="text" placeholder="Financial Tool" value={tool.name} onChange={(e) => handleChange(e, index, "financialTools")} />
-      ))}
-      <button className="add-btn" onClick={() => addField("financialTools", { name: "" })}>+ Add Financial Tool</button>
-    </div>
+  
+      {/* Financial Tools Section */}
+      <div className="section-container">
+        <h4>Financial Tools</h4>
+        {resumeData.financialTools.map((tool, index) => (
+          <div key={index}>
+            <input
+              type="text"
+              placeholder="Financial Tool"
+              name="name"
+              value={tool.name}
+              onChange={(e) => handleChange(e, index, "financialTools")}
+            />
+          </div>
+        ))}
+        <button className="add-btn" onClick={() => addField("financialTools", { name: "" })}>
+          + Add Financial Tool
+        </button>
+      </div>
+    
 
     <div className="section-container">
       <h4>Budget & Risk Management</h4>

@@ -129,10 +129,10 @@ function ResumePreview() {
   const SelectedTemplate = templateComponents[selectedTemplate] || Template1;
 
   const handleSaveOrUpdate = async () => {
-    console.log("🔄 Save/Update Triggered | Resume Data:", resumeData);
+    console.log("Save/Update Triggered | Resume Data:", resumeData);
 
     if (!resumeData) {
-      toast.error("❌ No resume data found.");
+      toast.error(" No resume data found.");
       return;
     }
 
@@ -140,13 +140,13 @@ function ResumePreview() {
       const updatedResume = { ...resumeData, templateNumber: selectedTemplate };
 
       if (resumeId && resumeId !== "new" && resumeId !== null) {
-        console.log(`🟠 Updating resume with ID: ${resumeId}`);
+        console.log(` Updating resume with ID: ${resumeId}`);
         await updateResume(resumeId, updatedResume);
-        toast.success("✅ Resume updated successfully!");
+        toast.success("Resume updated successfully!");
       } else {
         console.log("💾 Saving new resume...");
         const savedResume = await saveResume(userId, updatedResume);
-        toast.success("✅ Resume saved successfully!");
+        toast.success("Resume saved successfully!");
 
         setResumeId(savedResume.resume_id);
         navigate(`/resume-preview/${savedResume.resume_id}/${selectedTemplate}`, {
@@ -158,8 +158,8 @@ function ResumePreview() {
       navigate("/saved-resumes");
 
     } catch (error) {
-      console.error("❌ Save/Update Error:", error);
-      toast.error("❌ Failed to save/update resume.");
+      console.error(" Save/Update Error:", error);
+      toast.error("Failed to save/update resume.");
     }
   };
 
