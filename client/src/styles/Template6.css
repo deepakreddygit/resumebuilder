@@ -91,14 +91,14 @@
 .template6 .responsibilities li {
     margin-bottom: 5px;
 }
-/* Contact Info - Space Between Email & Phone */
+
 .template6 .contact-info {
     display: flex;
-    justify-content: center; /* Center elements horizontally */
+    justify-content: center; 
     align-items: center;
-    gap: 20px; /* Adds space between email & phone */
+    gap: 20px; 
     margin-top: 10px;
-    flex-wrap: wrap; /* Ensures responsiveness */
+    flex-wrap: wrap; 
 }
 
 
