@@ -1,5 +1,5 @@
 import React from "react";
-import "../../styles/Template3.css"; // Import the specific CSS for Template 3
+import "../../styles/Template3.css"; 
 
 function Template3({ resumeData }) {
   return (

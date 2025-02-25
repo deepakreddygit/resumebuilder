@@ -1,0 +1,122 @@
+.resume-template {
+    font-family: "Poppins", sans-serif;
+    max-width: 900px;
+    margin: 0 auto;
+    background: #ffffff;
+    padding: 40px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+
+.resume-header {
+    text-align: center; 
+    margin-bottom: 30px;
+}
+
+
+.resume-header h1 {
+    font-size: 40px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    font-family: "Montserrat", sans-serif;
+    margin: 0; 
+    border-bottom: 2px solid #ddd; 
+    padding-bottom: 5px; 
+}
+
+/* Job Title */
+.resume-header .job-title {
+    font-size: 18px;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+
+.resume-header .summary {
+    font-size: 14px;
+    color: #444;
+    max-width: 600px;
+    margin: 0 auto;
+    padding-top: 20px; 
+}
+
+
+.resume-body {
+    display: flex;
+    gap: 40px;
+}
+
+.left-section {
+    width: 35%;
+    border-right: 2px solid #ddd;
+    padding-right: 20px;
+}
+
+.right-section {
+    width: 65%;
+    padding-left: 20px;
+}
+
+/* Sections */
+.resume-section {
+    margin-bottom: 30px;
+}
+
+/* Updated Heading Style */
+.resume-section h2 {
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 2px solid #ddd; /* Add line under heading */
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    justify-content: flex-start; /* Align to left */
+}
+
+/* Section Text */
+.resume-section p {
+    font-size: 14px;
+    color: #444;
+}
+
+/* Experience & Education */
+.experience-item,
+.education-item {
+    margin-bottom: 15px;
+}
+
+.experience-item h3,
+.education-item h3 {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.company {
+    font-size: 14px;
+    color: #666;
+}
+
+.responsibilities {
+    font-size: 14px;
+    color: #444;
+}
+
+
+.skills-list {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.skill-badge {
+    background: #000;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 20px;
+    margin: 5px;
+    font-size: 14px;
+}

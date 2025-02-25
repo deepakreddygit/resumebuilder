@@ -3,109 +3,114 @@ import "../../styles/Template6.css";
 
 function Template6({ resumeData = {} }) {  
   return (
-    <div className="resume-template">
-      <div className="resume-header">
+    <div className="template6 resume-container">
+      {/* Header Section */}
+      <header className="header">
         <h1>{resumeData.name || "Your Name"}</h1>
-        <p className="summary">{resumeData.summary || "Your professional summary..."}</p>
+        <p className="summary">{resumeData.summary || "Your Professional Summary"}</p>
         <div className="contact-info">
-          <p>📧 {resumeData.email || "your@email.com"}</p>
-          <p>📞 {resumeData.phone || "Your Phone Number"}</p>
+          <span>{resumeData.phone || "Your Phone Number"}</span>
+          <span>{resumeData.email || "your@email.com"}</span>
         </div>
-      </div>
+      </header>
 
-      {/* ✅ Work Experience */}
-      <div className="resume-section">
-        <h2>📌 Work Experience</h2>
-        {(resumeData.experience || []).map((exp, index) => (
-          <div key={index} className="experience-item">
-            <h3>{exp.jobTitle || "Job Title"}</h3>
-            <p className="company">{exp.company || "Company Name"} ({exp.years || "Years"})</p>
-            <p className="responsibilities">{exp.responsibilities || "Job Responsibilities"}</p>
-          </div>
-        ))}
-      </div>
+      {/* Main Content */}
+      <main className="main-content">
+        {/* Left Column */}
+        <div className="left-column">
+          {/* Education */}
+          <section className="section education">
+            <h3 className="section-title">🎓 Education</h3>
+            {(resumeData.education || []).length > 0 ? (
+              resumeData.education.map((edu, index) => (
+                <div className="education-item" key={index}>
+                  <h4>{edu.degree || "Degree"}</h4>
+                  <p className="institution">{edu.institution || "Institution"} ({edu.year || "Year"})</p>
+                </div>
+              ))
+            ) : <p>No education added.</p>}
+          </section>
 
-      {/* ✅ Education */}
-      <div className="resume-section">
-        <h2>🎓 Education</h2>
-        {(resumeData.education || []).map((edu, index) => (
-          <div key={index} className="education-item">
-            <h3>{edu.degree || "Degree"}</h3>
-            <p>{edu.institution || "Institution"} ({edu.year || "Year"})</p>
-          </div>
-        ))}
-      </div>
+          {/* Skills */}
+          <section className="section skills">
+            <h3 className="section-title">🛠 Skills</h3>
+            <div className="skills-list">
+              {(resumeData.skills || []).length > 0 ? (
+                resumeData.skills.map((skill, index) => (
+                  <span className="skill-badge" key={index}>{skill}</span>
+                ))
+              ) : <p>No skills added.</p>}
+            </div>
+          </section>
 
-      {/* ✅ Finance & Management Skills */}
-      <div className="resume-section">
-        <h2>💰 Finance & Management Skills</h2>
-        <div className="skills-list">
-          {(resumeData.skills || []).map((skill, index) => (
-            <span key={index} className="skill-badge">{skill || "Skill"}</span>
-          ))}
+          {/* Experience */}
+          <section className="section experience">
+            <h3 className="section-title">💼 Work Experience</h3>
+            {(resumeData.experience || []).length > 0 ? (
+              resumeData.experience.map((exp, index) => (
+                <div className="experience-item" key={index}>
+                  <h4>{exp.jobTitle || "Job Title"}</h4>
+                  <p className="company">{exp.company || "Company Name"} ({exp.years || "Years"})</p>
+                  <ul className="responsibilities">
+                    {(Array.isArray(exp.responsibilities) ? exp.responsibilities : []).map((res, i) => (
+                      <li key={i}>{res}</li>
+                    ))}
+                  </ul>
+                </div>
+              ))
+            ) : <p>No work experience added.</p>}
+          </section>
+
+          {/* Languages */}
+          <section className="section languages">
+            <h3 className="section-title">🌍 Languages</h3>
+            <ul>
+              {(resumeData.languages || []).length > 0 ? (
+                resumeData.languages.map((lang, index) => (
+                  <li key={index}>{lang.language || "Language"} - {lang.proficiency || "Proficiency Level"}</li>
+                ))
+              ) : <p>No languages added.</p>}
+            </ul>
+          </section>
         </div>
-      </div>
 
-      {/* ✅ Certifications (CFA, CPA, etc.) */}
-      <div className="resume-section">
-        <h2>📜 Certifications</h2>
-        {(resumeData.certifications || []).map((cert, index) => (
-          <div key={index} className="certification-item">
-            <h3>{cert.title || "Certification Title"}</h3>
-            <p>{cert.issuer || "Issuer"} ({cert.year || "Year"})</p>
-          </div>
-        ))}
-      </div>
+        {/* Right Column */}
+        <div className="right-column">
+          {/* Investments */}
+          <section className="section investments">
+            <h3 className="section-title">💰 Investments</h3>
+            {(resumeData.investments || []).length > 0 ? (
+              resumeData.investments.map((inv, index) => (
+                <p key={index}>{inv.type || "Investment Type"} - 💵 {inv.amount || "Amount"}</p>
+              ))
+            ) : <p>No investments added.</p>}
+          </section>
 
-      {/* ✅ Financial Management Projects */}
-      <div className="resume-section">
-        <h2>📊 Finance Projects</h2>
-        {(resumeData.projects || []).map((project, index) => (
-          <div key={index} className="project-item">
-            <h3>{project.title || "Project Title"}</h3>
-            <p>{project.description || "Project description..."}</p>
-          </div>
-        ))}
-      </div>
+          {/* Financial Tools */}
+          <section className="section financial-tools">
+            <h3 className="section-title">📊 Financial Tools</h3>
+            <div className="tools-list">
+              {(resumeData.financialTools || []).length > 0 ? (
+                resumeData.financialTools.map((tool, index) => (
+                  <span className="tool-badge" key={index}>{tool.name || "Financial Tool"}</span>
+                ))
+              ) : <p>No financial tools added.</p>}
+            </div>
+          </section>
 
-      {/* ✅ Financial Tools & Analysis */}
-      <div className="resume-section">
-        <h2>📈 Financial Tools & Analysis</h2>
-        {(resumeData.financialTools || []).map((tool, index) => (
-          <p key={index}>{tool.name || "Financial Tool"}</p>
-        ))}
-      </div>
+          {/* Budget & Risk Management */}
+          <section className="section budget">
+            <h3 className="section-title">📉 Budget & Risk Management</h3>
+            <p>{resumeData.budgetExperience || "No budget experience provided."}</p>
+          </section>
 
-      {/* ✅ Investment Experience */}
-      <div className="resume-section">
-        <h2>💵 Investment Experience</h2>
-        {(resumeData.investments || []).map((inv, index) => (
-          <div key={index} className="investment-item">
-            <h3>{inv.type || "Investment Type"}</h3>
-            <p>💵 {inv.amount || "Investment Amount"} | 📅 {inv.years || "Years of Experience"}</p>
-          </div>
-        ))}
-      </div>
-
-      {/* ✅ Budget Management Experience */}
-      <div className="resume-section">
-        <h2>💼 Budget & Risk Management</h2>
-        <p>{resumeData.budgetExperience || "Describe your experience in budget & risk management"}</p>
-      </div>
-
-      {/* ✅ Leadership & Strategic Planning */}
-      <div className="resume-section">
-        <h2>📌 Leadership & Strategy</h2>
-        <p>{resumeData.leadershipExperience || "Describe your leadership experience and financial strategies"}</p>
-      </div>
-
-      {/* ✅ Languages */}
-      <div className="resume-section">
-        <h2>🌎 Languages</h2>
-        {(resumeData.languages || []).map((lang, index) => (
-          <p key={index}>{lang.language || "Language"} - {lang.proficiency || "Proficiency Level"}</p>
-        ))}
-      </div>
+          {/* Leadership & Strategy */}
+          <section className="section leadership">
+            <h3 className="section-title">🚀 Leadership & Strategy</h3>
+            <p>{resumeData.leadershipExperience || "No leadership experience provided."}</p>
+          </section>
+        </div>
+      </main>
     </div>
   );
 }

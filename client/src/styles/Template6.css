@@ -1,0 +1,107 @@
+
+.template6 .resume-container {
+    max-width: 1000px; 
+    margin: 0 auto;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+.template6 .header {
+    background-color: #0c2b43;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    border-radius: 8px 8px 0 0;
+}
+
+.template6 .header h1 {
+    font-size: 1.8rem;
+    font-weight: bold;
+}
+
+.template6 .summary {
+    font-size: 1rem;
+    margin-top: 10px;
+}
+
+
+.template6 .main-content {
+    display: flex;
+    justify-content: center; 
+    gap: 50px; 
+    padding: 30px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+
+.template6 .left-column, .template6 .right-column {
+    flex: 1;
+    min-width: 300px;
+}
+
+
+.template6 .section-title {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #1e73be;
+    border-bottom: 2px solid #1e73be;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+}
+
+
+.template6 .skills-list, .template6 .tools-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.template6 .skill-badge, .template6 .tool-badge {
+    border: 1px solid #1e73be;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+}
+
+
+.template6 .experience-item, .template6 .education-item {
+    margin-bottom: 15px;
+}
+
+.template6 .experience-item h4, .template6 .education-item h4 {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.template6 .company, .template6 .institution {
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #555;
+}
+
+.template6 .responsibilities {
+    padding-left: 20px;
+}
+
+.template6 .responsibilities li {
+    margin-bottom: 5px;
+}
+
+
+@media (max-width: 768px) {
+    .template6 .main-content {
+        flex-direction: column;
+        align-items: center; 
+        gap: 30px;
+    }
+
+    .template6 .contact-info {
+        flex-direction: column;
+        align-items: center;
+    }
+}

@@ -1,146 +1,84 @@
-/* ✅ Resume Container */
-.template7.resume-container {
-    background: #F8F6F2; /* Light cream background */
-    max-width: 850px;
-    margin: auto;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-    font-family: "Georgia", serif;
-    color: #333;
-  }
-  
-  .template7 .color-picker {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 15px;
-  }
-  
-  .template7 .color-picker label {
-    font-weight: bold;
-    font-size: 16px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: #2c2c2c;
-  }
-  
-  .template7 .color-input {
-    appearance: none;
-    width: 15px;
-    height: 15px;
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-    outline: none;
-    padding: 0;
-  }
-  
-  /* ✅ Remove default border when focused */
-  .template7 .color-input::-webkit-color-swatch {
-    border-radius: 50%;
-    border: none;
-  }
-  
-  .template7 .color-input::-moz-color-swatch {
-    border-radius: 50%;
-    border: none;
-  }
-  
-  /* ✅ Header Section */
-  .template7 .resume-header {
-    text-align: center;
-    border-bottom: 2px solid;
-    padding-bottom: 10px;
-    margin-bottom: 20px;
-  }
-  
-  .template7 .name {
-    font-size: 32px;
-    font-weight: bold;
-    text-transform: uppercase;
-  }
-  
-  .template7 .profession {
-    font-size: 16px;
-    font-style: italic;
-    color: #666;
-  }
-  
-  /* ✅ Resume Sections */
-  .template7 .resume-section {
-    margin-bottom: 25px;
-    padding-bottom: 10px;
-    border-bottom: 2px solid;
-  }
-  
-  .template7 h2 {
-    font-size: 18px;
-    font-weight: bold;
-    text-transform: uppercase;
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  
-  /* ✅ Skills */
-  .template7 .skill-badge {
-    display: inline-block;
-    padding: 5px 10px;
-    margin-right: 5px;
-    color: rgb(0, 0, 0);
-    border-radius: 5px;
-  }
-  
-  /* ✅ Responsive */
-  @media (max-width: 768px) {
-    .template7.resume-container {
-      padding: 20px;
-    }
-  }
-  
+
+.template7 {
+  font-family: "Arial", sans-serif;
+  max-width: 850px;
+  margin: 30px auto;
+  padding: 25px;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+}
 
 
-   /* ✅ Color Picker Styling */
-   .template7.color-picker-container {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin: 20px 0;
-    
-  }
-  
-  .template7.color-preview {
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    border: 2px solid #ddd;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  }
-  
-  .template7.color-input {
-    border: none;
-    padding: 4px;
-   width: 24px;
-    height: 24px;
-    cursor: pointer;
-    border-radius: 50%;
-  }
-  
-  .template7.save-color-btn {
-    background: #2c3e50;
-    color: white;
-    padding: 6px 10px;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-    font-size: 12px;
-    transition: 0.3s ease;
-  }
-  
-  .template7.save-color-btn:hover {
-    background: #1a252f;
-  }
-  
+.resume-header {
+  text-align: center;
+  padding-bottom: 15px;
+  margin-bottom: 20px;
+}
+
+.resume-header h1 {
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.contact-info p {
+  font-size: 14px;
+  color: #555;
+}
+
+
+.color-picker-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.color-circle {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid #333;
+  cursor: pointer;
+}
+
+.color-input-hidden {
+  display: none;
+}
+
+.save-color-btn {
+  padding: 6px 14px;
+  border: none;
+  background: #2c3e50;
+  color: white;
+  font-size: 14px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.save-color-btn:hover {
+  background: #1e2c3a;
+}
+
+/* Sections */
+.resume-section {
+  padding: 15px;
+  background: #f9f9f9;
+  border-radius: 6px;
+  margin-bottom: 15px;
+}
+
+.resume-section h2 {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.skills-list span {
+  background: #2c3e50;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  margin: 5px;
+  font-size: 14px;
+}

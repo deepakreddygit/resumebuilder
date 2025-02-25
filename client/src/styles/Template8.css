@@ -1,0 +1,104 @@
+.resume-container {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f5f0;
+    color: #333;
+    width: 800px;
+    margin: auto;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.header-section {
+    text-align: center;
+    background-color: #e4d7c5;
+    padding: 20px;
+    border-radius: 8px 8px 0 0;
+}
+
+.header-section h1 {
+    font-size: 26px;
+    color: #333;
+    font-weight: bold;
+}
+
+.header-section .job-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #555;
+}
+
+.body-section {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+}
+
+.sidebar {
+    width: 30%;
+    background-color: #eee;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.sidebar h2,
+.main-content h2 {
+    font-size: 20px;
+    font-weight: bold;
+    border-bottom: 2px solid #333;
+    padding-bottom: 5px;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar li {
+    margin: 5px 0;
+}
+
+.main-content {
+    width: 70%;
+}
+
+.experience-entry,
+.education-entry,
+.strategy-entry,
+.campaign-entry {
+    margin-bottom: 10px;
+}
+
+.company-name {
+    font-weight: bold;
+    color: #555;
+}
+
+/* Ensuring uniform titles for different sections */
+.experience-section h2,
+.education-section h2,
+.marketing-section h2,
+.social-media-section h2 {
+    font-size: 20px;
+    font-weight: bold;
+    border-bottom: 2px solid #333;
+    padding-bottom: 5px;
+}
+
+/* Titles for individual items in sections */
+.experience-entry h3,
+.education-entry h3,
+.strategy-entry h3,
+.campaign-entry h3 {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+@media (max-width: 768px) {
+    .body-section {
+        flex-direction: column;
+    }
+
+    .sidebar, .main-content {
+        width: 100%;
+    }
+}
