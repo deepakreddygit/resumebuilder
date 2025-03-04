@@ -3,7 +3,7 @@ import "../../styles/Template5.css";
 
 function Template5({ resumeData = {} }) {  
   return (
-    <div className="resume-template">
+    <div className=" template5 resume-template">
       {/* Header */}
       <div className="resume-header">
         <h1>{resumeData.name || "Your Name"}</h1>

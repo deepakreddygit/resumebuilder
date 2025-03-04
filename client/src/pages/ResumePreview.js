@@ -14,6 +14,7 @@ import Template5 from "../components/templates/Template5";
 import Template6 from "../components/templates/Template6";
 import Template7 from "../components/templates/Template7";
 import Template8 from "../components/templates/Template8";
+import Template9 from "../components/templates/Template9";
 
 //import all css
 import "../styles/Template1.css";
@@ -24,6 +25,7 @@ import "../styles/Template5.css";
 import "../styles/Template6.css";
 import "../styles/Template7.css";
 import "../styles/Template8.css";
+import "../styles/Template9.css";
 
 
 function ResumePreview() {
@@ -39,6 +41,7 @@ function ResumePreview() {
   console.log("🔵 Component Rendered | Current resumeId:", resumeId, "| Template:", selectedTemplate);
 
   useEffect(() => {
+    console.log("🟢 Component Mounted | Initial Resume ID:", resumeId);
     console.log("🟢 useEffect: Page Loaded. Params:", { paramResumeId, templateNumber });
 
     if (!templateNumber) {
@@ -95,18 +98,19 @@ function ResumePreview() {
   // Define templates grouped by roles
   const templatesByRole = {
     "software-engineer": [
-      { id: "1", name: "Modern" },
-      { id: "2", name: "Professional" },
+      { id: "1", name: "Modern Professional" },
+      { id: "2", name: "Modern Minimalist" },
       { id: "3", name: "Creative" },
     ],
     "financial-manager": [
-      { id: "4", name: "Elegant" },
-      { id: "5", name: "Minimal" },
-      { id: "6", name: "Compact" },
+      { id: "4", name: "Modern Finance Resume" },
+      { id: "5", name: "Modern Icon-Based Finance Resume" },
+      { id: "6", name: "Modern Infographic Finance Resume" },
     ],
     "marketing-manager": [
-      { id: "7", name: "Stylish" },
-      { id: "8", name: "Classic" },
+      { id: "7", name: "Strategic Marketing Resume" },
+      { id: "8", name: "Minimalist Marketing Resume" },
+      { id: "9", name: "Creative Marketing Resume" },
     ],
   };
 
@@ -124,6 +128,7 @@ function ResumePreview() {
     "6": Template6,
     "7": Template7,
     "8": Template8,
+    "9": Template9,
   };
 
   const SelectedTemplate = templateComponents[selectedTemplate] || Template1;
@@ -199,5 +204,6 @@ function ResumePreview() {
 }
 
 export default ResumePreview;
+
 
 

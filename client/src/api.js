@@ -144,3 +144,85 @@ export const deleteResume = async (resumeId) => {
         return { error: "Failed to delete resume" };
     }
 };
+
+// Submit a review for a template
+export const submitReview = async (userId, templateNumber, reviewText) => {
+    console.log(`Submitting review for Template ${templateNumber} by User ${userId}`);
+    try {
+        const response = await fetch(`${API_BASE_URL}/review/submit`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                user_id: userId,
+                templateNumber,
+                reviewText
+            }),
+        });
+
+        const result = await response.json();
+        console.log("Review Submitted:", result);
+        return result;
+    } catch (error) {
+        console.error("Error submitting review:", error);
+        return { error: "Failed to submit review" };
+    }
+};
+
+
+
+// ✅ Fetch all reviews
+export const getAllReviews = async () => {
+    console.log("Fetching all template reviews...");
+    try {
+        const response = await fetch("http://localhost:5001/reviews");
+        if (!response.ok) throw new Error("Failed to fetch reviews");
+
+        const reviews = await response.json();
+        console.log("✅ Reviews Fetched:", reviews);
+        return reviews;
+    } catch (error) {
+        console.error("❌ Error fetching reviews:", error);
+        return [];
+    }
+};
+
+// ✅ Update a review
+export const updateReview = async (reviewId, userId, newText) => {
+    console.log(`Updating review ${reviewId} for user ${userId}...`);
+    try {
+        const response = await fetch(`http://localhost:5001/review/update/${reviewId}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ user_id: userId, reviewText: newText }),
+        });
+
+        const result = await response.json();
+        console.log("✅ Review Updated:", result);
+        return result;
+    } catch (error) {
+        console.error("❌ Error updating review:", error);
+        return { error: "Failed to update review" };
+    }
+};
+
+// ✅ Delete a review
+export const deleteReview = async (reviewId, userId) => {
+    console.log(`Deleting review ${reviewId} for user ${userId}...`);
+
+    try {
+        const response = await fetch(`http://localhost:5001/review/delete/${reviewId}`, {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ user_id: userId }),
+        });
+
+        const result = await response.json();
+        console.log("✅ Review Deleted:", result);
+        return result;
+    } catch (error) {
+        console.error("❌ Error deleting review:", error);
+        return { error: "Failed to delete review" };
+    }
+};
+
+

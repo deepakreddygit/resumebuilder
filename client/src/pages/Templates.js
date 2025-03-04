@@ -1,17 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
+import { submitReview, getAllReviews } from "../api";
+import { toast } from "react-toastify";
+import { Modal, Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/Templates.css";
 
 function Templates() {
-  // Role options with images/icons
+  const { userId } = useContext(AuthContext);
+
   const roles = [
     { id: "software-engineer", name: "Software Engineer", icon: "💻" },
     { id: "financial-manager", name: "Financial Manager", icon: "📊" },
     { id: "marketing-manager", name: "Marketing Manager", icon: "📢" },
   ];
 
-  // Templates categorized by roles
   const templatesByRole = {
     "software-engineer": [
       { id: 1, name: "Modern", image: "/assets/images/templates/template1.png" },
@@ -30,14 +34,47 @@ function Templates() {
     ],
   };
 
-  // State to track selected role
   const [selectedRole, setSelectedRole] = useState(null);
+  const [reviews, setReviews] = useState([]);
+  const [reviewText, setReviewText] = useState("");
+  const [selectedTemplate, setSelectedTemplate] = useState(null);
+  const [showReviewModal, setShowReviewModal] = useState(false);
+  const [menuVisible, setMenuVisible] = useState(null);
+
+  useEffect(() => {
+    getAllReviews()
+      .then((res) => setReviews(res))
+      .catch(() => setReviews([]));
+  }, []);
+
+  const handleOpenReviewModal = (template) => {
+    setSelectedTemplate(template);
+    setShowReviewModal(true);
+    setMenuVisible(null);
+  };
+
+  const handleReviewSubmit = async () => {
+    if (!reviewText.trim() || !selectedTemplate) {
+      toast.error("Please enter a review.");
+      return;
+    }
+
+    try {
+      await submitReview(userId, selectedTemplate.id, reviewText);
+      toast.success("Review submitted successfully!");
+      setReviewText("");
+      setReviews([...reviews, { templateNumber: selectedTemplate.id, reviewText }]);
+      setShowReviewModal(false);
+    } catch {
+      toast.error("Failed to submit review.");
+    }
+  };
 
   return (
     <div className="container templates-container">
       <h3 className="text-center mb-4 fw-bold">Select the Role You Are Applying For</h3>
 
-      {/* 🔹 Role Selection Grid */}
+      {/* Role Selection */}
       <div className="row justify-content-center">
         {roles.map((role) => (
           <div className="col-md-4 col-sm-6 mb-3" key={role.id}>
@@ -59,7 +96,7 @@ function Templates() {
         ))}
       </div>
 
-      {/* 🔹 Show templates based on selected role */}
+      {/* Templates Display */}
       {selectedRole && (
         <>
           <h4 className="text-center mt-5 fw-bold">
@@ -67,37 +104,96 @@ function Templates() {
           </h4>
           <div className="row justify-content-center">
             {templatesByRole[selectedRole].map((template) => (
-              <div className="col-md-4 col-sm-6 mb-4" key={template.id}>
-                <div className="card shadow-lg template-card">
-                  <img
-                    src={template.image}
-                    alt={template.name}
-                    className="card-img-top img-fluid rounded"
-                    style={{ height: "500px", width:"400px", objectFit: "cover"}}
-                  />
-                  <div className="card-body text-center">
-                    {/* <h5 className="card-title fw-bold">{template.name} Template</h5> */}
-                    {/* <p className="card-text text-muted">ATS-friendly & customizable</p> */}
-                    <Link
-                      to={`/resume-builder/${selectedRole}/${template.id}`}
-                      className="useTemplate btn btn-primary w-100"
-                    >
-                      {/* Use {template.name} Template */}
-                      Use this template
-                    </Link>
+              <div className="col-lg-4 col-md-6 col-sm-12 mb-3" key={template.id}>
+                <div className="card shadow-lg template-card h-100">
+                  <div className="template-image-container">
+                    <img src={template.image} alt={template.name} className="card-img-top img-fluid rounded" />
                   </div>
+
+                  {/* Card Body */}
+                  <div className="card-body d-flex justify-content-between align-items-center">
+  {/* "Use this template" Button */}
+  <Link to={`/resume-builder/${selectedRole}/${template.id}`} className="btn btn-dark flex-grow-1">
+    Use this template
+  </Link>
+
+{/* Three Dots with Clickable Menu */}
+{/* Three Dots with Clickable Menu */}
+<div className="position-relative d-flex align-items-center">
+  <span
+    style={{ cursor: "pointer", fontSize: "18px", padding: "5px" }}
+    onClick={() => setMenuVisible(menuVisible === template.id ? null : template.id)}
+  >
+    ⋮
+  </span>
+
+  {menuVisible === template.id && (
+    <div
+      className="position-absolute shadow-sm rounded p-1"
+      style={{
+        right: "-10px", /* Keeps it aligned */
+        bottom: "50px", /* Moves it above the button */
+        zIndex: 1000, /* Ensures visibility */
+        minWidth: "130px", /* Compact size */
+        backgroundColor: "#343a40", /* Dark Gray for sleek look */
+        color: "#fff", /* White text for contrast */
+        boxShadow: "0 4px 10px rgba(0, 0, 0, 0.2)", /* Stronger shadow */
+        borderRadius: "8px",
+        textAlign: "center",
+        whiteSpace: "nowrap", /* Prevents text wrapping */
+      }}
+    >
+      <button
+        className="btn btn-sm w-100"
+        style={{
+          background: "transparent",
+          color: "#fff", /* White text */
+          fontWeight: "500",
+          fontSize: "14px",
+          padding: "6px 10px",
+          border: "none",
+        }}
+        onClick={() => handleOpenReviewModal(template)}
+      >
+        Write a Review
+      </button>
+    </div>
+  )}
+</div>
+
+
+</div>
                 </div>
               </div>
             ))}
           </div>
         </>
       )}
+
+      {/* Review Modal */}
+      <Modal show={showReviewModal} onHide={() => setShowReviewModal(false)} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Review for Template {selectedTemplate?.id}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <textarea
+            className="form-control"
+            placeholder="Write your review here..."
+            value={reviewText}
+            onChange={(e) => setReviewText(e.target.value)}
+          ></textarea>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowReviewModal(false)}>
+            Cancel
+          </Button>
+          <Button variant="primary" onClick={handleReviewSubmit}>
+            Submit Review
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 }
 
 export default Templates;
-
-
-
-

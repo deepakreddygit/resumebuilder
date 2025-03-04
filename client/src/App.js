@@ -14,6 +14,7 @@ import ResumePreview from "./pages/ResumePreview";
 import SavedResumes from "./pages/SavedResumes";
 import { AuthContext } from "./context/AuthContext";
 import { AuthProvider } from "./context/AuthContext";
+import NotFound from "./pages/NotFound"; // Create a NotFound page
 import "./App.css";
 
 function App() {
@@ -60,11 +61,12 @@ function AppContent() {
       <div className="content-container">
         <Navbar userName={userName} />
         <Routes>
+          {/* 🔹 Public Routes */}
           <Route path="/" element={<Navigate replace to={isAuthenticated ? "/dashboard" : "/login"} />} />
           <Route path="/login" element={isAuthenticated ? <Navigate replace to="/dashboard" /> : <Login />} />
           <Route path="/signup" element={isAuthenticated ? <Navigate replace to="/dashboard" /> : <Signup />} />
 
-          {/* Protected Routes */}
+          {/* 🔹 Protected Routes (Require Authentication) */}
           {isAuthenticated ? (
             <>
               <Route path="/dashboard" element={<Dashboard />} />
@@ -76,8 +78,8 @@ function AppContent() {
               <Route path="/resume-builder/:role/:templateNumber" element={<ResumeBuilder />} />
               <Route path="/resume/edit/:resumeId/:templateNumber?" element={<ResumeBuilder />} />
 
-              {/* ✅ Resume Preview - Ensures Proper Parameters */}
-              <Route path="/resume-preview/:role/:templateNumber" element={<ResumePreview />} />
+              {/* ✅ Resume Preview - Uses resumeId Instead of Role */}
+              <Route path="/resume-preview/:resumeId/:templateNumber?" element={<ResumePreview />} />
 
               {/* ✅ Saved Resumes Page */}
               <Route path="/saved-resumes" element={<SavedResumes />} />
@@ -85,6 +87,9 @@ function AppContent() {
           ) : (
             <Route path="*" element={<Navigate replace to="/login" />} />
           )}
+
+          {/* 🔹 Catch-All for Unknown Routes */}
+          <Route path="*" element={<NotFound />} />
         </Routes>
 
         {/* ✅ Toast Notifications */}

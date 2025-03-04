@@ -1,0 +1,45 @@
+.review-slider-container {
+    text-align: center;
+    padding: 40px 20px;
+    background: #f8f9fa;
+  }
+  
+  .review-heading {
+    font-size: 2rem;
+    font-weight: bold;
+  }
+  
+  .review-subheading {
+    font-size: 1.2rem;
+    color: gray;
+    margin-bottom: 20px;
+  }
+  
+  .slick-slide {
+    padding: 10px;
+  }
+  
+  .review-card {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  .review-card h4 {
+    font-size: 1.1rem;
+    font-weight: bold;
+  }
+  
+  .review-text {
+    font-size: 1rem;
+    color: #333;
+    margin: 10px 0;
+  }
+  
+  .review-date {
+    font-size: 0.9rem;
+    color: gray;
+  }
+  

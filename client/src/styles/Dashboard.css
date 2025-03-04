@@ -1,66 +1,208 @@
 .dashboard-container {
   text-align: center;
-  background: linear-gradient(to right, #E3F2FD, #BBDEFB); 
+  padding: 60px 20px;
+  background: linear-gradient(to right, #E3F2FD, #BBDEFB);
   min-height: 100vh;
-  padding: 40px;
+  overflow-x: hidden; /* ✅ Restricts horizontal scroll only on the Dashboard */
+  width: 100%;
+  max-width: 100vw; /* ✅ Prevents extra spacing */
 }
 
-.welcome-text {
-  font-size: 2.5rem;
+
+
+h1 {
+  font-size: 36px;
   font-weight: bold;
-  color: #333;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 
 .sub-text {
-  font-size: 1.2rem;
-  color: #555;
-  max-width: 600px;
+  font-size: 18px;
+  color: #444;
+  max-width: 800px;
+  margin: 0 auto 20px;
 }
 
-
-.button-group {
-  display: flex;
-  gap: 15px;
-  margin-top: 20px;
-}
-
-.action-btn {
-  padding: 12px 20px;
-  font-size: 1rem;
+.resume-count h3 {
+  font-size: 24px;
   font-weight: bold;
-  border-radius: 30px;
-  min-width: 180px;
-  transition: all 0.3s ease-in-out;
+  margin: 15px 0;
 }
 
-.btn-primary {
-  background-color: #007bff;
-  border: none;
-}
-
-.btn-primary:hover {
-  background-color: #0056b3;
-}
-
-.btn-outline-primary {
-  border: 2px solid #007bff;
+.resume-number {
   color: #007bff;
 }
 
-.btn-outline-primary:hover {
-  background-color: #007bff;
+.create-btn {
+  background: #007bff;
+  border: none;
+  padding: 12px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  color: white;
+  transition: background 0.3s;
+}
+
+.create-btn:hover {
+  background: #0056b3;
+}
+
+.slider-container {
+  width: 80%;
+  margin: auto;
+
+}
+
+
+.slick-slide {
+  display: flex !important;
+  justify-content: center;
+  padding: 0 15px; 
+}
+
+.review-card {
+  width: 350px !important;  /* Fixed width */
+  min-height: 320px; /* Consistent height */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Distributes content evenly */
+  align-items: center;
+  padding: 20px;
+  background: linear-gradient(to right, #E3F2FD, #BBDEFB);
+  box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  text-align: center;
+  margin: 15px 20px; /* Adds space around each card */
+}
+
+/* ✅ Add space between the cards in the Slick slider */
+.slick-slide {
+  display: flex !important;
+  justify-content: center;
+  padding: 0 15px; /* Adds horizontal spacing */
+}
+
+.review-text {
+  flex-grow: 1; /* ✅ Makes text fill available space */
+  font-size: 14px;
+  color: #333;
+  font-style: italic;
+}
+
+/* ✅ Ensures consistent button alignment */
+.review-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: auto; /* ✅ Pushes buttons to the bottom */
+}
+
+.edit-btn {
+  background: linear-gradient(135deg, #444, #222);
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  margin-right: 5px;
+  cursor: pointer;
+}
+
+.delete-btn {
+  background: red;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.slick-prev:before,
+.slick-next:before {
+  font-family: "slick";       
+  font-size: 30px !important; 
+  line-height: 1 !important;
+  opacity: 1 !important;
+  color: #007bff !important; 
+  transition: color 0.3s;
+  margin-left: -15px;
+}
+
+
+.slick-prev:hover:before,
+.slick-next:hover:before {
+  color: #0056b3 !important;  
+}
+
+
+
+
+/* ✅ Responsive Fix for Mobile */
+@media (max-width: 576px) {
+  .review-card {
+    width: 90%; 
+    min-height: auto; /* ✅ Allows it to adjust dynamically */
+    margin: 20px 0;
+  }
+}
+
+
+/* ✅ Improved UI for Edit Review Mode */
+.review-edit-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px; 
+  width: 100%;
+}
+
+/* ✅ Styling the Textarea for Editing */
+.review-edit-container textarea {
+  width: 100%;
+  min-height: 80px;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  resize: none; 
+  background: white;
+}
+
+/* ✅ Buttons Container (for spacing & alignment) */
+.review-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+/* ✅ Improved Button Styling */
+.review-buttons button {
+  padding: 8px 12px;
+  font-size: 14px;
+  border-radius: 5px;
+  cursor: pointer;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+/* ✅ Save Button */
+.review-buttons .save-btn {
+  background: #007bff;
   color: white;
 }
 
-@media (max-width: 768px) {
-  .button-group {
-      flex-direction: column;
-      gap: 10px;
-  }
-
-  .stats-container {
-      flex-direction: column;
-      gap: 15px;
-  }
+.review-buttons .save-btn:hover {
+  background: #0056b3;
 }
+
+/* ✅ Cancel Button */
+.review-buttons .cancel-btn {
+  background: #e0e0e0;
+  color: black;
+}
+
+.review-buttons .cancel-btn:hover {
+  background: #bdbdbd;
+}
+

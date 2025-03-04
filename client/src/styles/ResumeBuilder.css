@@ -5,6 +5,35 @@ body {
     margin: 0;
     padding: 0;
   }
+
+  .input-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+  }
+  
+  label {
+    font-weight: bold;
+    margin-top: 10px;
+  }
+  
+  .input-error {
+    border: 2px solid red;
+  }
+  
+  .error-container {
+    height: 15px; /* Ensure spacing below each field */
+    display: flex;
+    align-items: center;
+  }
+  
+  .error-text {
+    color: red;
+    font-size: 12px;
+    margin-top: 2px;
+    display: block; /* Force it to appear below the input */
+  }
+  
   
   .resume-builder-container {
     max-width: 800px;
