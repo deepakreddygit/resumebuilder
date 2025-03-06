@@ -50,13 +50,13 @@ function Dashboard() {
     fetchData();
   }, [userId, isAuthenticated]);
 
-  // ✅ Handle Edit Review
+  //  Handle Edit Review
   const handleEditReview = (review) => {
     setEditingReview(review.review_id);
     setEditedReviewText(review.reviewText);
   };
 
-  // ✅ Handle Save Review
+  // Handle Save Review
   const handleSaveReview = async () => {
     if (!editedReviewText.trim()) {
       toast.error("Review text cannot be empty!", { position: "top-right" });
@@ -80,19 +80,19 @@ function Dashboard() {
     }
   };
 
-  // ✅ Open Delete Modal
+
   const handleOpenDeleteModal = (reviewId) => {
     setSelectedReviewId(reviewId);
     setShowDeleteModal(true);
   };
 
-  // ✅ Close Delete Modal
+  
   const handleCloseDeleteModal = () => {
     setShowDeleteModal(false);
     setSelectedReviewId(null);
   };
 
-  // ✅ Confirm Delete Review
+
   const handleConfirmDelete = async () => {
     if (!selectedReviewId) return;
 
@@ -109,7 +109,7 @@ function Dashboard() {
     setSelectedReviewId(null);
   };
 
-  // ✅ Slider Settings
+
   const sliderSettings = {
     dots: reviews.length > 1,
     infinite: reviews.length > 2,
@@ -117,7 +117,7 @@ function Dashboard() {
     slidesToShow: Math.min(reviews.length, 3),
     slidesToScroll: 1,
     autoplay: reviews.length > 2,
-    autoplaySpeed: 4000,
+    autoplaySpeed: 1000,
     centerMode: reviews.length > 1,
     centerPadding: reviews.length > 1 ? "20px" : "0px",
     responsive: [
@@ -198,7 +198,7 @@ function Dashboard() {
         <p className="text-center">No reviews available.</p>
       )}
 
-      {/* ✅ Delete Confirmation Modal */}
+      {/* Delete Confirmation Modal */}
       {showDeleteModal && (
         <div className="delete-modal-overlay">
           <div className="delete-modal-content">

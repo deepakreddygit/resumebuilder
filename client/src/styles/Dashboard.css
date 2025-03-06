@@ -206,3 +206,74 @@ h1 {
   background: #bdbdbd;
 }
 
+/* Modal Overlay */
+.delete-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Dark overlay */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Ensure it appears on top */
+}
+
+/* Modal Content */
+.delete-modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 350px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Modal Actions (Buttons) */
+.delete-modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+/* Button Styles */
+.delete-modal-actions .btn {
+  padding: 8px 15px;
+  font-size: 14px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+}
+
+/* Cancel Button */
+.delete-modal-actions .btn-secondary {
+  background-color: gray;
+  color: white;
+}
+
+/* Delete Button - RED */
+.delete-modal-actions .btn-danger {
+  background-color: red;
+  color: white;
+}
+
+/* Delete Button Hover Effect */
+.delete-modal-actions .btn-danger:hover {
+  background-color: darkred;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+

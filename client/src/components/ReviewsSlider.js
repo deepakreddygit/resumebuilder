@@ -11,7 +11,7 @@ const ReviewsSlider = () => {
   useEffect(() => {
     getAllReviews()
       .then((res) => {
-        console.log("✅ Reviews received:", res);
+        console.log("Reviews received:", res);
         // Sort latest reviews first (Descending order)
         setReviews(res.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
       })

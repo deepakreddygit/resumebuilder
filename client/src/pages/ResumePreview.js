@@ -79,13 +79,13 @@ function ResumePreview() {
             setResumeData(safeData);
             setResumeId(data.resume_id);
           } else {
-            toast.error("❌ Resume not found.");
+            toast.error(" Resume not found.");
             navigate("/saved-resumes");
           }
         })
         .catch((error) => {
-          console.error("❌ API Error Fetching Resume:", error);
-          toast.error("❌ Error fetching resume.");
+          console.error(" API Error Fetching Resume:", error);
+          toast.error("Error fetching resume.");
           navigate("/saved-resumes");
         });
     }
@@ -172,7 +172,7 @@ function ResumePreview() {
     <div className="resume-preview-container">
       <h2 className="text-center">LIVE RESUME PREVIEW</h2>
 
-      {/* 🔽 Role-Based Template Dropdown */}
+      {/*Role-Based Template Dropdown */}
       <div className="template-selector">
         <p className="text-center"><strong>Choose a Template:</strong></p>
         <select
@@ -189,7 +189,7 @@ function ResumePreview() {
         </select>
       </div>
 
-      {/* 🔹 Resume Preview */}
+      {/* Resume Preview */}
       <div className="resume-preview">
         <SelectedTemplate resumeData={resumeData} />
       </div>
