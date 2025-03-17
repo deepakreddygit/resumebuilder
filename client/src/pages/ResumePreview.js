@@ -16,6 +16,8 @@ import Template7 from "../components/templates/Template7";
 import Template8 from "../components/templates/Template8";
 import Template9 from "../components/templates/Template9";
 import Template10 from "../components/templates/Template10";
+import Template11 from "../components/templates/Template11";
+import Template12 from "../components/templates/Template12";
 
 //all css
 import "../styles/Template1.css";
@@ -28,6 +30,8 @@ import "../styles/Template7.css";
 import "../styles/Template8.css";
 import "../styles/Template9.css";
 import "../styles/Template10.css";
+import "../styles/Template11.css";
+import "../styles/Template12.css";
 
 
 function ResumePreview() {
@@ -134,7 +138,9 @@ function ResumePreview() {
     "7": Template7,
     "8": Template8,
     "9": Template9,
-    "10":Template10
+    "10":Template10,
+    "11": Template11,
+    "12": Template12,
   };
 
   const SelectedTemplate = templateComponents[selectedTemplate] || Template1;
@@ -176,7 +182,20 @@ function ResumePreview() {
 
   return (
     <div className="resume-preview-container">
-      <h2 className="text-center">LIVE RESUME PREVIEW</h2>
+      <h2 
+  className="text-center" 
+  style={{
+    marginTop: "30px",  
+    marginBottom: "20px", 
+    fontWeight: "600", 
+    color: "#333",  
+    textTransform: "uppercase", 
+    letterSpacing: "1px" 
+  }}
+>
+  LIVE RESUME PREVIEW
+</h2>
+
 
       {/*Role-Based Template Dropdown */}
       <div className="template-selector">

@@ -171,43 +171,194 @@ function Profile() {
           View Saved Resumes
         </button>
       </div>
-      {/* Delete Confirmation Modal */}
+{/* Delete Confirmation Modal */}
 {showConfirmDelete && (
-  <div className="modal-overlay">
-    <div className="modal-content">
-      <h4>Confirm Deletion</h4>
-      <p className="delete-warning">Are you sure you want to delete your profile picture?</p>
-      <div className="modal-buttons">
-        <button className="btn confirm-btn" onClick={handleDeleteImage}>
+  <div 
+    className="modal-overlay"
+    style={{
+      position: "fixed",
+      top: "0",
+      left: "0",
+      width: "100%",
+      height: "100%",
+      background: "rgba(0, 0, 0, 0.5)",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      zIndex: "1000",
+    }}
+  >
+    <div 
+      className="modal-content"
+      style={{
+        background: "#fff",
+        padding: "20px",
+        borderRadius: "8px",
+        width: "350px",
+        boxShadow: "0 4px 10px rgba(0, 0, 0, 0.2)",
+        textAlign: "center",
+        animation: "fadeIn 0.3s ease-in-out",
+      }}
+    >
+      <h4 style={{ fontSize: "18px", fontWeight: "600", marginBottom: "10px", color: "#333" }}>
+        Confirm Deletion
+      </h4>
+      <p 
+        className="delete-warning"
+        style={{
+          fontSize: "16px",
+          color: "#555",
+          marginBottom: "15px",
+        }}
+      >
+        Are you sure you want to delete your profile picture?
+      </p>
+      <div 
+        className="modal-buttons"
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          gap: "10px",
+        }}
+      >
+        <button 
+          className="btn confirm-btn"
+          onClick={handleDeleteImage}
+          style={{
+            backgroundColor: "#dc3545",
+            color: "white",
+            fontWeight: "600",
+            padding: "8px 16px",
+            borderRadius: "5px",
+            border: "none",
+            cursor: "pointer",
+            transition: "all 0.3s ease",
+          }}
+        >
           Confirm
         </button>
-        <button className="btn cancel-btn" onClick={() => setShowConfirmDelete(false)}>
+        <button 
+          className="btn cancel-btn"
+          onClick={() => setShowConfirmDelete(false)}
+          style={{
+            backgroundColor: "#6c757d",
+            color: "white",
+            fontWeight: "600",
+            padding: "8px 16px",
+            borderRadius: "5px",
+            border: "none",
+            cursor: "pointer",
+            transition: "all 0.3s ease",
+          }}
+        >
           Cancel
         </button>
       </div>
     </div>
   </div>
 )}
+
 {/* Upload Confirmation Modal */}
 {showSaveModal && (
-  <div className="modal-overlay">
-    <div className="modal-content">
-      <h4>Confirm Image Upload</h4>
-      <div className="modal-image-container">
-        <img src={previewURL} alt="Preview" className="modal-preview-img" />
+  <div 
+    className="modal-overlay"
+    style={{
+      position: "fixed",
+      top: "0",
+      left: "0",
+      width: "100%",
+      height: "100%",
+      background: "rgba(0, 0, 0, 0.5)",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      zIndex: "1000",
+    }}
+  >
+    <div 
+      className="modal-content"
+      style={{
+        background: "#fff",
+        padding: "20px",
+        borderRadius: "8px",
+        width: "350px",
+        boxShadow: "0 4px 10px rgba(0, 0, 0, 0.2)",
+        textAlign: "center",
+        animation: "fadeIn 0.3s ease-in-out",
+      }}
+    >
+      <h4 style={{ fontSize: "18px", fontWeight: "600", marginBottom: "10px", color: "#333" }}>
+        Confirm Image Upload
+      </h4>
+      <div 
+        className="modal-image-container"
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          marginBottom: "10px",
+        }}
+      >
+        <img 
+          src={previewURL} 
+          alt="Preview" 
+          className="modal-preview-img"
+          style={{
+            width: "120px",
+            height: "120px",
+            borderRadius: "50%",
+            objectFit: "cover",
+            border: "2px solid #ddd",
+          }}
+        />
       </div>
-      <p>Do you want to upload this image?</p>
-      <div className="modal-buttons">
-        <button className="btn confirm-btn" onClick={handleSaveImage}>
+      <p style={{ fontSize: "16px", color: "#555", marginBottom: "15px" }}>
+        Do you want to upload this image?
+      </p>
+      <div 
+        className="modal-buttons"
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          gap: "10px",
+        }}
+      >
+        <button 
+          className="btn confirm-btn"
+          onClick={handleSaveImage}
+          style={{
+            backgroundColor: "#28a745",
+            color: "white",
+            fontWeight: "600",
+            padding: "8px 16px",
+            borderRadius: "5px",
+            border: "none",
+            cursor: "pointer",
+            transition: "all 0.3s ease",
+          }}
+        >
           <FontAwesomeIcon icon={faSave} /> Confirm
         </button>
-        <button className="btn cancel-btn" onClick={() => setShowSaveModal(false)}>
+        <button 
+          className="btn cancel-btn"
+          onClick={() => setShowSaveModal(false)}
+          style={{
+            backgroundColor: "#6c757d",
+            color: "white",
+            fontWeight: "600",
+            padding: "8px 16px",
+            borderRadius: "5px",
+            border: "none",
+            cursor: "pointer",
+            transition: "all 0.3s ease",
+          }}
+        >
           <FontAwesomeIcon icon={faTimes} /> Cancel
         </button>
       </div>
     </div>
   </div>
 )}
+
 
     </div>
   );

@@ -62,17 +62,91 @@ function Navbar() {
         </div>
       </nav>
 
-      {/* Logout Confirmation Modal */}
-      <Modal show={showModal} onHide={() => setShowModal(false)} centered>
-        <Modal.Header closeButton>
-          <Modal.Title>Confirm Logout</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>Are you sure you want to log out?</Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowModal(false)}>Cancel</Button>
-          <Button className="btn-danger" onClick={handleLogout}>Logout</Button>
-        </Modal.Footer>
-      </Modal>
+   {/* Logout Confirmation Modal */}
+<Modal 
+  show={showModal} 
+  onHide={() => setShowModal(false)} 
+  centered 
+  style={{ 
+    backdropFilter: "blur(5px)", 
+    transition: "opacity 0.3s ease-in-out" 
+  }}
+>
+  <Modal.Header 
+    closeButton 
+    style={{ 
+      backgroundColor: "#f8f9fa", 
+      borderBottom: "2px solid #dee2e6", 
+      padding: "15px" 
+    }}
+  >
+    <Modal.Title 
+      style={{ 
+        fontWeight: "600", 
+        fontSize: "18px", 
+        color: "#333" 
+      }}
+    >
+      Confirm Logout
+    </Modal.Title>
+  </Modal.Header>
+
+  <Modal.Body 
+    style={{ 
+      fontSize: "16px", 
+      color: "#555", 
+      padding: "20px", 
+      textAlign: "center" 
+    }}
+  >
+    Are you sure you want to log out?
+  </Modal.Body>
+
+  <Modal.Footer 
+    style={{ 
+      borderTop: "2px solid #dee2e6", 
+      padding: "15px", 
+      display: "flex", 
+      justifyContent: "center" 
+    }}
+  >
+    <Button 
+      variant="secondary" 
+      onClick={() => setShowModal(false)} 
+      style={{ 
+        backgroundColor: "#6c757d", 
+        color: "white", 
+        fontWeight: "600", 
+        padding: "8px 16px", 
+        borderRadius: "5px", 
+        border: "none", 
+        transition: "all 0.3s ease", 
+        cursor: "pointer"
+      }}
+    >
+      Cancel
+    </Button>
+
+    <Button 
+      className="btn-danger" 
+      onClick={handleLogout} 
+      style={{ 
+        backgroundColor: "#dc3545", 
+        color: "white", 
+        fontWeight: "600", 
+        padding: "8px 16px", 
+        borderRadius: "5px", 
+        border: "none", 
+        transition: "all 0.3s ease", 
+        cursor: "pointer", 
+        marginLeft: "10px"
+      }}
+    >
+      Logout
+    </Button>
+  </Modal.Footer>
+</Modal>
+
     </>
   );
 }

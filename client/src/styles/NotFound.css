@@ -1,0 +1,40 @@
+.not-found-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
+    align-items: center; 
+    height: 100vh; 
+    text-align: center;
+    background: linear-gradient(to right, #E3F2FD, #BBDEFB);
+  }
+  
+  .not-found-title {
+    font-size: 100px;
+    font-weight: bold;
+    color: #dc3545; 
+  }
+  
+  .not-found-subtitle {
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  
+  .not-found-text {
+    font-size: 18px;
+    color: #6c757d; 
+    margin-bottom: 20px;
+  }
+  
+  .btn-primary {
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .btn-primary:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+  }
+  

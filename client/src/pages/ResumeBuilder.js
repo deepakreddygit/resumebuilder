@@ -81,22 +81,26 @@ function ResumeBuilder() {
     });
   };
 
-
   const handleGenerateSummary = async () => {
     if (!aiPrompt.trim()) {
       alert("Please enter a prompt for AI to generate a summary.");
       return;
     }
-
+  
     setLoading(true);
-
+  
     // Simulating AI Response (Replace this with an actual API call)
     setTimeout(() => {
-      const mockResponse = `Generated Summary for: "${aiPrompt}"`;
-      setGeneratedText(mockResponse);
+      const mockResponse = `Generated Summary for: "${aiPrompt.trim()}"`;
+  
+      // ✅ Remove "Generated Summary for:" and extract only the user input
+      const cleanedText = mockResponse.replace(/^Generated Summary for: "?(.+?)"?$/, "$1");
+  
+      setGeneratedText(cleanedText); // ✅ Set only the cleaned text
       setLoading(false);
     }, 2000); // Simulate AI processing time
   };
+
 
   const handleClosePopup = () => {
     setShowPopup(false);
@@ -322,7 +326,7 @@ function ResumeBuilder() {
 />
   {touched.phone && resumeData.phone.trim() === "" && <span className="error-text">Phone number is required</span>}
 
-    <div className="summary-container">
+  <div className="summary-container">
       {/* Summary Label */}
       <label className="input-label">
         Summary <span className="required">*</span>
@@ -337,9 +341,7 @@ function ResumeBuilder() {
           value={resumeData.summary}
           onChange={handleChange}
           onBlur={() => handleBlur(null, "summary")}
-          className={`summary-textarea ${
-            resumeData.summary.trim() === "" ? "input-error" : ""
-          }`}
+          className={`summary-textarea ${resumeData.summary.trim() === "" ? "input-error" : ""}`}
         />
 
         {/* AI Icon in Bottom-Left */}
@@ -352,7 +354,7 @@ function ResumeBuilder() {
           <div className="ai-popup">
             <div className="ai-popup-header">
               <h4>Generate Summary</h4>
-              <FaTimes className="close-icon" onClick={handleClosePopup} />
+              <FaTimes className="close-icon" onClick={() => setShowPopup(false)} />
             </div>
 
             {/* AI Input Field */}
@@ -365,13 +367,9 @@ function ResumeBuilder() {
 
             {/* AI Processing Message or Generate Button */}
             {loading ? (
-              <button className="generate-btn" disabled>
-                Generating...
-              </button>
+              <button className="generate-btn" disabled>Generating...</button>
             ) : (
-              <button className="generate-btn" onClick={handleGenerateSummary}>
-                Generate
-              </button>
+              <button className="generate-btn" onClick={handleGenerateSummary}>Generate</button>
             )}
 
             {/* Display AI Generated Summary */}
@@ -379,8 +377,9 @@ function ResumeBuilder() {
               <div className="ai-response">
                 <p>{generatedText}</p>
                 <button className="use-btn" onClick={() => {
+                  // ✅ Ensure only the actual AI-generated text is used
                   handleChange({ target: { name: "summary", value: generatedText } });
-                  handleClosePopup();
+                  setShowPopup(false);
                 }}>
                   Use This
                 </button>
