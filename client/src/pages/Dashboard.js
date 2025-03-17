@@ -15,6 +15,7 @@ function Dashboard() {
   const navigate = useNavigate();
   const [reviews, setReviews] = useState([]);
   const [resumeCount, setResumeCount] = useState(null);
+  const [loadingReviews, setLoadingReviews] = useState(true);  // ✅ Added loading state for reviews
   const [editingReview, setEditingReview] = useState(null);
   const [editedReviewText, setEditedReviewText] = useState("");
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -44,13 +45,15 @@ function Dashboard() {
         console.error("❌ Error fetching data:", error);
         setReviews([]);
         setResumeCount(0);
+      } finally {
+        setLoadingReviews(false); // ✅ Stop loading once data is fetched
       }
     };
 
     fetchData();
   }, [userId, isAuthenticated]);
 
-  //  Handle Edit Review
+  // Handle Edit Review
   const handleEditReview = (review) => {
     setEditingReview(review.review_id);
     setEditedReviewText(review.reviewText);
@@ -80,19 +83,19 @@ function Dashboard() {
     }
   };
 
-
+  // Open Delete Modal
   const handleOpenDeleteModal = (reviewId) => {
     setSelectedReviewId(reviewId);
     setShowDeleteModal(true);
   };
 
-  
+  // Close Delete Modal
   const handleCloseDeleteModal = () => {
     setShowDeleteModal(false);
     setSelectedReviewId(null);
   };
 
-
+  // Confirm Delete
   const handleConfirmDelete = async () => {
     if (!selectedReviewId) return;
 
@@ -109,7 +112,7 @@ function Dashboard() {
     setSelectedReviewId(null);
   };
 
-
+  // ✅ Review Slider Settings
   const sliderSettings = {
     dots: reviews.length > 1,
     infinite: reviews.length > 2,
@@ -117,7 +120,7 @@ function Dashboard() {
     slidesToShow: Math.min(reviews.length, 3),
     slidesToScroll: 1,
     autoplay: reviews.length > 2,
-    autoplaySpeed: 1000,
+    autoplaySpeed: 2000,
     centerMode: reviews.length > 1,
     centerPadding: reviews.length > 1 ? "20px" : "0px",
     responsive: [
@@ -134,31 +137,77 @@ function Dashboard() {
 
   return (
     <div className="dashboard-container">
-      {/* ✅ Toast Container */}
-      <ToastContainer />
+    <ToastContainer />
 
-      <h1 className="text-center mt-5">Welcome, {userName}!</h1>
-      <p className="sub-text text-center">Create an ATS-friendly resume in just minutes.</p>
+    {/* ✅ Content Wrapper (Left Info & Right Images) */}
+    <div className="content-wrapper">
+      {/* ✅ Left Content: User Info, Resume Count, and Button */}
+      <div className="left-content">
+  <h1 className="main-title">
+    Create your resume in just <span className="highlight">minutes</span>
+  </h1>
 
-      <div className="resume-count text-center mb-4">
-        {resumeCount === null ? (
-          <h3>Loading resumes...</h3>
-        ) : (
-          <h3>
-            You have <span className="resume-number">{resumeCount}</span> saved resumes
-          </h3>
-        )}
-      </div>
+  <p className="sub-text">
+    Craft a perfect ATS-friendly resume instantly using our application with different <span className="highlight">template</span> variations.
+  </p>
 
-      <div className="text-center mb-5">
-        <button className="btn btn-primary create-btn" onClick={() => navigate("/templates")}>
-          Create New Resume
-        </button>
-      </div>
+  <div className="resume-count">
+    {resumeCount === null ? (
+      <h3>Loading your resumes...</h3>
+    ) : (
+      <h3>
+        You have <span className="highlight resume-number">{resumeCount}</span> saved resumes
+      </h3>
+    )}
+  </div>
 
-      <h2 className="text-center mt-5 mb-4">User Reviews</h2>
+  <div className="buttons-group">
+  <button
+  className="btn primary-btn"
+  onClick={() => navigate("/templates")}
+  style={{
+    backgroundColor: "#2f5bea",
+    color: "#ffffff",
+    border: "none",
+    padding: "12px 24px",
+    borderRadius: "50px",
+    fontSize: "16px",
+    fontWeight: "bold",
+    boxShadow: "0 4px 14px rgba(47,91,234,0.4)",
+    cursor: "pointer",
+  }}
+>
+  Create new resume
+</button>
 
-      {reviews.length > 0 ? (
+  </div>
+</div>
+
+      <div className="animated-resumes">
+  {/* Resume 1 horizontally centered */}
+  <div className="resume-center">
+    <img src="/assets/template2.png" alt="Resume 1" className="resume-img floating-up" />
+  </div>
+
+  {/* Resume 2 & 3 stacked vertically on the right side */}
+  <div className="resumes-right">
+    <img src="/assets/template1.png" alt="Resume 2" className="resume-img floating-down" />
+    <img src="/assets/template5.png" alt="Resume 3" className="resume-img floating-down" />
+  </div>
+</div>
+
+
+
+
+    </div>
+      {/* ✅ Reviews Section */}
+      <h2 className="text-center mt-5 mb-4" style={{ fontWeight: 600 }}>User Reviews</h2>
+
+
+      {/* ✅ Show "Loading reviews..." text while fetching */}
+      {loadingReviews ? (
+        <p className="text-center">Loading reviews...</p>
+      ) : reviews.length > 0 ? (
         <div className="slider-container">
           <Slider key={reviews.length} {...sliderSettings}>
             {reviews.map((review) => (
@@ -166,30 +215,96 @@ function Dashboard() {
                 <p>
                   <strong>{review.username}</strong> reviewed Template {review.templateNumber}
                 </p>
-
                 {editingReview === review.review_id ? (
-  <div className="review-edit-container">
-    <textarea
-      value={editedReviewText}
-      onChange={(e) => setEditedReviewText(e.target.value)}
-    />
-    <div className="review-buttons">
-      <button className="save-btn" onClick={handleSaveReview}>Save</button>
-      <button className="cancel-btn" onClick={() => setEditingReview(null)}>Cancel</button>
-    </div>
-  </div>
-) : (
-  <>
-    <p className="review-text">{review.reviewText}</p>
-    {review.user_id === userId && (
-      <div className="review-actions">
-        <button className="edit-btn" onClick={() => handleEditReview(review)}>Edit</button>
-        <button className="delete-btn" onClick={() => handleOpenDeleteModal(review.review_id)}>Delete</button>
-      </div>
-    )}
-  </>
-)}
+                  <div className="review-edit-container">
+                    <textarea
+                      value={editedReviewText}
+                      onChange={(e) => setEditedReviewText(e.target.value)}
+                    />
+                   <div className="review-buttons">
+  <button
+    style={{
+      background: "linear-gradient(135deg, #007bff, #0056b3)",
+      color: "white",
+      border: "none",
+      padding: "8px 16px",
+      borderRadius: "5px",
+      fontSize: "14px",
+      cursor: "pointer",
+      transition: "all 0.3s ease",
+      boxShadow: "2px 2px 5px rgba(0, 0, 0, 0.2)",
+      fontWeight: "600",
+      marginRight: "8px"
+    }}
+    onClick={handleSaveReview}
+  >
+    Save
+  </button>
 
+  <button
+    style={{
+      background: "linear-gradient(135deg, #e0e0e0, #bdbdbd)",
+      color: "#333",
+      border: "none",
+      padding: "8px 16px",
+      borderRadius: "5px",
+      fontSize: "14px",
+      cursor: "pointer",
+      transition: "all 0.3s ease",
+      boxShadow: "2px 2px 5px rgba(0, 0, 0, 0.2)",
+      fontWeight: "600"
+    }}
+    onClick={() => setEditingReview(null)}
+  >
+    Cancel
+  </button>
+</div>
+
+                  </div>
+                ) : (
+                  <>
+                    <p className="review-text">{review.reviewText}</p>
+                    {review.user_id === userId && (
+                    <div className="review-actions">
+                    <button
+                      style={{
+                        background: "linear-gradient(135deg, #444, #222)",
+                        color: "white",
+                        border: "none",
+                        padding: "8px 12px",
+                        borderRadius: "5px",
+                        fontSize: "14px",
+                        marginRight: "8px",
+                        cursor: "pointer",
+                        transition: "all 0.3s ease",
+                        boxShadow: "2px 2px 5px rgba(0, 0, 0, 0.2)"
+                      }}
+                      onClick={() => handleEditReview(review)}
+                    >
+                      Edit
+                    </button>
+                  
+                    <button
+                      style={{
+                        background: "linear-gradient(135deg, #d9534f, #b52b27)",
+                        color: "white",
+                        border: "none",
+                        padding: "8px 12px",
+                        borderRadius: "5px",
+                        fontSize: "14px",
+                        cursor: "pointer",
+                        transition: "all 0.3s ease",
+                        boxShadow: "2px 2px 5px rgba(0, 0, 0, 0.2)"
+                      }}
+                      onClick={() => handleOpenDeleteModal(review.review_id)}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                  
+                    )}
+                  </>
+                )}
               </div>
             ))}
           </Slider>
@@ -198,7 +313,7 @@ function Dashboard() {
         <p className="text-center">No reviews available.</p>
       )}
 
-      {/* Delete Confirmation Modal */}
+      {/* ✅ Delete Confirmation Modal */}
       {showDeleteModal && (
         <div className="delete-modal-overlay">
           <div className="delete-modal-content">
@@ -220,3 +335,8 @@ function Dashboard() {
 }
 
 export default Dashboard;
+
+
+
+
+

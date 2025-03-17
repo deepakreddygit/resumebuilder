@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "../../styles/Template4.css";
 
 function Template4({ resumeData = {} }) {  
-  // ✅ Generate a Unique Number if None Exists
+
   const templateNumber = resumeData.templateNumber || "4";  
   const uniqueKey = `resumeColor-${templateNumber}-Session-${sessionStorage.getItem("sessionKey") || Date.now()}`;
 
@@ -12,14 +12,14 @@ function Template4({ resumeData = {} }) {
   const [selectedColor, setSelectedColor] = useState("#2c3e50");
   const [showMessage, setShowMessage] = useState(false);
 
-  // ✅ Ensure session key is stored in sessionStorage
+
   useEffect(() => {
     if (!sessionStorage.getItem("sessionKey")) {
       sessionStorage.setItem("sessionKey", Date.now().toString());
     }
   }, []);
 
-  // ✅ Load Color from localStorage when component mounts
+
   useEffect(() => {
     console.log("🔄 Attempting to load color from storage...");
     const savedColor = localStorage.getItem(uniqueKey);
@@ -32,7 +32,7 @@ function Template4({ resumeData = {} }) {
     }
   }, [uniqueKey]); // ✅ Runs when uniqueKey changes
 
-  // ✅ Save Color to localStorage
+
   const handleSaveColor = () => {
     console.log("💾 Saving color:", selectedColor, "for Key:", uniqueKey);
     localStorage.setItem(uniqueKey, selectedColor);
@@ -48,7 +48,7 @@ function Template4({ resumeData = {} }) {
   return (
     <div className="template4 resume-template">
       
-    {/* ✅ Color Picker (Circle + Save Button Only) */}
+
     <div className="color-picker-container">
       <div 
         className="color-circle" 
@@ -56,7 +56,7 @@ function Template4({ resumeData = {} }) {
         onClick={() => document.getElementById(`colorInput-${templateNumber}`).click()}
       ></div>
 
-      {/* Hidden Color Picker */}
+
       <input 
         type="color" 
         id={`colorInput-${templateNumber}`}
@@ -72,7 +72,7 @@ function Template4({ resumeData = {} }) {
       {showMessage && <span className="color-updated-message">✔ Color Updated!</span>}
     </div>
 
-      {/* ✅ Header */}
+
       <div className="resume-header">
         <h1 style={{ color: selectedColor }}>{resumeData.name || "Your Name"}</h1>
         <p className="tagline">{resumeData.role || "Your Role"}</p>
@@ -81,7 +81,7 @@ function Template4({ resumeData = {} }) {
       </div>
 
       <div className="resume-body">
-        {/* ✅ Sidebar */}
+
         <div className="resume-sidebar">
           <div className="sidebar-section">
             <h3  style={{ color: selectedColor }}>CONTACT</h3>
@@ -106,7 +106,7 @@ function Template4({ resumeData = {} }) {
           </div>
         </div>
 
-        {/* ✅ Main Content */}
+
         <div className="resume-main">
           <div className="resume-section">
             <h2 style={{ color: selectedColor }}>WORK EXPERIENCE</h2>

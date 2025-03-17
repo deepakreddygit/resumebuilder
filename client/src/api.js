@@ -1,3 +1,4 @@
+import axios from "axios";
 const API_BASE_URL = "http://localhost:5001";
 
 // Signup
@@ -38,22 +39,78 @@ export const loginUser = async (userData) => {
     }
 };
 
-// Get User Profile
+// Fetch user profile information from backend
 export const getUserProfile = async (userId) => {
-    console.log(`Fetching user data for userId: ${userId}`);
     try {
-        const response = await fetch(`${API_BASE_URL}/user/${userId}`);
-        if (!response.ok) {
-            throw new Error("Failed to fetch user data");
-        }
-        const data = await response.json();
-        console.log("User Data Fetched:", data);
-        return data;
+      const response = await axios.get(`${API_BASE_URL}/user/profile/${userId}`);
+      const data = response.data;
+  
+      console.log("Fetched Profile Data:", data); // Debugging Log
+  
+      return {
+        name: data.name?.trim() || "",
+        email: data.email?.trim() || "",
+        phone: data.phone?.trim() || "No Phone Provided",
+        summary: data.summary?.trim() || "No Summary Available",
+        education: data.education || [],
+        languages: data.languages || [],
+        profileImage: data.profileImage || "/assets/images/default_profile.jpg",
+      };
     } catch (error) {
-        console.error("Error fetching user profile:", error);
-        return { error: "Failed to load user data" };
+      console.error("Error fetching profile data:", error.response || error);
+      return {
+        name: "",
+        email: "",
+        phone: "No Phone Provided",
+        summary: "No Summary Available",
+        education: [],
+        languages: [],
+        profileImage: "/assets/images/default_profile.jpg",
+      };
     }
-};
+  };
+  
+  // Upload profile image to Cloudinary via backend
+  export const uploadProfileImage = async (userId, formData) => {
+    try {
+      const response = await axios.post(
+        `${API_BASE_URL}/user/profile/${userId}/upload-image`,
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
+  
+      console.log("Image Upload Response:", response.data);
+      return response.data; // { profileImageUrl: "https://..." }
+    } catch (error) {
+      console.error("Error uploading profile image:", error.response || error);
+      throw error;
+    }
+  };
+  
+  // Fetch basic user details (name, email)
+  export const getUserDetails = async (userId) => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/user/details/${userId}`);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching user details:", error.response || error);
+      throw error;
+    }
+  };
+
+  // Delete profile image
+export const deleteProfileImage = async (userId) => {
+    try {
+      const response = await axios.delete(`${API_BASE_URL}/user/profile/${userId}/delete-image`);
+      return response.data;
+    } catch (error) {
+      console.error("Error deleting profile image:", error.response || error);
+      throw error;
+    }
+  };
+  
 
 // Save a resume
 export const saveResume = async (userId, resumeData) => {
@@ -128,17 +185,31 @@ export const updateResume = async (resumeId, updatedData) => {
 };
 
 
-// Delete a resume
-export const deleteResume = async (resumeId) => {
+// ✅ Improved Delete Resume API Call
+export const deleteResume = async (resumeId, userId) => {
     console.log(`Deleting resume: ${resumeId}`);
     try {
         const response = await fetch(`${API_BASE_URL}/resume/delete/${resumeId}`, {
             method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+            },
         });
 
         const result = await response.json();
         console.log("Resume Delete Response:", result);
-        return result;
+
+        if (!response.ok) {
+            return { error: result.error || "Failed to delete resume" };
+        }
+
+        // ✅ If deletion is successful, fetch the latest user profile
+        const updatedProfileResponse = await fetch(`${API_BASE_URL}/user/profile/${userId}?t=${new Date().getTime()}`);
+        const updatedProfile = await updatedProfileResponse.json();
+
+        console.log("Updated Profile After Deletion:", updatedProfile);
+
+        return { ...result, updatedProfile }; // ✅ Return updated profile data along with the response
     } catch (error) {
         console.error("Error deleting resume:", error);
         return { error: "Failed to delete resume" };
@@ -225,4 +296,7 @@ export const deleteReview = async (reviewId, userId) => {
     }
 };
 
+
+
+  
 

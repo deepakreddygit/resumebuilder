@@ -1,70 +1,349 @@
-/* Full-page scroll (below navbar) */
+/* Center the profile card */
 .profile-page-container {
-  height: calc(100vh - 60px); /* Full height minus navbar */
-  overflow-y: auto; /* Enable scrolling */
   display: flex;
-  justify-content: center;  /* Center content horizontally */
-  align-items: center;  /* Center content vertically */
-  flex-direction: column; /* Stack elements */
-  text-align: center;
-  padding: 20px;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(to right, #E3F2FD, #BBDEFB);
 }
 
-/* Profile Card Container */
+/* Profile Card Styling */
 .profile-card {
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  max-width: 400px;
-  width: 100%;
+  background: #fff;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   text-align: center;
+  width: 380px;
+  position: relative;
+}
+
+/* Profile Image Container */
+.profile-image-container {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 20px;
 }
 
 /* Profile Image */
 .profile-img {
-  width: 120px;
-  height: 120px;
+  width: 150px;
+  height: 150px;
   border-radius: 50%;
   object-fit: cover;
-  margin: 0 auto 15px auto;
-  display: block;
-  border: 3px solid  #222;
+  border: 3px solid #333;
+  transition: transform 0.3s ease;
 }
 
-/* Name & Email Styling */
-.profile-card h5 {
-  font-size: 1.4rem;
-  font-weight: bold;
-  margin-bottom: 5px;
+/* Profile Image Hover Effect */
+.profile-img:hover {
+  transform: scale(1.05);
 }
 
-.profile-card p {
-  font-size: 1rem;
-  color: #555;
-}
-
-/* Button */
-.view-resumes-btn {
-  background: linear-gradient(135deg, #444, #222);
+/* Camera Icon (Upload Button) */
+.custom-file-upload {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  background-color: #333;
   color: white;
-  border: none;
-  padding: 10px 20px;
-  font-size: 1rem;
-  font-weight: bold;
-  border-radius: 5px;
-  margin-top: 15px;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
   cursor: pointer;
-  transition: background 0.3s ease-in-out;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease;
 }
+
+.custom-file-upload:hover {
+  background-color: #555;
+}
+
+/* Hide default file input */
+.custom-file-upload input[type='file'] {
+  display: none;
+}
+
+/* Button Group (Save & Delete) */
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 15px;
+}
+
+/* Buttons */
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: none;
+  font-size: 15px;
+  cursor: pointer;
+  color: white;
+  transition: all 0.3s ease;
+}
+
+/* Save Button */
+.save-btn {
+  background-color: #28a745;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+}
+
+.save-btn:hover {
+  background-color: #218838;
+}
+
+/* Delete Button */
+.delete-btn {
+  background-color: #d9534f;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+}
+
+.delete-btn:hover {
+  background-color: #c9302c;
+}
+
+/* View Resumes Button */
+.view-resumes-btn {
+  background-color: #333;
+  padding: 10px 20px;
+  border-radius: 6px;
+  margin-top: 12px;
+  font-size: 14px;
+  color: white;
+  display: block; /* Ensure it's treated as a block element */
+  text-align: center;
+  width: fit-content; /* Ensures the button only takes necessary width */
+  margin-left: auto;  /* Centers it horizontally */
+  margin-right: auto; /* Centers it horizontally */
+}
+
 
 .view-resumes-btn:hover {
-  background-color: #0056b3;
+  background-color: #555;
 }
 
-/* Responsive Adjustments */
-@media (max-width: 768px) {
-  .profile-card {
-    width: 90%;
-  }
+/* Icons inside Buttons */
+.icon, .camera-icon {
+  font-size: 18px;
+}
+
+/* Notification (Success & Error Messages) */
+.notification {
+  margin-top: 15px;
+  padding: 10px;
+  background-color: #333;
+  color: white;
+  border-radius: 6px;
+  font-size: 14px;
+  display: inline-block;
+}
+
+/* Modal Overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Modal Content */
+.modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 320px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Modal Buttons */
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.confirm-btn {
+  background-color: #d9534f;
+}
+
+.cancel-btn {
+  background-color: #555;
+}
+/* Position the three-dot menu in the top-right corner */
+.three-dot-menu {
+  position: absolute;
+  top: 10px; /* Adjust as needed */
+  right: 15px; /* Adjust as needed */
+  cursor: pointer;
+}
+
+.ellipsis-icon {
+  font-size: 20px;
+  cursor: pointer;
+  padding: 5px;
+}
+
+/* Dropdown menu styling */
+.dropdown-menu {
+  position: absolute;
+  top: 30px; /* Adjust to position below the three dots */
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 5px;
+  z-index: 9999; /* Ensure it appears above everything */
+  width: 120px;
+  display: block;
+}
+
+.dropdown-menu button {
+  background: none;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  font-size: 14px;
+}
+
+.dropdown-menu button:hover {
+  background-color: #f8d7da;
+  color: red;
+}
+
+.confirm-delete-text {
+  margin-top: 10px;
+  font-size: 14px;
+  color: red;
+  text-align: center;
+}
+/* Modal Preview Image */
+.modal-preview-img {
+  width: 120px; /* Match Profile Image Size */
+  height: 120px; /* Maintain Aspect Ratio */
+  border-radius: 50%; /* Make it Round */
+  object-fit: cover; /* Prevent Stretching */
+  border: 2px solid #ccc;
+}
+/* Modal Buttons Container */
+.modal-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 12px; /* Adds space between buttons */
+  margin-top: 10px;
+}
+
+/* Smaller Buttons */
+.modal-buttons .btn {
+  padding: 8px 14px;
+  font-size: 14px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* Confirm Button */
+.confirm-btn {
+  background-color: #0d6efd;
+  color: white;
+}
+
+.confirm-btn:hover {
+  background-color: #0b5ed7;
+}
+
+/* Cancel Button */
+.cancel-btn {
+  background-color: #6c757d;
+  color: white;
+}
+
+.cancel-btn:hover {
+  background-color: #5c636a;
+}
+/* Modal Overlay (Gray Background) */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* Modal Box */
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  width: 350px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Delete Warning Message */
+.delete-warning {
+  color: red;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+/* Modal Buttons Container */
+.modal-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+/* Confirm and Cancel Buttons */
+.modal-buttons .btn {
+  padding: 8px 14px;
+  font-size: 14px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+}
+
+.confirm-btn {
+  background-color: #dc3545;
+  color: white;
+}
+
+.confirm-btn:hover {
+  background-color: #b02a37;
+}
+
+.cancel-btn {
+  background-color: #6c757d;
+  color: white;
+}
+
+.cancel-btn:hover {
+  background-color: #5c636a;
 }

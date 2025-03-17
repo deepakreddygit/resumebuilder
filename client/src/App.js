@@ -7,14 +7,13 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Dashboard from "./pages/Dashboard";
 import Templates from "./pages/Templates";
-import TemplatePage from "./pages/TemplatePage";
 import Profile from "./pages/Profile";
 import ResumeBuilder from "./pages/ResumeBuilder";
 import ResumePreview from "./pages/ResumePreview";
 import SavedResumes from "./pages/SavedResumes";
 import { AuthContext } from "./context/AuthContext";
 import { AuthProvider } from "./context/AuthContext";
-import NotFound from "./pages/NotFound"; // Create a NotFound page
+import NotFound from "./pages/NotFound"; 
 import "./App.css";
 
 function App() {
@@ -71,7 +70,6 @@ function AppContent() {
             <>
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/templates" element={<Templates />} />
-              <Route path="/template/:templateNumber" element={<TemplatePage />} />
               <Route path="/profile/:userId" element={<Profile />} />
 
               {/* ✅ Resume Builder - Supports Multiple Roles & Templates */}

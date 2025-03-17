@@ -58,22 +58,22 @@ function ResumeTemplate8({ resumeData }) {
             <p>{resumeData.summary || "Provide a summary of your experience."}</p>
           </div>
 
-          <div className="work-experience">
-            <h2>Experience</h2>
-            {resumeData.experience?.length ? (
-              resumeData.experience.map((exp, index) => (
-                <div key={index} className="experience-entry">
-                  <h3>{exp.jobTitle || "Job Title"}</h3>
-                  <p className="company-name">
-                    {exp.company || "Company Name"} ({exp.years || "Years"})
-                  </p>
-                  <p>{exp.responsibilities || "List job responsibilities."}</p>
-                </div>
-              ))
-            ) : (
-              <p>No work experience provided.</p>
-            )}
-          </div>
+          {/* Work Experience - Only Show if There is Data */}
+{resumeData.experience?.length > 0 && (
+  <div className="work-experience">
+    <h2>Work Experience</h2>
+    {resumeData.experience.map((exp, index) => (
+      <div key={index} className="experience-entry">
+        <h3>{exp.jobTitle || "Job Title"}</h3>
+        <p className="company-name">
+          {exp.company || "Company Name"} ({exp.years || "Years"})
+        </p>
+        <p>{exp.responsibilities || "List job responsibilities."}</p>
+      </div>
+    ))}
+  </div>
+)}
+
 
           <div className="education">
             <h2>Education</h2>

@@ -1,0 +1,89 @@
+/* ✅ Apply styles only to Template 9 */
+.template-9 .resume-container {
+    display: flex;
+    flex-direction: column;
+    font-family: Arial, sans-serif;
+    max-width: 800px;
+    margin: 0 auto;
+    border: 2px solid #003366;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  
+  .template-9 .header {
+    background-color: #003366;
+    color: white;
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .template-9 .header h1 {
+    margin: 0;
+    font-size: 28px;
+  }
+  
+  .template-9 .job-title {
+    font-size: 16px;
+    margin-top: 5px;
+  }
+  
+  .template-9 .body {
+    display: flex;
+  }
+  
+  .template-9 .main-content {
+    width: 70%;
+    padding: 15px;
+    background-color: #e6f0ff; /* Light blue shade */
+  }
+  
+  .template-9 .sidebar {
+    width: 30%;
+    background-color: #f4f4f4;
+    padding: 15px;
+  }
+  
+  .template-9 .section {
+    margin-bottom: 20px;
+  }
+  
+  .template-9 .section h2 {
+    color: #003366;
+    border-bottom: 2px solid #003366;
+    padding-bottom: 5px;
+  }
+  
+  .template-9 .experience-entry,
+  .template-9 .strategy-entry,
+  .template-9 .campaign-entry {
+    margin-bottom: 15px;
+  }
+  
+  .template-9 .company {
+    font-weight: bold;
+  }
+  
+  .template-9 .date {
+    font-style: italic;
+    color: gray;
+  }
+  
+  .template-9 ul {
+    padding-left: 20px;
+  }
+  
+  .template-9 li {
+    margin-bottom: 5px;
+  }
+  
+  /* ✅ Responsive Fix for Mobile */
+  @media (max-width: 768px) {
+    .template-9 .body {
+      flex-direction: column;
+    }
+    .template-9 .sidebar,
+    .template-9 .main-content {
+      width: 100%;
+    }
+  }
+  

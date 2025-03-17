@@ -5,7 +5,7 @@ import { AuthContext } from "../context/AuthContext";
 import { getResumeById, saveResume, updateResume } from "../api";
 import "../styles/ResumePreview.css";
 
-// Import all templates
+//all templates
 import Template1 from "../components/templates/Template1";
 import Template2 from "../components/templates/Template2";
 import Template3 from "../components/templates/Template3";
@@ -15,8 +15,9 @@ import Template6 from "../components/templates/Template6";
 import Template7 from "../components/templates/Template7";
 import Template8 from "../components/templates/Template8";
 import Template9 from "../components/templates/Template9";
+import Template10 from "../components/templates/Template10";
 
-//import all css
+//all css
 import "../styles/Template1.css";
 import "../styles/Template2.css";
 import "../styles/Template3.css";
@@ -26,6 +27,7 @@ import "../styles/Template6.css";
 import "../styles/Template7.css";
 import "../styles/Template8.css";
 import "../styles/Template9.css";
+import "../styles/Template10.css";
 
 
 function ResumePreview() {
@@ -112,6 +114,9 @@ function ResumePreview() {
       { id: "8", name: "Minimalist Marketing Resume" },
       { id: "9", name: "Creative Marketing Resume" },
     ],
+    "sales-manager": [  
+      { id: "10", name: "Sales Manager Resume" },
+    ],
   };
 
   // Get templates based on the role in resumeData
@@ -129,6 +134,7 @@ function ResumePreview() {
     "7": Template7,
     "8": Template8,
     "9": Template9,
+    "10":Template10
   };
 
   const SelectedTemplate = templateComponents[selectedTemplate] || Template1;
@@ -195,9 +201,30 @@ function ResumePreview() {
       </div>
 
       <div className="text-center mt-4">
-        <button className="save-btn" onClick={handleSaveOrUpdate}>
-          {resumeId && resumeId !== "new" && resumeId !== null ? "Update Resume" : "Save Resume"}
-        </button>
+      <button
+  className="preview-page-save-btn"
+  onClick={handleSaveOrUpdate}
+  style={{
+    backgroundColor: "#007bff",
+    color: "white",
+    border: "none",
+    padding: "10px 20px",
+    fontSize: "16px",
+    fontWeight: "bold",
+    borderRadius: "6px",
+    cursor: "pointer",
+    transition: "all 0.3s ease-in-out",
+    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+    display: "inline-block",
+    textAlign: "center",
+    marginTop: "10px",
+  }}
+  onMouseOver={(e) => (e.target.style.backgroundColor = "#0056b3")}
+  onMouseOut={(e) => (e.target.style.backgroundColor = "#007bff")}
+>
+  {resumeId && resumeId !== "new" && resumeId !== null ? "Update Resume" : "Save Resume"}
+</button>
+
       </div>
     </div>
   );

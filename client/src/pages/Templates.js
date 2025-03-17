@@ -14,6 +14,7 @@ function Templates() {
     { id: "software-engineer", name: "Software Engineer", icon: "💻" },
     { id: "financial-manager", name: "Financial Manager", icon: "📊" },
     { id: "marketing-manager", name: "Marketing Manager", icon: "📢" },
+    { id: "sales-manager", name: "Sales Manager", icon: "📈" }, // ✅ Sales Manager added
   ];
 
   const templatesByRole = {
@@ -31,6 +32,11 @@ function Templates() {
       { id: 7, name: "Stylish", image: "/assets/images/templates/template7.png" },
       { id: 8, name: "Classic", image: "/assets/images/templates/template8.png" },
       { id: 9, name: "Trendy", image: "/assets/images/templates/template9.png" },
+    ],
+    "sales-manager": [  // ✅ Templates for Sales Manager
+      { id: 10, name: "Dynamic", image: "/assets/images/templates/template10.png" },
+      { id: 11, name: "Persuasive", image: "/assets/images/templates/template11.png" },
+      { id: 12, name: "Strategic", image: "/assets/images/templates/template12.png" },
     ],
   };
 
@@ -112,57 +118,54 @@ function Templates() {
 
                   {/* Card Body */}
                   <div className="card-body d-flex justify-content-between align-items-center">
-  {/* "Use this template" Button */}
-  <Link to={`/resume-builder/${selectedRole}/${template.id}`} className="btn btn-dark flex-grow-1">
-    Use this template
-  </Link>
+                    {/* "Use this template" Button */}
+                    <Link to={`/resume-builder/${selectedRole}/${template.id}`} className="btn btn-dark flex-grow-1">
+                      Use this template
+                    </Link>
 
-{/* Three Dots with Clickable Menu */}
-{/* Three Dots with Clickable Menu */}
-<div className="position-relative d-flex align-items-center">
-  <span
-    style={{ cursor: "pointer", fontSize: "18px", padding: "5px" }}
-    onClick={() => setMenuVisible(menuVisible === template.id ? null : template.id)}
-  >
-    ⋮
-  </span>
+                    {/* Three Dots with Clickable Menu */}
+                    <div className="position-relative d-flex align-items-center">
+                      <span
+                        style={{ cursor: "pointer", fontSize: "18px", padding: "5px" }}
+                        onClick={() => setMenuVisible(menuVisible === template.id ? null : template.id)}
+                      >
+                        ⋮
+                      </span>
 
-  {menuVisible === template.id && (
-    <div
-      className="position-absolute shadow-sm rounded p-1"
-      style={{
-        right: "-10px", /* Keeps it aligned */
-        bottom: "50px", /* Moves it above the button */
-        zIndex: 1000, /* Ensures visibility */
-        minWidth: "130px", /* Compact size */
-        backgroundColor: "#343a40", /* Dark Gray for sleek look */
-        color: "#fff", /* White text for contrast */
-        boxShadow: "0 4px 10px rgba(0, 0, 0, 0.2)", /* Stronger shadow */
-        borderRadius: "8px",
-        textAlign: "center",
-        whiteSpace: "nowrap", /* Prevents text wrapping */
-      }}
-    >
-      <button
-        className="btn btn-sm w-100"
-        style={{
-          background: "transparent",
-          color: "#fff", /* White text */
-          fontWeight: "500",
-          fontSize: "14px",
-          padding: "6px 10px",
-          border: "none",
-        }}
-        onClick={() => handleOpenReviewModal(template)}
-      >
-        Write a Review
-      </button>
-    </div>
-  )}
-</div>
-
-
-</div>
+                      {menuVisible === template.id && (
+                        <div
+                          className="position-absolute shadow-sm rounded p-1"
+                          style={{
+                            right: "-10px",
+                            bottom: "50px",
+                            zIndex: 1000,
+                            minWidth: "130px",
+                            backgroundColor: "#343a40",
+                            color: "#fff",
+                            boxShadow: "0 4px 10px rgba(0, 0, 0, 0.2)",
+                            borderRadius: "8px",
+                            textAlign: "center",
+                            whiteSpace: "nowrap",
+                          }}
+                        >
+                          <button
+                            className="btn btn-sm w-100"
+                            style={{
+                              background: "transparent",
+                              color: "#fff",
+                              fontWeight: "500",
+                              fontSize: "14px",
+                              padding: "6px 10px",
+                              border: "none",
+                            }}
+                            onClick={() => handleOpenReviewModal(template)}
+                          >
+                            Write a Review
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  </div>
                 </div>
               </div>
             ))}

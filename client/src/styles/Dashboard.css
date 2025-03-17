@@ -1,15 +1,33 @@
+/* ✅ Full Page Container */
 .dashboard-container {
   text-align: center;
   padding: 60px 20px;
   background: linear-gradient(to right, #E3F2FD, #BBDEFB);
   min-height: 100vh;
-  overflow-x: hidden; /* ✅ Restricts horizontal scroll only on the Dashboard */
+  overflow-x: hidden;
   width: 100%;
-  max-width: 100vw; /* ✅ Prevents extra spacing */
+  max-width: 100vw;
 }
 
+/* ✅ Main Content Layout */
+.content-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 50px;
+  max-width: 1200px;
+  margin: 0 auto;
+  flex-wrap: wrap;
+}
 
+/* ✅ Left Section */
+.left-content {
+  max-width: 500px;
+  text-align: left;
+  flex: 1;
+}
 
+/* ✅ Heading & Sub-Text */
 h1 {
   font-size: 36px;
   font-weight: bold;
@@ -23,6 +41,7 @@ h1 {
   margin: 0 auto 20px;
 }
 
+/* ✅ Resume Count */
 .resume-count h3 {
   font-size: 24px;
   font-weight: bold;
@@ -33,6 +52,7 @@ h1 {
   color: #007bff;
 }
 
+/* ✅ Create Resume Button */
 .create-btn {
   background: #007bff;
   border: none;
@@ -41,61 +61,112 @@ h1 {
   border-radius: 5px;
   color: white;
   transition: background 0.3s;
+  font-weight: bold;
 }
 
 .create-btn:hover {
   background: #0056b3;
 }
 
+/* ✅ Right Section */
+.right-content {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ✅ Animated Resume Images */
+.animated-resumes {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.resume-img {
+  width: 250px;
+  border-radius: 8px;
+  transition: transform 0.5s ease-in-out;
+}
+
+/* ✅ Floating Animations */
+@keyframes floatUp {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes floatDown {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(15px); }
+  100% { transform: translateY(0); }
+}
+
+.floating-up {
+  animation: floatUp 5s infinite ease-in-out;
+}
+
+.floating-down {
+  animation: floatDown 5s infinite ease-in-out;
+}
+
+/* ✅ Reviews Section */
+.reviews-heading {
+  margin-top: 60px;
+  font-size: 28px;
+  font-weight: bold;
+  color: #333;
+}
+
+.reviews-container {
+  max-width: 1000px;
+  margin: 30px auto;
+}
+
+/* ✅ Slider for Reviews */
 .slider-container {
   width: 80%;
   margin: auto;
-
 }
-
 
 .slick-slide {
   display: flex !important;
   justify-content: center;
-  padding: 0 15px; 
+  padding: 0 15px;
 }
 
+/* ✅ Review Card */
 .review-card {
-  width: 350px !important;  /* Fixed width */
-  min-height: 320px; /* Consistent height */
+  width: 350px !important;
+  min-height: 320px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* Distributes content evenly */
+  justify-content: space-between;
   align-items: center;
   padding: 20px;
   background: linear-gradient(to right, #E3F2FD, #BBDEFB);
   box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
   text-align: center;
-  margin: 15px 20px; /* Adds space around each card */
+  margin: 15px 20px;
 }
 
-/* ✅ Add space between the cards in the Slick slider */
-.slick-slide {
-  display: flex !important;
-  justify-content: center;
-  padding: 0 15px; /* Adds horizontal spacing */
-}
-
+/* ✅ Review Text */
 .review-text {
-  flex-grow: 1; /* ✅ Makes text fill available space */
+  flex-grow: 1;
   font-size: 14px;
   color: #333;
   font-style: italic;
 }
 
-/* ✅ Ensures consistent button alignment */
+/* ✅ Review Actions */
 .review-actions {
   display: flex;
   justify-content: center;
-  margin-top: auto; /* ✅ Pushes buttons to the bottom */
+  margin-top: auto;
 }
 
+/* ✅ Edit & Delete Buttons */
 .edit-btn {
   background: linear-gradient(135deg, #444, #222);
   color: white;
@@ -117,46 +188,46 @@ h1 {
   cursor: pointer;
 }
 
+/* ✅ Slider Arrows */
 .slick-prev:before,
 .slick-next:before {
-  font-family: "slick";       
-  font-size: 30px !important; 
-  line-height: 1 !important;
+  font-size: 30px !important;
   opacity: 1 !important;
-  color: #007bff !important; 
+  color: #007bff !important;
   transition: color 0.3s;
   margin-left: -15px;
 }
 
-
 .slick-prev:hover:before,
 .slick-next:hover:before {
-  color: #0056b3 !important;  
+  color: #0056b3 !important;
 }
 
-
-
-
 /* ✅ Responsive Fix for Mobile */
-@media (max-width: 576px) {
+@media (max-width: 768px) {
+  .content-wrapper {
+    flex-direction: column;
+    text-align: center;
+    gap: 30px;
+  }
+
   .review-card {
-    width: 90%; 
-    min-height: auto; /* ✅ Allows it to adjust dynamically */
+    width: 90%;
+    min-height: auto;
     margin: 20px 0;
   }
 }
 
-
-/* ✅ Improved UI for Edit Review Mode */
+/* ✅ Edit Review Mode */
 .review-edit-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px; 
+  gap: 10px;
   width: 100%;
 }
 
-/* ✅ Styling the Textarea for Editing */
+/* ✅ Textarea for Editing */
 .review-edit-container textarea {
   width: 100%;
   min-height: 80px;
@@ -164,11 +235,11 @@ h1 {
   font-size: 14px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  resize: none; 
+  resize: none;
   background: white;
 }
 
-/* ✅ Buttons Container (for spacing & alignment) */
+/* ✅ Review Buttons */
 .review-buttons {
   display: flex;
   justify-content: center;
@@ -176,17 +247,7 @@ h1 {
   width: 100%;
 }
 
-/* ✅ Improved Button Styling */
-.review-buttons button {
-  padding: 8px 12px;
-  font-size: 14px;
-  border-radius: 5px;
-  cursor: pointer;
-  border: none;
-  transition: all 0.3s ease;
-}
-
-/* ✅ Save Button */
+/* ✅ Save & Cancel Buttons */
 .review-buttons .save-btn {
   background: #007bff;
   color: white;
@@ -196,7 +257,6 @@ h1 {
   background: #0056b3;
 }
 
-/* ✅ Cancel Button */
 .review-buttons .cancel-btn {
   background: #e0e0e0;
   color: black;
@@ -206,21 +266,21 @@ h1 {
   background: #bdbdbd;
 }
 
-/* Modal Overlay */
+/* ✅ Modal Overlay */
 .delete-modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5); /* Dark overlay */
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000; /* Ensure it appears on top */
+  z-index: 1000;
 }
 
-/* Modal Content */
+/* ✅ Modal Content */
 .delete-modal-content {
   background: white;
   padding: 20px;
@@ -231,7 +291,7 @@ h1 {
   animation: fadeIn 0.3s ease-in-out;
 }
 
-/* Modal Actions (Buttons) */
+/* ✅ Modal Actions */
 .delete-modal-actions {
   display: flex;
   justify-content: center;
@@ -239,33 +299,17 @@ h1 {
   margin-top: 15px;
 }
 
-/* Button Styles */
-.delete-modal-actions .btn {
-  padding: 8px 15px;
-  font-size: 14px;
-  cursor: pointer;
-  border: none;
-  border-radius: 5px;
-}
-
-/* Cancel Button */
-.delete-modal-actions .btn-secondary {
-  background-color: gray;
-  color: white;
-}
-
-/* Delete Button - RED */
+/* ✅ Delete Button */
 .delete-modal-actions .btn-danger {
   background-color: red;
   color: white;
 }
 
-/* Delete Button Hover Effect */
 .delete-modal-actions .btn-danger:hover {
   background-color: darkred;
 }
 
-/* Animation */
+/* ✅ Fade-In Animation */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -276,4 +320,131 @@ h1 {
     transform: scale(1);
   }
 }
+.resume-row {
+  display: flex;
+  justify-content: center;
+  gap: 20px; /* Adjust spacing between resumes as needed */
+  margin-top: 20px;
+}
 
+.resume-img {
+  width: 200px; /* Adjust the width as needed */
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Keep your animation classes */
+.floating-up {
+  animation: floatUp 3s ease-in-out infinite alternate;
+}
+
+.floating-down {
+  animation: floatDown 3s ease-in-out infinite alternate;
+}
+
+/* Example animations (if not already defined) */
+@keyframes floatUp {
+  from { transform: translateY(0); }
+  to { transform: translateY(-15px); }
+}
+
+@keyframes floatDown {
+  from { transform: translateY(0); }
+  to { transform: translateY(15px); }
+}
+
+
+.animated-resumes {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 60px; /* spacing between center and right resumes */
+}
+
+.resume-center {
+  display: flex;
+  justify-content: center;
+}
+
+.resumes-right {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* vertical spacing between resume 2 and 3 */
+}
+
+.resume-img {
+  width: 240px; /* adjust accordingly */
+  border-radius: 12px;
+  box-shadow: 0 5px 10px rgba(0,0,0,0.15);
+}
+
+/* Animations */
+.floating-up {
+  animation: floatUp 3s ease-in-out infinite alternate;
+}
+
+.floating-down {
+  animation: floatDown 3s ease-in-out infinite alternate;
+}
+
+@keyframes floatUp {
+  from { transform: translateY(0); }
+  to { transform: translateY(-15px); }
+}
+
+@keyframes floatDown {
+  from { transform: translateY(0); }
+  to { transform: translateY(15px); }
+}
+.left-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 550px;
+}
+
+.main-title {
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.highlight {
+  color: #3b82f6; /* distinct highlight color */
+}
+
+.sub-text {
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+.resume-count {
+  font-size: 1.2rem;
+  margin: 10px 0;
+}
+
+.buttons-group {
+  display: flex;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.btn {
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 25px;
+  cursor: pointer;
+  border: none;
+}
+
+.primary-btn {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.secondary-btn {
+  background-color: transparent;
+  border: 1px solid #3b82f6;
+  color: #3b82f6;
+}

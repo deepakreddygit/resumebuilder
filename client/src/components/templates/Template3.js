@@ -190,6 +190,22 @@ const Template3 = ({ resumeData }) => {
               )}
             </div>
 
+                 {/* Languages Section */}
+                 <div style={styles.section}>
+              <h4 style={styles.sectionHeader}>LANGUAGES</h4>
+              <ul style={styles.list}>
+                {resumeData.languages?.length > 0 ? (
+                  resumeData.languages.map((lang, index) => (
+                    <li key={index} style={styles.listItem}>
+                      {lang.language || "Language"} - {lang.proficiency || "Proficiency Level"}
+                    </li>
+                  ))
+                ) : (
+                  <p>No languages added</p>
+                )}
+              </ul>
+            </div>
+
           
           </div>
         </div>

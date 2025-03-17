@@ -34,101 +34,93 @@ function Template1({ resumeData }) {
           </Card>
 
           {/* Skills Section */}
-          <Card className="skills-card p-3">
-            <Card.Body>
-              <h4>Skills</h4>
-              <ul>
-                {skills.length > 0 ? skills.map((skill, index) => <li key={index}>✔ {skill}</li>) : <li>No skills added</li>}
-              </ul>
-            </Card.Body>
-          </Card>
+          {skills.length > 0 && (
+            <Card className="skills-card p-3">
+              <Card.Body>
+                <h4>Skills</h4>
+                <ul>
+                  {skills.map((skill, index) => <li key={index}>✔ {skill}</li>)}
+                </ul>
+              </Card.Body>
+            </Card>
+          )}
 
           {/* Certifications */}
-          <Card className="certifications-card p-3">
-            <Card.Body>
-              <h4>Certifications</h4>
-              <ul>
-                {certifications.length > 0 ? (
-                  certifications.map((cert, index) => (
+          {certifications.length > 0 && (
+            <Card className="certifications-card p-3">
+              <Card.Body>
+                <h4>Certifications</h4>
+                <ul>
+                  {certifications.map((cert, index) => (
                     <li key={index}><strong>{cert.title}</strong> - {cert.issuer} ({cert.year})</li>
-                  ))
-                ) : (
-                  <li>No certifications added</li>
-                )}
-              </ul>
-            </Card.Body>
-          </Card>
+                  ))}
+                </ul>
+              </Card.Body>
+            </Card>
+          )}
 
           {/* Languages */}
-          <Card className="languages-card p-3">
-            <Card.Body>
-              <h4>Languages</h4>
-              <ul>
-                {languages.length > 0 ? (
-                  languages.map((lang, index) => (
+          {languages.length > 0 && (
+            <Card className="languages-card p-3">
+              <Card.Body>
+                <h4>Languages</h4>
+                <ul>
+                  {languages.map((lang, index) => (
                     <li key={index}>{lang.language} - {lang.proficiency}</li>
-                  ))
-                ) : (
-                  <li>No languages added</li>
-                )}
-              </ul>
-            </Card.Body>
-          </Card>
+                  ))}
+                </ul>
+              </Card.Body>
+            </Card>
+          )}
         </Col>
 
         {/* Right Main Content */}
         <Col md={8} className="resume_right p-4">
-          {/* Work Experience */}
-          <Card className="experience-card p-3">
-            <Card.Body>
-              <h2>Work Experience</h2>
-              {experience.length > 0 ? (
-                experience.map((exp, index) => (
+          {/* Work Experience - Only Show if Available */}
+          {experience.length > 0 && (
+            <Card className="experience-card p-3">
+              <Card.Body>
+                <h2>Work Experience</h2>
+                {experience.map((exp, index) => (
                   <div key={index} className="work-item">
                     <h5>{exp.jobTitle || "Job Title"} - {exp.company || "Company Name"}</h5>
                     <p className="years">{exp.years || "Years"}</p>
                     <p>{exp.responsibilities || "Job Responsibilities"}</p>
                   </div>
-                ))
-              ) : (
-                <p>No work experience added</p>
-              )}
-            </Card.Body>
-          </Card>
+                ))}
+              </Card.Body>
+            </Card>
+          )}
 
           {/* Education */}
-          <Card className="education-card p-3">
-            <Card.Body>
-              <h2>Education</h2>
-              {education.length > 0 ? (
-                education.map((edu, index) => (
+          {education.length > 0 && (
+            <Card className="education-card p-3">
+              <Card.Body>
+                <h2>Education</h2>
+                {education.map((edu, index) => (
                   <div key={index} className="education-item">
                     <h5>{edu.degree}</h5>
                     <p>{edu.institution} ({edu.year})</p>
                   </div>
-                ))
-              ) : (
-                <p>No education added</p>
-              )}
-            </Card.Body>
-          </Card>
+                ))}
+              </Card.Body>
+            </Card>
+          )}
 
           {/* Projects */}
-          <Card className="projects-card p-3">
-            <Card.Body>
-              <h2>Projects</h2>
-              {projects.length > 0 ? (
-                projects.map((proj, index) => (
+          {projects.length > 0 && (
+            <Card className="projects-card p-3">
+              <Card.Body>
+                <h2>Projects</h2>
+                {projects.map((proj, index) => (
                   <div key={index} className="project-item">
                     <h5>{proj.title}</h5>
                     <p>{proj.description}</p>
                   </div>
-                ))
-              ) : (
-                <p>No projects added</p>
-              )}
-            </Card.Body>
-          </Card>
+                ))}
+              </Card.Body>
+            </Card>
+          )}
         </Col>
       </Row>
     </Container>
