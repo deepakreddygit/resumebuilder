@@ -33,12 +33,12 @@ function Dashboard() {
           setResumeCount(resumes.length);
 
           let res = await getAllReviews();
-          console.log("✅ Raw Reviews Received:", res);
+       
 
           const uniqueReviews = Array.from(new Set(res.map(r => r.review_id)))
             .map(id => res.find(r => r.review_id === id));
 
-          console.log("✅ Unique Reviews:", uniqueReviews);
+        
           setReviews(uniqueReviews.reverse());
         }
       } catch (error) {
@@ -46,7 +46,7 @@ function Dashboard() {
         setReviews([]);
         setResumeCount(0);
       } finally {
-        setLoadingReviews(false); // ✅ Stop loading once data is fetched
+        setLoadingReviews(false); 
       }
     };
 
@@ -139,9 +139,27 @@ function Dashboard() {
     <div className="dashboard-container">
     <ToastContainer />
 
+    {/* ✅ Content Wrapper (Left Info & Right Images) */}
     <div className="content-wrapper">
-  
+      {/* ✅ Left Content: User Info, Resume Count, and Button */}
       <div className="left-content">
+  <h1 className="main-title">
+    Create your resume in just <span className="highlight">minutes</span>
+  </h1>
+
+  <p className="sub-text">
+    Craft a perfect ATS-friendly resume instantly using our application with different <span className="highlight">template</span> variations.
+  </p>
+
+  <div className="resume-count">
+    {resumeCount === null ? (
+      <h3>Loading your resumes...</h3>
+    ) : (
+      <h3>
+        You have <span className="highlight resume-number">{resumeCount}</span> saved resumes
+      </h3>
+    )}
+  </div>
 
   <div className="buttons-group">
   <button
@@ -165,7 +183,18 @@ function Dashboard() {
   </div>
 </div>
 
+      <div className="animated-resumes">
+  {/* Resume 1 horizontally centered */}
+  <div className="resume-center">
+    <img src="/assets/template2.png" alt="Resume 1" className="resume-img floating-up" />
+  </div>
 
+  {/* Resume 2 & 3 stacked vertically on the right side */}
+  <div className="resumes-right">
+    <img src="/assets/template1.png" alt="Resume 2" className="resume-img floating-down" />
+    <img src="/assets/template5.png" alt="Resume 3" className="resume-img floating-down" />
+  </div>
+</div>
 
 
 
@@ -284,13 +313,28 @@ function Dashboard() {
         <p className="text-center">No reviews available.</p>
       )}
 
-
+      {/* ✅ Delete Confirmation Modal */}
+      {showDeleteModal && (
+        <div className="delete-modal-overlay">
+          <div className="delete-modal-content">
+            <h4>Confirm Deletion</h4>
+            <p>Are you sure you want to delete this review?</p>
+            <div className="delete-modal-actions">
+              <button className="btn btn-secondary" onClick={handleCloseDeleteModal}>
+                Cancel
+              </button>
+              <button className="btn btn-danger ms-2" onClick={handleConfirmDelete}>
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
 export default Dashboard;
-
 
 
 
