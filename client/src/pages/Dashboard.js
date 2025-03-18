@@ -15,7 +15,7 @@ function Dashboard() {
   const navigate = useNavigate();
   const [reviews, setReviews] = useState([]);
   const [resumeCount, setResumeCount] = useState(null);
-  const [loadingReviews, setLoadingReviews] = useState(true);  // ✅ Added loading state for reviews
+  const [loadingReviews, setLoadingReviews] = useState(true);  
   const [editingReview, setEditingReview] = useState(null);
   const [editedReviewText, setEditedReviewText] = useState("");
   const [showDeleteModal, setShowDeleteModal] = useState(false);
