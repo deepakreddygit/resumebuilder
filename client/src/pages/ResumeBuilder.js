@@ -44,7 +44,7 @@ function ResumeBuilder() {
     templateNumber: templateNumber || "1",
   });
 
-
+  // ✅ Correctly Declare the state for storing basic details
   const [savedBasicData, setSavedBasicData] = useState(null);
 
   const [touched, setTouched] = useState({
@@ -88,23 +88,24 @@ function ResumeBuilder() {
     }
   
     setLoading(true);
-
+  
+    // Simulating AI Response (Replace this with an actual API call)
     setTimeout(() => {
       const mockResponse = `Generated Summary for: "${aiPrompt.trim()}"`;
   
-
+      // ✅ Remove "Generated Summary for:" and extract only the user input
       const cleanedText = mockResponse.replace(/^Generated Summary for: "?(.+?)"?$/, "$1");
   
-      setGeneratedText(cleanedText); 
+      setGeneratedText(cleanedText); // ✅ Set only the cleaned text
       setLoading(false);
-    }, 2000); 
+    }, 2000); // Simulate AI processing time
   };
 
 
   const handleClosePopup = () => {
     setShowPopup(false);
-    setAiPrompt(""); 
-    setGeneratedText(""); 
+    setAiPrompt(""); // Reset input
+    setGeneratedText(""); // Reset generated summary
   };
 
   useEffect(() => {
@@ -113,7 +114,8 @@ function ResumeBuilder() {
         .then((data) => {
           if (data) {
             console.log("🔄 Resume Data Fetched:", data);
-   
+            
+            // ✅ Directly update the resumeData state with fetched data
             setResumeData((prevData) => ({
               ...prevData,
               ...data,
@@ -136,20 +138,20 @@ function ResumeBuilder() {
               templateNumber: data.templateNumber || prevData.templateNumber,
             }));
           } else {
-            toast.error(" Failed to load resume.");
+            toast.error("❌ Failed to load resume.");
             navigate("/saved-resumes");
           }
         })
-        .catch(() => toast.error(" Error fetching resume."));
+        .catch(() => toast.error("❌ Error fetching resume."));
     }
   
-
+    // ✅ Fetch stored basic user details for autofill
     getUserProfile(userId)
       .then((profile) => {
         if (profile) {
           console.log("🔹 User Basic Info Fetched:", profile);
   
-   
+          // ✅ Store separately for autofill (without overriding resume editing)
           setSavedBasicData({
             name: profile.name || "",
             email: profile.email || "",
@@ -212,7 +214,50 @@ function ResumeBuilder() {
     });
   };
 
+  const handleAutofillBasicDetails = () => {
+    // ✅ Dismiss any previous toasts before showing a new one
+    toast.dismiss();
   
+    // ✅ Check if savedBasicData exists and has valid properties
+    if (!savedBasicData || !savedBasicData.name?.trim() || !savedBasicData.email?.trim() || !savedBasicData.phone?.trim()) {
+      toast.warning("No basic details found. Please create a resume first.", {
+        toastId: `no-basic-data-warning-${Math.random()}`, // ✅ Ensures unique toast every time
+        autoClose: 2500,
+      });
+  
+      // ✅ Ensure fields remain empty
+      setResumeData((prevData) => ({
+        ...prevData,
+        name: "",
+        email: "",
+        phone: "",
+        summary: "",
+        education: prevData.education, // Retain previous values if available
+        languages: prevData.languages, // Retain previous values if available
+      }));
+  
+      return;
+    }
+  
+    console.log("🆕 Autofilling with saved basic details:", savedBasicData);
+  
+    // ✅ Autofill only if valid data exists
+    setResumeData((prevData) => ({
+      ...prevData,
+      name: savedBasicData.name,
+      email: savedBasicData.email,
+      phone: savedBasicData.phone,
+      summary: savedBasicData.summary || "",
+      education: savedBasicData.education.length > 0 ? savedBasicData.education : prevData.education,
+      languages: savedBasicData.languages.length > 0 ? savedBasicData.languages : prevData.languages,
+    }));
+  
+    // ✅ Show success toast
+    toast.success("Basic details autofilled!", {
+      autoClose: 2000,
+      toastId: `autofill-success-${Math.random()}`,
+    });
+  };
   
   
   
@@ -226,7 +271,7 @@ function ResumeBuilder() {
    <div className="resume-header">
    <h2 className="resume-title" style={{ paddingTop: "10px" }}>Create Your Resume</h2>
 
-  <button className="autofill-btn">
+  <button className="autofill-btn" onClick={handleAutofillBasicDetails}>
     Autofill
   </button>
 </div>
@@ -724,10 +769,10 @@ function ResumeBuilder() {
 
 
 
-{/* ✅ Financial Manager Fields */}
+{/* Financial Manager Fields */}
 {resumeData.role === "financial-manager" && (
   <>
-    {/* ✅ Investments Section */}
+    {/*Investments Section */}
     <div className="section-container">
       <h4>Investments <span className="required">*</span></h4>
       {resumeData.investments.map((inv, index) => (
@@ -780,7 +825,7 @@ function ResumeBuilder() {
       </button>
     </div>
 
-    {/* ✅ Financial Tools Section */}
+    {/* Financial Tools Section */}
     <div className="section-container">
       <h4>Financial Tools <span className="required">*</span></h4>
       {resumeData.financialTools.map((tool, index) => (
@@ -805,7 +850,7 @@ function ResumeBuilder() {
       </button>
     </div>
 
-    {/* ✅ Budget & Risk Management Section */}
+    {/* Budget & Risk Management Section */}
     <div className="section-container">
       <h4>Budget & Risk Management <span className="required">*</span></h4>
       <label>Describe your experience in budget & risk management</label>
@@ -822,7 +867,7 @@ function ResumeBuilder() {
       )}
     </div>
 
-    {/* ✅ Leadership & Strategy Section */}
+    {/*Leadership & Strategy Section */}
     <div className="section-container">
       <h4>Leadership & Strategy <span className="required">*</span></h4>
       <label>Describe your leadership experience and financial strategies</label>
@@ -841,10 +886,10 @@ function ResumeBuilder() {
   </>
 )}
 
-{/* ✅ Sales Manager Fields */}
+{/*  Sales Manager Fields */}
 {resumeData.role === "sales-manager" && (
   <>
-    {/* ✅ Sales Strategies Section */}
+    {/* Sales Strategies Section */}
     <div className="section-container">
       <h4>Sales Strategies <span className="required">*</span></h4>
       {resumeData.salesStrategies?.map((strategy, index) => (
@@ -882,7 +927,7 @@ function ResumeBuilder() {
       </button>
     </div>
 
-    {/* ✅ Client Acquisition Section */}
+    {/*  Client Acquisition Section */}
     <div className="section-container">
       <h4>Client Acquisition <span className="required">*</span></h4>
       {resumeData.clientAcquisition?.map((client, index) => (
@@ -920,7 +965,7 @@ function ResumeBuilder() {
       </button>
     </div>
 
-    {/* ✅ Revenue Growth Achievements */}
+    {/*  Revenue Growth Achievements */}
     <div className="section-container">
       <h4>Revenue Growth Achievements <span className="required">*</span></h4>
       {resumeData.revenueGrowth?.map((growth, index) => (
@@ -945,7 +990,7 @@ function ResumeBuilder() {
       </button>
     </div>
 
-    {/* ✅ Sales Tools & Technologies */}
+    {/*  Sales Tools & Technologies */}
     <div className="section-container">
       <h4>Sales Tools & Technologies <span className="required">*</span></h4>
       {resumeData.salesTools?.map((tool, index) => (
@@ -970,7 +1015,7 @@ function ResumeBuilder() {
       </button>
     </div>
 
-    {/* ✅ Negotiation Experience */}
+    {/*  Negotiation Experience */}
     <div className="section-container">
       <h4>Negotiation Experience <span className="required">*</span></h4>
       {resumeData.negotiationExperience?.map((negotiation, index) => (
@@ -998,7 +1043,7 @@ function ResumeBuilder() {
 
 
 
-{/* ✅ Languages (Common for All Roles) */}
+{/* Languages (Common for All Roles) */}
 <div className="section-container">
   <h4>Languages <span className="required">*</span></h4>
   {resumeData.languages.map((lang, index) => (
