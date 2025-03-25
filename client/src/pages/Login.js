@@ -101,6 +101,10 @@ function Login() {
           <h1 className="text-center">Welcome Back!</h1>
           <p className="text-center">Log in to access your personalized resume builder. Create professional, recruiter-approved resumes in minutes!</p>
           <p className="text-center">Don't have an account? <Link to="/signup">Sign up now.</Link></p>
+          <p className="text-center mt-2">
+          <Link to="/forgot-password">Forgot Password?</Link>
+          </p>
+
         </div>
       </div>
     </div>

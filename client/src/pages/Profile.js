@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
-import { getUserDetails, getUserProfile, uploadProfileImage, deleteProfileImage } from '../api';
+import { getUserDetails, getUserProfile, uploadProfileImage, deleteProfileImage,changePassword } from '../api';
 import { toast } from 'react-toastify';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisV, faTrashAlt, faCamera, faSave, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import '../styles/Profile.css';
+
 
 function Profile() {
   const navigate = useNavigate();
@@ -27,6 +29,18 @@ function Profile() {
   const [showSaveModal, setShowSaveModal] = useState(false);
   const [showDeleteMenu, setShowDeleteMenu] = useState(false);
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
+  const [showPasswordForm, setShowPasswordForm] = useState(false);
+  
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmNewPassword, setConfirmNewPassword] = useState('');
+  
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  
+
+
 
   useEffect(() => {
     if (!userId) {
@@ -118,6 +132,43 @@ function Profile() {
     }
   };
 
+  const handleChangePassword = async () => {
+    if (!currentPassword || !newPassword || !confirmNewPassword) {
+      toast.warn('Please fill in all fields.');
+      return;
+    }
+  
+    if (newPassword.length < 8) {
+      toast.warn('New password must be at least 8 characters.');
+      return;
+    }
+  
+    if (newPassword !== confirmNewPassword) {
+      toast.error('New passwords do not match!');
+      return;
+    }
+  
+    try {
+      const result = await changePassword(userId, currentPassword, newPassword, confirmNewPassword);
+  
+      if (result.message) {
+        toast.success(result.message);
+  
+        // Reset form and close modal
+        setCurrentPassword('');
+        setNewPassword('');
+        setConfirmNewPassword('');
+        setShowPasswordModal(false); // ✅ Use modal state here
+      } else {
+        toast.error(result.error || 'Failed to change password.');
+      }
+    } catch (err) {
+      toast.error('Something went wrong!');
+    }
+  };
+  
+  
+
   return (
     <div className="profile-page-container">
       <div className="profile-card">
@@ -170,6 +221,156 @@ function Profile() {
         <button className="btn view-resumes-btn" onClick={() => navigate('/saved-resumes')}>
           View Saved Resumes
         </button>
+
+{/* chnage password */}
+<div style={{ display: "flex", justifyContent: "center", marginTop: "15px" }}>
+  <button
+    className="btn change-password-btn"
+    onClick={() => setShowPasswordModal(true)}
+    style={{
+      backgroundColor: "#333",
+      color: "#fff",
+      padding: "10px 20px",
+      borderRadius: "5px",
+      border: "none",
+      cursor: "pointer",
+      fontWeight: "600",
+    }}
+  >
+    Change Password
+  </button>
+</div>
+
+{/* 🔐 Change Password Modal */}
+{showPasswordModal && (
+  <div 
+    className="modal-overlay"
+    style={{
+      position: "fixed",
+      top: 0,
+      left: 0,
+      width: "100%",
+      height: "100%",
+      background: "rgba(0, 0, 0, 0.5)",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      zIndex: 1000,
+    }}
+  >
+    <div 
+      className="modal-content"
+      style={{
+        background: "#fff",
+        padding: "25px",
+        borderRadius: "8px",
+        width: "400px",
+        boxShadow: "0 4px 10px rgba(0, 0, 0, 0.2)",
+        textAlign: "center",
+      }}
+    >
+      <h4 style={{ fontSize: "20px", fontWeight: "600", marginBottom: "15px" }}>
+        Change Password
+      </h4>
+      
+    {/* 🔐 Current Password */}
+<div style={{ position: "relative", marginBottom: "10px" }}>
+<input
+    type={showCurrentPassword ? "text" : "password"}
+    placeholder="Current Password"
+    value={currentPassword} // ✅ Correct value
+    onChange={(e) => setCurrentPassword(e.target.value)}
+    className="form-input"
+    style={{ width: "100%", padding: "8px", paddingRight: "40px" }}
+  />
+  <FontAwesomeIcon
+    icon={showCurrentPassword ? faEyeSlash : faEye}
+    onClick={() => setShowCurrentPassword((prev) => !prev)}
+    style={{
+      position: "absolute",
+      right: "10px",
+      top: "50%",
+      transform: "translateY(-50%)",
+      cursor: "pointer",
+      color: "#888"
+    }}
+  />
+</div>
+
+{/* 🔐 New Password */}
+<div style={{ position: "relative", marginBottom: "10px" }}>
+  <input
+    type={showNewPassword ? "text" : "password"}
+    placeholder="New Password"
+    value={newPassword}
+    onChange={(e) => setNewPassword(e.target.value)}
+    className="form-input"
+    style={{ width: "100%", padding: "8px", paddingRight: "40px" }}
+  />
+  <FontAwesomeIcon
+    icon={showNewPassword ? faEyeSlash : faEye}
+    onClick={() => setShowNewPassword((prev) => !prev)}
+    style={{
+      position: "absolute",
+      right: "10px",
+      top: "50%",
+      transform: "translateY(-50%)",
+      cursor: "pointer",
+      color: "#888"
+    }}
+  />
+</div>
+
+{/* 🔐 Confirm New Password */}
+<input
+  type="password"
+  placeholder="Confirm New Password"
+  value={confirmNewPassword}
+  onChange={(e) => setConfirmNewPassword(e.target.value)}
+  className="form-input"
+  style={{ marginBottom: "20px", width: "100%", padding: "8px" }}
+/>
+
+      <div style={{ display: "flex", justifyContent: "center", gap: "10px" }}>
+        <button
+          className="btn confirm-btn"
+          onClick={async () => {
+            await handleChangePassword(); // show toast + reset
+          }}
+          style={{
+            backgroundColor: "#28a745",
+            color: "white",
+            fontWeight: "600",
+            padding: "8px 16px",
+            borderRadius: "5px",
+            border: "none",
+            cursor: "pointer",
+          }}
+        >
+          Save
+        </button>
+        <button
+          className="btn cancel-btn"
+          onClick={() => setShowPasswordModal(false)}
+          style={{
+            backgroundColor: "#6c757d",
+            color: "white",
+            fontWeight: "600",
+            padding: "8px 16px",
+            borderRadius: "5px",
+            border: "none",
+            cursor: "pointer",
+          }}
+        >
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
+{/* change password  */}
+        
       </div>
 {/* Delete Confirmation Modal */}
 {showConfirmDelete && (
@@ -361,6 +562,9 @@ function Profile() {
 
 
     </div>
+
+  
+    
   );
 }
 

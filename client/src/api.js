@@ -297,6 +297,29 @@ export const deleteReview = async (reviewId, userId) => {
 };
 
 
+// Change Password
+export const changePassword = async (userId, currentPassword, newPassword, confirmNewPassword) => {
+    console.log("Change Password API Triggered:", { userId, currentPassword });
+    try {
+        const response = await fetch(`${API_BASE_URL}/change-password`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                user_id: userId,
+                current_password: currentPassword,
+                new_password: newPassword,
+                confirm_new_password: confirmNewPassword,
+            }),
+        });
+
+        const result = await response.json();
+        console.log("Change Password Response:", result);
+        return result;
+    } catch (error) {
+        console.error("Change Password API Error:", error);
+        return { error: "An unexpected error occurred!" };
+    }
+};
 
   
 

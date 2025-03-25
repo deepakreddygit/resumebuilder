@@ -3,11 +3,12 @@ from flask_cors import CORS
 from db import users_collection
 import bcrypt
 from bson import ObjectId  
+import traceback 
 
 auth_bp = Blueprint('auth', __name__)
 
 
-CORS(auth_bp, origins="http://localhost:3000")
+# CORS(auth_bp, origins="http://localhost:3000")
 
 # Home route
 @auth_bp.route('/')
@@ -94,3 +95,92 @@ def get_user_by_id(user_id):
         "name": user['name'],
         "email": user['email']
     }), 200
+
+
+# //change password
+@auth_bp.route('/change-password', methods=['POST'])
+def change_password():
+    try:
+        data = request.json
+        user_id = data.get('user_id')
+        current_password = data.get('current_password')
+        new_password = data.get('new_password')
+        confirm_new_password = data.get('confirm_new_password')
+
+        if not user_id or not current_password or not new_password or not confirm_new_password:
+            return jsonify({"error": "All fields are required!"}), 400
+
+        if new_password != confirm_new_password:
+            return jsonify({"error": "New passwords do not match!"}), 400
+
+        user = users_collection.find_one({"_id": ObjectId(user_id)})
+
+        if not user:
+            return jsonify({"error": "User not found!"}), 404
+
+        # Check current password
+        if not bcrypt.checkpw(current_password.encode('utf-8'), user['password']):
+            return jsonify({"error": "Current password is incorrect!"}), 400
+
+        # Hash new password
+        hashed_new_pw = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt())
+
+        # Update in database
+        users_collection.update_one(
+            {"_id": ObjectId(user_id)},
+            {"$set": {"password": hashed_new_pw}}
+        )
+
+        print(f"[SERVER] Password changed successfully for user: {user['email']}")
+        return jsonify({"message": "Password updated successfully!"}), 200
+
+    except Exception as e:
+        print("[SERVER] Error in change-password:", traceback.format_exc())
+        return jsonify({"error": "Something went wrong!"}), 500
+
+
+# forgot password
+@auth_bp.route('/forgot-password', methods=['POST'])
+def forgot_password():
+    data = request.json
+    email = data.get('email')
+
+    if not email:
+        return jsonify({"error": "Email is required"}), 400
+
+    user = users_collection.find_one({"email": email})
+    if not user:
+        return jsonify({"error": "User not found"}), 404
+
+    # Just confirming user exists
+    return jsonify({
+        "message": "User exists",
+        "user_id": str(user['_id']),
+        "name": user['name']
+    }), 200
+
+# reset password
+@auth_bp.route('/reset-password', methods=['POST'])
+def reset_password():
+    data = request.json
+    user_id = data.get('user_id')
+    new_password = data.get('new_password')
+    confirm_password = data.get('confirm_password')
+
+    if not user_id or not new_password or not confirm_password:
+        return jsonify({"error": "All fields are required"}), 400
+
+    if new_password != confirm_password:
+        return jsonify({"error": "Passwords do not match"}), 400
+
+    user = users_collection.find_one({"_id": ObjectId(user_id)})
+    if not user:
+        return jsonify({"error": "User not found"}), 404
+
+    hashed_pw = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt())
+    users_collection.update_one(
+        {"_id": ObjectId(user_id)},
+        {"$set": {"password": hashed_pw}}
+    )
+
+    return jsonify({"message": "Password reset successful!"}), 200

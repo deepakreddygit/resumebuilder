@@ -5,6 +5,8 @@ import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 import Dashboard from "./pages/Dashboard";
 import Templates from "./pages/Templates";
 import Profile from "./pages/Profile";
@@ -64,6 +66,9 @@ function AppContent() {
           <Route path="/" element={<Navigate replace to={isAuthenticated ? "/dashboard" : "/login"} />} />
           <Route path="/login" element={isAuthenticated ? <Navigate replace to="/dashboard" /> : <Login />} />
           <Route path="/signup" element={isAuthenticated ? <Navigate replace to="/dashboard" /> : <Signup />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+
 
           {/* 🔹 Protected Routes (Require Authentication) */}
           {isAuthenticated ? (

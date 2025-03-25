@@ -51,29 +51,29 @@ function SavedResumes() {
     setShowModal(false);
   
     try {
-      // ✅ Call deleteResume function with userId
+     
       const result = await deleteResume(selectedResumeId, userId);
   
       if (result.error) {
-        toast.error(`❌ ${result.error}`);
+        toast.error(`${result.error}`);
         return;
       }
   
-      toast.success("✅ Resume deleted successfully!", { autoClose: 3000 });
+      toast.success("Resume deleted successfully!", { autoClose: 3000 });
   
-      // ✅ Update the UI: Remove deleted resume from state
+
       setResumes((prevResumes) => prevResumes.filter((r) => r.resume_id !== selectedResumeId));
   
-      // ✅ Update user profile in the frontend with the latest data
+
       if (result.updatedProfile) {
         setSavedBasicData(result.updatedProfile);
       } else {
-        setSavedBasicData(null); // If profile is cleared, reset it
+        setSavedBasicData(null); 
       }
   
     } catch (error) {
       console.error("Error deleting resume:", error);
-      toast.error("❌ Failed to delete resume.");
+      toast.error("Failed to delete resume.");
     }
   };
   
@@ -255,13 +255,6 @@ function SavedResumes() {
     </Button>
   </Modal.Footer>
 </Modal>
-
-
-
-
-
-
-
     </div>
   );
 }

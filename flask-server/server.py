@@ -8,7 +8,7 @@ from routes.resume import resume_bp
 
 app = Flask(__name__, static_folder="client/build")
 
-CORS(app, origins=["http://localhost:3000"])
+CORS(app, origins="http://localhost:3000", supports_credentials=True)  # enable CORS globally
 
 
 app.register_blueprint(auth_bp)

@@ -93,7 +93,7 @@ function ResumeBuilder() {
     setTimeout(() => {
       const mockResponse = `Generated Summary for: "${aiPrompt.trim()}"`;
   
-      // ✅ Remove "Generated Summary for:" and extract only the user input
+      //  Remove "Generated Summary for:" and extract only the user input
       const cleanedText = mockResponse.replace(/^Generated Summary for: "?(.+?)"?$/, "$1");
   
       setGeneratedText(cleanedText); // ✅ Set only the cleaned text
@@ -113,7 +113,7 @@ function ResumeBuilder() {
       getResumeById(resumeId)
         .then((data) => {
           if (data) {
-            console.log("🔄 Resume Data Fetched:", data);
+            console.log("Resume Data Fetched:", data);
             
             // ✅ Directly update the resumeData state with fetched data
             setResumeData((prevData) => ({
@@ -200,12 +200,12 @@ function ResumeBuilder() {
     const missingFields = requiredFields.filter(field => !resumeData[field]?.trim());
 
     if (missingFields.length > 0) {
-      toast.error(`❌ Please fill out all required fields before previewing.`);
+      toast.error(`Please fill out all required fields before previewing.`);
       return;
     }
 
     if (!resumeData.templateNumber) {
-      toast.error("❌ Template selection is missing!");
+      toast.error("Template selection is missing!");
       return;
     }
 
@@ -232,8 +232,8 @@ function ResumeBuilder() {
         email: "",
         phone: "",
         summary: "",
-        education: prevData.education, // Retain previous values if available
-        languages: prevData.languages, // Retain previous values if available
+        education: prevData.education, 
+        languages: prevData.languages, 
       }));
   
       return;
@@ -241,7 +241,7 @@ function ResumeBuilder() {
   
     console.log("🆕 Autofilling with saved basic details:", savedBasicData);
   
-    // ✅ Autofill only if valid data exists
+
     setResumeData((prevData) => ({
       ...prevData,
       name: savedBasicData.name,
@@ -252,7 +252,7 @@ function ResumeBuilder() {
       languages: savedBasicData.languages.length > 0 ? savedBasicData.languages : prevData.languages,
     }));
   
-    // ✅ Show success toast
+
     toast.success("Basic details autofilled!", {
       autoClose: 2000,
       toastId: `autofill-success-${Math.random()}`,
@@ -377,7 +377,7 @@ function ResumeBuilder() {
               <div className="ai-response">
                 <p>{generatedText}</p>
                 <button className="use-btn" onClick={() => {
-                  // ✅ Ensure only the actual AI-generated text is used
+         
                   handleChange({ target: { name: "summary", value: generatedText } });
                   setShowPopup(false);
                 }}>
