@@ -1,15 +1,25 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, redirect
 from flask_cors import CORS  
 from db import users_collection
+from itsdangerous import URLSafeTimedSerializer
+from flask_mail import Message
 import bcrypt
+from flask import url_for
 from bson import ObjectId  
 import traceback 
+from extensions import mail
+from flask_mail import Message
+from extensions import mail 
+import os
+from config import Config
+from flask import render_template_string
+
 
 auth_bp = Blueprint('auth', __name__)
 
 
-# CORS(auth_bp, origins="http://localhost:3000")
 
+# CORS(auth_bp, origins="http://localhost:3000")
 # Home route
 @auth_bp.route('/')
 def home():
@@ -96,7 +106,6 @@ def get_user_by_id(user_id):
         "email": user['email']
     }), 200
 
-
 # //change password
 @auth_bp.route('/change-password', methods=['POST'])
 def change_password():
@@ -137,50 +146,116 @@ def change_password():
     except Exception as e:
         print("[SERVER] Error in change-password:", traceback.format_exc())
         return jsonify({"error": "Something went wrong!"}), 500
+    
 
+    # forgot password
 
-# forgot password
+serializer = URLSafeTimedSerializer(os.environ.get("SECRET_KEY", "proresumeproject"))
+
 @auth_bp.route('/forgot-password', methods=['POST'])
 def forgot_password():
-    data = request.json
-    email = data.get('email')
+    try:
+        data = request.json
+        email = data.get('email')
 
-    if not email:
-        return jsonify({"error": "Email is required"}), 400
+        if not email:
+            return jsonify({"error": "Email is required"}), 400
 
-    user = users_collection.find_one({"email": email})
-    if not user:
-        return jsonify({"error": "User not found"}), 404
+        user = users_collection.find_one({"email": email})
+        if not user:
+            return jsonify({"error": "User not found"}), 404
 
-    # Just confirming user exists
-    return jsonify({
-        "message": "User exists",
-        "user_id": str(user['_id']),
-        "name": user['name']
-    }), 200
+        # Generate token and reset URL
+        token = serializer.dumps(email, salt='reset-password-salt')
+        reset_url = url_for("auth.verify_reset_token", token=token, _external=True)
+
+        # ✅ Read and render the HTML template
+        with open("backend_templates/reset_password_email.html", "r") as file:
+            html_template = file.read()
+            html_body = render_template_string(html_template, reset_url=reset_url)
+
+        # ✅ Send the email
+        msg = Message(
+            "Reset Your Password",
+            sender="noreply@yourdomain.com",
+            recipients=[email]
+        )
+        msg.html = html_body
+        mail.send(msg)
+
+        return jsonify({"message": "Password reset email sent!"}), 200
+
+    except Exception as e:
+        print("Error in forgot-password:", e)
+        return jsonify({"error": "Internal Server Error"}), 500
+
+
+# verify reset token
+@auth_bp.route('/verify-reset/<token>', methods=['GET'])
+def verify_reset_token(token):
+    try:
+        email = serializer.loads(token, salt='reset-password-salt', max_age=3600)
+        user = users_collection.find_one({"email": email})
+        if not user:
+            return jsonify({"error": "User not found"}), 404
+
+        return redirect(f"http://localhost:3000/reset-password?token={token}")
+    except Exception as e:
+        print("Token verification error:", e)  # 👈 See exact error in terminal
+        return jsonify({"error": "Invalid or expired token"}), 400
 
 # reset password
+# @auth_bp.route('/reset-password', methods=['POST'])
+# def reset_password():
+#     data = request.json
+#     user_id = data.get('user_id')
+#     new_password = data.get('new_password')
+#     confirm_password = data.get('confirm_password')
+
+#     if not user_id or not new_password or not confirm_password:
+#         return jsonify({"error": "All fields are required"}), 400
+
+#     if new_password != confirm_password:
+#         return jsonify({"error": "Passwords do not match"}), 400
+
+#     user = users_collection.find_one({"_id": ObjectId(user_id)})
+#     if not user:
+#         return jsonify({"error": "User not found"}), 404
+
+#     hashed_pw = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt())
+#     users_collection.update_one(
+#         {"_id": ObjectId(user_id)},
+#         {"$set": {"password": hashed_pw}}
+#     )
+
+#     return jsonify({"message": "Password reset successful!"}), 200
+
+serializer = URLSafeTimedSerializer(Config.SECRET_KEY)
+
 @auth_bp.route('/reset-password', methods=['POST'])
 def reset_password():
     data = request.json
-    user_id = data.get('user_id')
+    token = data.get('token')
     new_password = data.get('new_password')
     confirm_password = data.get('confirm_password')
 
-    if not user_id or not new_password or not confirm_password:
+    if not token or not new_password or not confirm_password:
         return jsonify({"error": "All fields are required"}), 400
 
     if new_password != confirm_password:
         return jsonify({"error": "Passwords do not match"}), 400
 
-    user = users_collection.find_one({"_id": ObjectId(user_id)})
-    if not user:
-        return jsonify({"error": "User not found"}), 404
+    try:
+        email = serializer.loads(token, salt='reset-password-salt', max_age=3600)
+        user = users_collection.find_one({"email": email})
+        if not user:
+            return jsonify({"error": "User not found"}), 404
 
-    hashed_pw = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt())
-    users_collection.update_one(
-        {"_id": ObjectId(user_id)},
-        {"$set": {"password": hashed_pw}}
-    )
+        hashed_pw = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt())
+        users_collection.update_one({"email": email}, {"$set": {"password": hashed_pw}})
 
-    return jsonify({"message": "Password reset successful!"}), 200
+        return jsonify({"message": "Password reset successful!"}), 200
+
+    except Exception as e:
+        print("Reset token error:", e)
+        return jsonify({"error": "Invalid or expired token"}), 400

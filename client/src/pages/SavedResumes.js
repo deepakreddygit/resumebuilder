@@ -8,6 +8,61 @@ import { FaEdit, FaTrashAlt, FaEye } from "react-icons/fa";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/SavedResumes.css";
 
+
+const isRecentlyUpdated = (timestamp) => {
+  if (!timestamp) return false;
+  const updatedDate = new Date(timestamp);
+  const now = new Date();
+  const diffInMs = now - updatedDate;
+  const diffInHours = diffInMs / (1000 * 60 * 60);
+  return diffInHours <= 72;
+};
+
+const formatDateTime = (timestamp) => {
+  if (!timestamp) return "";
+
+  // Parse as UTC
+  const utcDate = new Date(timestamp + "Z"); // "Z" forces UTC
+
+  // Convert to America/New_York time
+  return utcDate.toLocaleString("en-US", {
+    timeZone: "America/New_York",
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: true,
+  });
+};
+
+
+const getRelativeTime = (timestamp) => {
+  if (!timestamp) return "";
+
+  const utcDate = new Date(timestamp + "Z"); // parse as UTC
+  const now = new Date(); // local time (browser time)
+
+  // Adjust `now` to Eastern Time (Ohio)
+  const offset = -new Date().getTimezoneOffset() / 60;
+  const easternOffset = -4; // EDT is UTC-4, EST is UTC-5 — adjust for daylight saving as needed
+  const diffInMs = now - utcDate;
+
+  const seconds = Math.floor(diffInMs / 1000);
+  const minutes = Math.floor(diffInMs / (1000 * 60));
+  const hours = Math.floor(diffInMs / (1000 * 60 * 60));
+  const days = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+
+  if (seconds < 60) return "Updated just now";
+  if (minutes < 60) return `Updated ${minutes} minute${minutes !== 1 ? "s" : ""} ago`;
+  if (hours < 24) return `Updated ${hours} hour${hours !== 1 ? "s" : ""} ago`;
+  if (days === 1) return "Updated yesterday";
+  return `Updated ${days} days ago`;
+};
+
+
+
 function SavedResumes() {
   const navigate = useNavigate();
   const { userId } = useContext(AuthContext);
@@ -130,9 +185,26 @@ function SavedResumes() {
             const templateName = templateNames[resume.templateNumber] || "Unknown Template";
 
             return (
+              
               <div key={resume.resume_id} className="resume-card">
                 <div className="resume-content">
-                  <h5 className="resume-name">{resume.name || `Resume ${index + 1}`}</h5>
+                  {/* <h5 className="resume-name">{resume.name || `Resume ${index + 1}`}</h5> */}
+                  <div className="resume-header">
+  <h5 className="resume-name">{resume.name || `Resume ${index + 1}`}</h5>
+  {resume.lastUpdated && (
+    <span
+      className="recent-badge"
+      title={new Date(resume.lastUpdated + "Z").toLocaleString("en-US", {
+        timeZone: "America/New_York",
+      })}
+    >
+      {getRelativeTime(resume.lastUpdated)}
+    </span>
+  )}
+</div>
+
+
+
                   <p className="resume-role">
                     <strong>{roleData.icon} {roleData.name}</strong>
                   </p>

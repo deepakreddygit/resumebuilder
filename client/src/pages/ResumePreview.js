@@ -119,7 +119,9 @@ function ResumePreview() {
       { id: "9", name: "Creative Marketing Resume" },
     ],
     "sales-manager": [  
-      { id: "10", name: "Sales Manager Resume" },
+      { id: "10", name: "Creative Sales Manager Resume" },
+      { id: "11", name: "Professional Sales Strategist Resume" },
+      { id: "12", name: "Modern Sales Manager Resume" },
     ],
   };
 

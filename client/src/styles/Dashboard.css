@@ -448,3 +448,30 @@ h1 {
   border: 1px solid #3b82f6;
   color: #3b82f6;
 }
+
+.edit-button-style{
+
+                                  background: linear-gradient(135deg, #444, #222);
+                                  color: white;
+                                  border: none;
+                                  padding: 8px 12px;
+                                  border-radius: 5px;
+                                  font-size: 14px;
+                                  margin-right: 8px;
+                                  cursor: pointer;
+                                  transition: all 0.3s ease;
+                                  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2)
+
+}
+
+.dlt-button-style{
+  background: linear-gradient(135deg, #d9534f, #b52b27);
+                         color: white;
+                           border: none;
+                           padding: 8px 12px;
+                           border-radius: 5px;
+                          font-size: 14px;
+                           cursor: pointer;
+                           transition: all 0.3s ease;
+                           box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2)
+}

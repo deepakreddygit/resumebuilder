@@ -9,6 +9,7 @@ from flask import request, jsonify
 from bson import ObjectId
 import os
 from dotenv import load_dotenv
+from datetime import datetime
 
 resume_bp = Blueprint("resume", __name__)
 CORS(resume_bp, origins="http://localhost:3000")
@@ -149,6 +150,7 @@ def save_resume(user_id):
         "languages": data.get("languages", []),
         "templateNumber": data.get("templateNumber", "1"),
         "role": role,
+        "lastUpdated": datetime.utcnow().isoformat() 
     }
 
     # ✅ Include Sales Manager Fields
@@ -173,6 +175,8 @@ def save_resume(user_id):
 
     # ✅ Save to MongoDB
     resumes_collection.insert_one(new_resume)
+    print("Saved lastUpdated:", datetime.utcnow().isoformat())
+
 
     print(f"[SERVER] Resume saved for user: {user_id} with Resume ID: {resume_id}")
     return jsonify({"message": "Resume saved successfully!", "resume_id": resume_id}), 200
@@ -249,7 +253,7 @@ def update_resume(resume_id):
 
     resumes_collection.update_one(
         {"resume_id": resume_id},
-        {"$set": data}
+         {"$set": {**data, "lastUpdated": datetime.utcnow().isoformat()}}
     )
 
     print(f"[SERVER] Resume Updated Successfully: {resume_id}")

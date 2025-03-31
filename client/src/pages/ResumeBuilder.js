@@ -15,6 +15,8 @@ function ResumeBuilder() {
   const [aiPrompt, setAiPrompt] = useState("");
   const [loading, setLoading] = useState(false);
   const [generatedText, setGeneratedText] = useState("");
+  const [completionPercentage, setCompletionPercentage] = useState(0);
+
 
 
   const [resumeData, setResumeData] = useState({
@@ -164,6 +166,11 @@ function ResumeBuilder() {
       })
       .catch(() => console.log("No stored user profile found. User will enter manually."));
   }, [resumeId, navigate, userId]);
+
+  useEffect(() => {
+    calculateProgress();
+  }, [resumeData]);
+  
   
   
   
@@ -258,22 +265,125 @@ function ResumeBuilder() {
       toastId: `autofill-success-${Math.random()}`,
     });
   };
+
+  const calculateProgress = () => {
+    let filled = 0;
+    let total = 0;
   
+    const checkFilled = (field) => {
+      if (typeof field === "string") return field.trim() !== "";
+      return !!field;
+    };
   
+    const requiredFields = [
+      resumeData.name,
+      resumeData.email,
+      resumeData.phone,
+      resumeData.summary,
+    ];
   
+    requiredFields.forEach((field) => {
+      total++;
+      if (checkFilled(field)) filled++;
+    });
   
+    // ✅ Education
+    resumeData.education.forEach((edu) => {
+      total += 3;
+      if (checkFilled(edu.degree)) filled++;
+      if (checkFilled(edu.institution)) filled++;
+      if (checkFilled(edu.year)) filled++;
+    });
   
+    // ✅ Skills
+    resumeData.skills.forEach((skill) => {
+      total++;
+      if (checkFilled(skill)) filled++;
+    });
   
+    // ✅ Languages
+    resumeData.languages.forEach((lang) => {
+      total += 2;
+      if (checkFilled(lang.language)) filled++;
+      if (checkFilled(lang.proficiency)) filled++;
+    });
   
+    // ✅ Software Engineer
+    if (resumeData.role === "software-engineer") {
+      resumeData.projects.forEach((proj) => {
+        total += 2;
+        if (checkFilled(proj.title)) filled++;
+        if (checkFilled(proj.description)) filled++;
+      });
   
+      resumeData.certifications.forEach((cert) => {
+        total += 3;
+        if (checkFilled(cert.title)) filled++;
+        if (checkFilled(cert.issuer)) filled++;
+        if (checkFilled(cert.year)) filled++;
+      });
+    }
+  
+    // ✅ Marketing Manager
+    if (resumeData.role === "marketing-manager") {
+      resumeData.marketingStrategies.forEach((s) => {
+        total += 2;
+        if (checkFilled(s.strategy)) filled++;
+        if (checkFilled(s.impact)) filled++;
+      });
+  
+      resumeData.socialMedia.forEach((s) => {
+        total += 2;
+        if (checkFilled(s.platform)) filled++;
+        if (checkFilled(s.results)) filled++;
+      });
+    }
+  
+    // ✅ Financial Manager
+    if (resumeData.role === "financial-manager") {
+      resumeData.investments.forEach((inv) => {
+        total += 3;
+        if (checkFilled(inv.type)) filled++;
+        if (checkFilled(inv.amount)) filled++;
+        if (checkFilled(inv.years)) filled++;
+      });
+  
+      resumeData.financialTools.forEach((tool) => {
+        total++;
+        if (checkFilled(tool.name)) filled++;
+      });
+  
+      total += 2;
+      if (checkFilled(resumeData.budgetExperience)) filled++;
+      if (checkFilled(resumeData.leadershipExperience)) filled++;
+    }
+  
+    const percentage = Math.round((filled / total) * 100);
+    setCompletionPercentage(percentage);
+  };
+  
+
   return (
     <div className="resume-builder-container">
-   <div className="resume-header">
+   <div className="resume-header-builder">
    <h2 className="resume-title" style={{ paddingTop: "10px" }}>Create Your Resume</h2>
+   <div className="progress-bar-container">
+  <div className="progress-bar-track">
+    <div
+      className="progress-bar-fill"
+      style={{ width: `${completionPercentage}%` }}
+    ></div>
+  </div>
+  <div className="progress-bar-text">
+    {completionPercentage}% Complete
+  </div>
+</div>
 
-  <button className="autofill-btn" onClick={handleAutofillBasicDetails}>
-    Autofill
-  </button>
+
+   <div class="button-container" onClick={handleAutofillBasicDetails}>
+  <button class="autofill-btn">Autofill</button>
+</div>
+
 </div>
 
 
@@ -560,26 +670,40 @@ function ResumeBuilder() {
 <div className="section-container">
   <h4>Skills <span className="required">*</span></h4>
   {resumeData.skills.map((skill, index) => (
-    <div key={index} className="skill-item">
-      
-      <input
-        type="text"
-        name="skill"
-        placeholder="Enter a Skill"
-        value={skill}
-        onChange={(e) => {
-          const updatedSkills = [...resumeData.skills];
-          updatedSkills[index] = e.target.value;
-          setResumeData({ ...resumeData, skills: updatedSkills });
-        }}
-        onBlur={() => handleBlur(index, "skill", "skills")}
-        className={touched.skills?.[index]?.skill && !skill.trim() ? "input-error" : ""}
-      />
-      {touched.skills?.[index]?.skill && !skill.trim() && (
-        <span className="error-text">Required</span>
-      )}
-    </div>
-  ))}
+  <div
+    key={index}
+    style={{ display: "flex", flexDirection: "column", gap: "10px", marginBottom: "15px" }}
+  >
+    <input
+      type="text"
+      name="skill"
+      placeholder="Enter a Skill"
+      value={skill}
+      onChange={(e) => {
+        const updatedSkills = [...resumeData.skills];
+        updatedSkills[index] = e.target.value;
+        setResumeData({ ...resumeData, skills: updatedSkills });
+      }}
+      onBlur={() => handleBlur(index, "skill", "skills")}
+      className={touched.skills?.[index]?.skill && !skill.trim() ? "input-error" : ""}
+      style={{ padding: "10px", fontSize: "14px", borderRadius: "6px", border: "1px solid #ccc" }}
+    />
+
+    {touched.skills?.[index]?.skill && !skill.trim() && (
+      <span className="error-text">Required</span>
+    )}
+
+    {index > 0 && (
+      <button className="remove-button-style"
+        onClick={() => removeField("skills", index)}
+      >
+        Remove Skill
+      </button>
+    )}
+  </div>
+))}
+
+
 
   {/* Add Skill Button */}
   <button className="add-btn" onClick={() => addField("skills", "")}>+ Add Skill</button>
@@ -595,35 +719,59 @@ function ResumeBuilder() {
     <div className="section-container">
       <h4>Projects <span className="required">*</span></h4>
       {resumeData.projects.map((proj, index) => (
-        <div key={index} className="input-group">
-          <label>Project Title <span className="required">*</span></label>
-          <input
-            type="text"
-            name="title"
-            placeholder="Enter Project Title"
-            value={proj.title}
-            onChange={(e) => handleChange(e, index, "projects")}
-            onBlur={() => handleBlur(index, "title", "projects")}
-            className={touched.projects?.[index]?.title && !proj.title.trim() ? "input-error" : ""}
-          />
-          {touched.projects?.[index]?.title && !proj.title.trim() && (
-            <span className="error-text">Project Title is required</span>
-          )}
+  <div
+    key={index}
+    className="input-group"
+    style={{ display: "flex", flexDirection: "column", gap: "10px", marginBottom: "25px" }}
+  >
+    <label>
+      Project Title <span className="required">*</span>
+    </label>
+    <input
+      type="text"
+      name="title"
+      placeholder="Enter Project Title"
+      value={proj.title}
+      onChange={(e) => handleChange(e, index, "projects")}
+      onBlur={() => handleBlur(index, "title", "projects")}
+      className={touched.projects?.[index]?.title && !proj.title.trim() ? "input-error" : ""}
+      style={{ padding: "10px", fontSize: "14px", borderRadius: "6px", border: "1px solid #ccc" }}
+    />
+    {touched.projects?.[index]?.title && !proj.title.trim() && (
+      <span className="error-text">Project Title is required</span>
+    )}
 
-          <label>Project Description <span className="required">*</span></label>
-          <textarea
-            name="description"
-            placeholder="Enter Project Description"
-            value={proj.description}
-            onChange={(e) => handleChange(e, index, "projects")}
-            onBlur={() => handleBlur(index, "description", "projects")}
-            className={touched.projects?.[index]?.description && !proj.description.trim() ? "input-error" : ""}
-          ></textarea>
-          {touched.projects?.[index]?.description && !proj.description.trim() && (
-            <span className="error-text">Project Description is required</span>
-          )}
-        </div>
-      ))}
+    <label>
+      Project Description <span className="required">*</span>
+    </label>
+    <textarea
+      name="description"
+      placeholder="Enter Project Description"
+      value={proj.description}
+      onChange={(e) => handleChange(e, index, "projects")}
+      onBlur={() => handleBlur(index, "description", "projects")}
+      className={
+        touched.projects?.[index]?.description && !proj.description.trim()
+          ? "input-error"
+          : ""
+      }
+      style={{ padding: "10px", fontSize: "14px", borderRadius: "6px", border: "1px solid #ccc" }}
+    ></textarea>
+    {touched.projects?.[index]?.description && !proj.description.trim() && (
+      <span className="error-text">Project Description is required</span>
+    )}
+
+    {/* Remove Button */}
+    {index > 0 && (
+      <button className="remove-button-style"
+        onClick={() => removeField("projects", index)}
+      >
+        Remove Project
+      </button>
+    )}
+  </div>
+))}
+
       <button className="add-btn" onClick={() => addField("projects", { title: "", description: "" })}>
         + Add Project
       </button>
@@ -633,50 +781,67 @@ function ResumeBuilder() {
     <div className="section-container">
       <h4>Certifications <span className="required">*</span></h4>
       {resumeData.certifications.map((cert, index) => (
-        <div key={index} className="input-group">
-          <label>Certification Title <span className="required">*</span></label>
-          <input
-            type="text"
-            name="title"
-            placeholder="Enter Certification Title"
-            value={cert.title}
-            onChange={(e) => handleChange(e, index, "certifications")}
-            onBlur={() => handleBlur(index, "title", "certifications")}
-            className={touched.certifications?.[index]?.title && !cert.title.trim() ? "input-error" : ""}
-          />
-          {touched.certifications?.[index]?.title && !cert.title.trim() && (
-            <span className="error-text">Certification Title is required</span>
-          )}
+  <div
+    key={index}
+    className="input-group"
+    style={{ display: "flex", flexDirection: "column", gap: "10px", marginBottom: "25px" }}
+  >
+    <label>Certification Title <span className="required">*</span></label>
+    <input
+      type="text"
+      name="title"
+      placeholder="Enter Certification Title"
+      value={cert.title}
+      onChange={(e) => handleChange(e, index, "certifications")}
+      onBlur={() => handleBlur(index, "title", "certifications")}
+      className={touched.certifications?.[index]?.title && !cert.title.trim() ? "input-error" : ""}
+      style={{ padding: "10px", fontSize: "14px", borderRadius: "6px", border: "1px solid #ccc" }}
+    />
+    {touched.certifications?.[index]?.title && !cert.title.trim() && (
+      <span className="error-text">Certification Title is required</span>
+    )}
 
-          <label>Issuer <span className="required">*</span></label>
-          <input
-            type="text"
-            name="issuer"
-            placeholder="Enter Issuer (e.g., Coursera, Microsoft)"
-            value={cert.issuer}
-            onChange={(e) => handleChange(e, index, "certifications")}
-            onBlur={() => handleBlur(index, "issuer", "certifications")}
-            className={touched.certifications?.[index]?.issuer && !cert.issuer.trim() ? "input-error" : ""}
-          />
-          {touched.certifications?.[index]?.issuer && !cert.issuer.trim() && (
-            <span className="error-text">Issuer is required</span>
-          )}
+    <label>Issuer <span className="required">*</span></label>
+    <input
+      type="text"
+      name="issuer"
+      placeholder="Enter Issuer (e.g., Coursera, Microsoft)"
+      value={cert.issuer}
+      onChange={(e) => handleChange(e, index, "certifications")}
+      onBlur={() => handleBlur(index, "issuer", "certifications")}
+      className={touched.certifications?.[index]?.issuer && !cert.issuer.trim() ? "input-error" : ""}
+      style={{ padding: "10px", fontSize: "14px", borderRadius: "6px", border: "1px solid #ccc" }}
+    />
+    {touched.certifications?.[index]?.issuer && !cert.issuer.trim() && (
+      <span className="error-text">Issuer is required</span>
+    )}
 
-          <label>Year <span className="required">*</span></label>
-          <input
-            type="text"
-            name="year"
-            placeholder="Enter Year of Certification"
-            value={cert.year}
-            onChange={(e) => handleChange(e, index, "certifications")}
-            onBlur={() => handleBlur(index, "year", "certifications")}
-            className={touched.certifications?.[index]?.year && !cert.year.trim() ? "input-error" : ""}
-          />
-          {touched.certifications?.[index]?.year && !cert.year.trim() && (
-            <span className="error-text">Year is required</span>
-          )}
-        </div>
-      ))}
+    <label>Year <span className="required">*</span></label>
+    <input
+      type="text"
+      name="year"
+      placeholder="Enter Year of Certification"
+      value={cert.year}
+      onChange={(e) => handleChange(e, index, "certifications")}
+      onBlur={() => handleBlur(index, "year", "certifications")}
+      className={touched.certifications?.[index]?.year && !cert.year.trim() ? "input-error" : ""}
+      style={{ padding: "10px", fontSize: "14px", borderRadius: "6px", border: "1px solid #ccc" }}
+    />
+    {touched.certifications?.[index]?.year && !cert.year.trim() && (
+      <span className="error-text">Year is required</span>
+    )}
+
+    {/* Remove Button */}
+    {index > 0 && (
+      <button className="remove-button-style"
+        onClick={() => removeField("certifications", index)}
+      >
+        Remove Certification
+      </button>
+    )}
+  </div>
+))}
+
       <button className="add-btn" onClick={() => addField("certifications", { title: "", issuer: "", year: "" })}>
         + Add Certification
       </button>
@@ -693,35 +858,59 @@ function ResumeBuilder() {
     <div className="section-container">
       <h4>Marketing Strategies <span className="required">*</span></h4>
       {resumeData.marketingStrategies.map((strategy, index) => (
-        <div key={index} className="input-group">
-          <label>Strategy Name <span className="required">*</span></label>
-          <input
-            type="text"
-            name="strategy"
-            placeholder="Enter Strategy Name"
-            value={strategy.strategy}
-            onChange={(e) => handleChange(e, index, "marketingStrategies")}
-            onBlur={() => handleBlur(index, "strategy", "marketingStrategies")}
-            className={touched.marketingStrategies?.[index]?.strategy && !strategy.strategy.trim() ? "input-error" : ""}
-          />
-          {touched.marketingStrategies?.[index]?.strategy && !strategy.strategy.trim() && (
-            <span className="error-text">Strategy Name is required</span>
-          )}
+  <div
+    key={index}
+    className="input-group"
+    style={{ display: "flex", flexDirection: "column", gap: "10px", marginBottom: "25px" }}
+  >
+    <label>Strategy Name <span className="required">*</span></label>
+    <input
+      type="text"
+      name="strategy"
+      placeholder="Enter Strategy Name"
+      value={strategy.strategy}
+      onChange={(e) => handleChange(e, index, "marketingStrategies")}
+      onBlur={() => handleBlur(index, "strategy", "marketingStrategies")}
+      className={
+        touched.marketingStrategies?.[index]?.strategy && !strategy.strategy.trim()
+          ? "input-error"
+          : ""
+      }
+      style={{ padding: "10px", fontSize: "14px", borderRadius: "6px", border: "1px solid #ccc" }}
+    />
+    {touched.marketingStrategies?.[index]?.strategy && !strategy.strategy.trim() && (
+      <span className="error-text">Strategy Name is required</span>
+    )}
 
-          <label>Impact <span className="required">*</span></label>
-          <textarea
-            name="impact"
-            placeholder="Impact (e.g., Increased engagement by 30%)"
-            value={strategy.impact}
-            onChange={(e) => handleChange(e, index, "marketingStrategies")}
-            onBlur={() => handleBlur(index, "impact", "marketingStrategies")}
-            className={touched.marketingStrategies?.[index]?.impact && !strategy.impact.trim() ? "input-error" : ""}
-          ></textarea>
-          {touched.marketingStrategies?.[index]?.impact && !strategy.impact.trim() && (
-            <span className="error-text">Impact description is required</span>
-          )}
-        </div>
-      ))}
+    <label>Impact <span className="required">*</span></label>
+    <textarea
+      name="impact"
+      placeholder="Impact (e.g., Increased engagement by 30%)"
+      value={strategy.impact}
+      onChange={(e) => handleChange(e, index, "marketingStrategies")}
+      onBlur={() => handleBlur(index, "impact", "marketingStrategies")}
+      className={
+        touched.marketingStrategies?.[index]?.impact && !strategy.impact.trim()
+          ? "input-error"
+          : ""
+      }
+      style={{ padding: "10px", fontSize: "14px", borderRadius: "6px", border: "1px solid #ccc" }}
+    ></textarea>
+    {touched.marketingStrategies?.[index]?.impact && !strategy.impact.trim() && (
+      <span className="error-text">Impact description is required</span>
+    )}
+
+    {/* Remove Button */}
+    {index > 0 && (
+      <button className="remove-button-style"
+        onClick={() => removeField("marketingStrategies", index)}
+      >
+        Remove Strategy
+      </button>
+    )}
+  </div>
+))}
+
       <button className="add-btn" onClick={() => addField("marketingStrategies", { strategy: "", impact: "" })}>
         + Add Strategy
       </button>
@@ -731,35 +920,59 @@ function ResumeBuilder() {
     <div className="section-container">
       <h4>Social Media Campaigns <span className="required">*</span></h4>
       {resumeData.socialMedia.map((campaign, index) => (
-        <div key={index} className="input-group">
-          <label>Platform <span className="required">*</span></label>
-          <input
-            type="text"
-            name="platform"
-            placeholder="Enter Platform (e.g., Facebook, Instagram)"
-            value={campaign.platform}
-            onChange={(e) => handleChange(e, index, "socialMedia")}
-            onBlur={() => handleBlur(index, "platform", "socialMedia")}
-            className={touched.socialMedia?.[index]?.platform && !campaign.platform.trim() ? "input-error" : ""}
-          />
-          {touched.socialMedia?.[index]?.platform && !campaign.platform.trim() && (
-            <span className="error-text">Platform is required</span>
-          )}
+  <div
+    key={index}
+    className="input-group"
+    style={{ display: "flex", flexDirection: "column", gap: "10px", marginBottom: "25px" }}
+  >
+    <label>Platform <span className="required">*</span></label>
+    <input
+      type="text"
+      name="platform"
+      placeholder="Enter Platform (e.g., Facebook, Instagram)"
+      value={campaign.platform}
+      onChange={(e) => handleChange(e, index, "socialMedia")}
+      onBlur={() => handleBlur(index, "platform", "socialMedia")}
+      className={
+        touched.socialMedia?.[index]?.platform && !campaign.platform.trim()
+          ? "input-error"
+          : ""
+      }
+      style={{ padding: "10px", fontSize: "14px", borderRadius: "6px", border: "1px solid #ccc" }}
+    />
+    {touched.socialMedia?.[index]?.platform && !campaign.platform.trim() && (
+      <span className="error-text">Platform is required</span>
+    )}
 
-          <label>Results <span className="required">*</span></label>
-          <textarea
-            name="results"
-            placeholder="Results (e.g., 10k followers increase)"
-            value={campaign.results}
-            onChange={(e) => handleChange(e, index, "socialMedia")}
-            onBlur={() => handleBlur(index, "results", "socialMedia")}
-            className={touched.socialMedia?.[index]?.results && !campaign.results.trim() ? "input-error" : ""}
-          ></textarea>
-          {touched.socialMedia?.[index]?.results && !campaign.results.trim() && (
-            <span className="error-text">Results description is required</span>
-          )}
-        </div>
-      ))}
+    <label>Results <span className="required">*</span></label>
+    <textarea
+      name="results"
+      placeholder="Results (e.g., 10k followers increase)"
+      value={campaign.results}
+      onChange={(e) => handleChange(e, index, "socialMedia")}
+      onBlur={() => handleBlur(index, "results", "socialMedia")}
+      className={
+        touched.socialMedia?.[index]?.results && !campaign.results.trim()
+          ? "input-error"
+          : ""
+      }
+      style={{ padding: "10px", fontSize: "14px", borderRadius: "6px", border: "1px solid #ccc" }}
+    ></textarea>
+    {touched.socialMedia?.[index]?.results && !campaign.results.trim() && (
+      <span className="error-text">Results description is required</span>
+    )}
+
+    {/* Remove Button */}
+    {index > 0 && (
+      <button className="remove-button-style"
+        onClick={() => removeField("socialMedia", index)}
+      >
+        Remove Campaign
+      </button>
+    )}
+  </div>
+))}
+
       <button className="add-btn" onClick={() => addField("socialMedia", { platform: "", results: "" })}>
         + Add Campaign
       </button>
@@ -776,50 +989,79 @@ function ResumeBuilder() {
     <div className="section-container">
       <h4>Investments <span className="required">*</span></h4>
       {resumeData.investments.map((inv, index) => (
-        <div key={index} className="input-group">
-          <label>Investment Type <span className="required">*</span></label>
-          <input
-            type="text"
-            name="type"
-            placeholder="Investment Type"
-            value={inv.type}
-            onChange={(e) => handleChange(e, index, "investments")}
-            onBlur={() => handleBlur(index, "type", "investments")}
-            className={touched.investments?.[index]?.type && !inv.type.trim() ? "input-error" : ""}
-          />
-          {touched.investments?.[index]?.type && !inv.type.trim() && (
-            <span className="error-text">Investment Type is required</span>
-          )}
+  <div
+    key={index}
+    className="input-group"
+    style={{ display: "flex", flexDirection: "column", gap: "10px", marginBottom: "25px" }}
+  >
+    <label>Investment Type <span className="required">*</span></label>
+    <input
+      type="text"
+      name="type"
+      placeholder="Investment Type"
+      value={inv.type}
+      onChange={(e) => handleChange(e, index, "investments")}
+      onBlur={() => handleBlur(index, "type", "investments")}
+      className={
+        touched.investments?.[index]?.type && !inv.type.trim()
+          ? "input-error"
+          : ""
+      }
+      style={{ padding: "10px", fontSize: "14px", borderRadius: "6px", border: "1px solid #ccc" }}
+    />
+    {touched.investments?.[index]?.type && !inv.type.trim() && (
+      <span className="error-text">Investment Type is required</span>
+    )}
 
-          <label>Investment Amount <span className="required">*</span></label>
-          <input
-            type="text"
-            name="amount"
-            placeholder="Investment Amount"
-            value={inv.amount}
-            onChange={(e) => handleChange(e, index, "investments")}
-            onBlur={() => handleBlur(index, "amount", "investments")}
-            className={touched.investments?.[index]?.amount && !inv.amount.trim() ? "input-error" : ""}
-          />
-          {touched.investments?.[index]?.amount && !inv.amount.trim() && (
-            <span className="error-text">Amount is required</span>
-          )}
+    <label>Investment Amount <span className="required">*</span></label>
+    <input
+      type="text"
+      name="amount"
+      placeholder="Investment Amount"
+      value={inv.amount}
+      onChange={(e) => handleChange(e, index, "investments")}
+      onBlur={() => handleBlur(index, "amount", "investments")}
+      className={
+        touched.investments?.[index]?.amount && !inv.amount.trim()
+          ? "input-error"
+          : ""
+      }
+      style={{ padding: "10px", fontSize: "14px", borderRadius: "6px", border: "1px solid #ccc" }}
+    />
+    {touched.investments?.[index]?.amount && !inv.amount.trim() && (
+      <span className="error-text">Amount is required</span>
+    )}
 
-          <label>Years of Experience <span className="required">*</span></label>
-          <input
-            type="text"
-            name="years"
-            placeholder="Years of Experience"
-            value={inv.years}
-            onChange={(e) => handleChange(e, index, "investments")}
-            onBlur={() => handleBlur(index, "years", "investments")}
-            className={touched.investments?.[index]?.years && !inv.years.trim() ? "input-error" : ""}
-          />
-          {touched.investments?.[index]?.years && !inv.years.trim() && (
-            <span className="error-text">Years of Experience is required</span>
-          )}
-        </div>
-      ))}
+    <label>Years of Experience <span className="required">*</span></label>
+    <input
+      type="text"
+      name="years"
+      placeholder="Years of Experience"
+      value={inv.years}
+      onChange={(e) => handleChange(e, index, "investments")}
+      onBlur={() => handleBlur(index, "years", "investments")}
+      className={
+        touched.investments?.[index]?.years && !inv.years.trim()
+          ? "input-error"
+          : ""
+      }
+      style={{ padding: "10px", fontSize: "14px", borderRadius: "6px", border: "1px solid #ccc" }}
+    />
+    {touched.investments?.[index]?.years && !inv.years.trim() && (
+      <span className="error-text">Years of Experience is required</span>
+    )}
+
+    {/* Remove Button */}
+    {index > 0 && (
+      <button className="remove-button-style"
+        onClick={() => removeField("investments", index)}
+      >
+        Remove Investment
+      </button>
+    )}
+  </div>
+))}
+
       <button className="add-btn" onClick={() => addField("investments", { type: "", amount: "", years: "" })}>
         + Add Investment
       </button>
@@ -829,22 +1071,41 @@ function ResumeBuilder() {
     <div className="section-container">
       <h4>Financial Tools <span className="required">*</span></h4>
       {resumeData.financialTools.map((tool, index) => (
-        <div key={index} className="input-group">
-          <label>Financial Tool <span className="required">*</span></label>
-          <input
-            type="text"
-            placeholder="Financial Tool"
-            name="name"
-            value={tool.name}
-            onChange={(e) => handleChange(e, index, "financialTools")}
-            onBlur={() => handleBlur(index, "name", "financialTools")}
-            className={touched.financialTools?.[index]?.name && !tool.name.trim() ? "input-error" : ""}
-          />
-          {touched.financialTools?.[index]?.name && !tool.name.trim() && (
-            <span className="error-text">Financial Tool is required</span>
-          )}
-        </div>
-      ))}
+  <div
+    key={index}
+    className="input-group"
+    style={{ display: "flex", flexDirection: "column", gap: "10px", marginBottom: "25px" }}
+  >
+    <label>Financial Tool <span className="required">*</span></label>
+    <input
+      type="text"
+      placeholder="Financial Tool"
+      name="name"
+      value={tool.name}
+      onChange={(e) => handleChange(e, index, "financialTools")}
+      onBlur={() => handleBlur(index, "name", "financialTools")}
+      className={
+        touched.financialTools?.[index]?.name && !tool.name.trim()
+          ? "input-error"
+          : ""
+      }
+      style={{ padding: "10px", fontSize: "14px", borderRadius: "6px", border: "1px solid #ccc" }}
+    />
+    {touched.financialTools?.[index]?.name && !tool.name.trim() && (
+      <span className="error-text">Financial Tool is required</span>
+    )}
+
+    {/* Remove Button */}
+    {index > 0 && (
+      <button className="remove-button-style"
+        onClick={() => removeField("financialTools", index)}
+      >
+        Remove Tool
+      </button>
+    )}
+  </div>
+))}
+
       <button className="add-btn" onClick={() => addField("financialTools", { name: "" })}>
         + Add Financial Tool
       </button>
@@ -893,35 +1154,74 @@ function ResumeBuilder() {
     <div className="section-container">
       <h4>Sales Strategies <span className="required">*</span></h4>
       {resumeData.salesStrategies?.map((strategy, index) => (
-        <div key={index} className="input-group">
-          <label>Strategy Name <span className="required">*</span></label>
-          <input
-            type="text"
-            name="strategy"
-            placeholder="Enter Strategy Name"
-            value={strategy.strategy}
-            onChange={(e) => handleChange(e, index, "salesStrategies")}
-            onBlur={() => handleBlur(index, "strategy", "salesStrategies")}
-            className={touched.salesStrategies?.[index]?.strategy && !strategy.strategy.trim() ? "input-error" : ""}
-          />
-          {touched.salesStrategies?.[index]?.strategy && !strategy.strategy.trim() && (
-            <span className="error-text">Strategy Name is required</span>
-          )}
+  <div
+    key={index}
+    className="input-group"
+    style={{
+      display: "flex",
+      flexDirection: "column",
+      gap: "10px",
+      marginBottom: "25px"
+    }}
+  >
+    <label>Strategy Name <span className="required">*</span></label>
+    <input
+      type="text"
+      name="strategy"
+      placeholder="Enter Strategy Name"
+      value={strategy.strategy}
+      onChange={(e) => handleChange(e, index, "salesStrategies")}
+      onBlur={() => handleBlur(index, "strategy", "salesStrategies")}
+      className={
+        touched.salesStrategies?.[index]?.strategy && !strategy.strategy.trim()
+          ? "input-error"
+          : ""
+      }
+      style={{
+        padding: "10px",
+        fontSize: "14px",
+        borderRadius: "6px",
+        border: "1px solid #ccc"
+      }}
+    />
+    {touched.salesStrategies?.[index]?.strategy && !strategy.strategy.trim() && (
+      <span className="error-text">Strategy Name is required</span>
+    )}
 
-          <label>Impact <span className="required">*</span></label>
-          <textarea
-            name="impact"
-            placeholder="Impact (e.g., Increased sales by 20%)"
-            value={strategy.impact}
-            onChange={(e) => handleChange(e, index, "salesStrategies")}
-            onBlur={() => handleBlur(index, "impact", "salesStrategies")}
-            className={touched.salesStrategies?.[index]?.impact && !strategy.impact.trim() ? "input-error" : ""}
-          ></textarea>
-          {touched.salesStrategies?.[index]?.impact && !strategy.impact.trim() && (
-            <span className="error-text">Impact description is required</span>
-          )}
-        </div>
-      ))}
+    <label>Impact <span className="required">*</span></label>
+    <textarea
+      name="impact"
+      placeholder="Impact (e.g., Increased sales by 20%)"
+      value={strategy.impact}
+      onChange={(e) => handleChange(e, index, "salesStrategies")}
+      onBlur={() => handleBlur(index, "impact", "salesStrategies")}
+      className={
+        touched.salesStrategies?.[index]?.impact && !strategy.impact.trim()
+          ? "input-error"
+          : ""
+      }
+      style={{
+        padding: "10px",
+        fontSize: "14px",
+        borderRadius: "6px",
+        border: "1px solid #ccc"
+      }}
+    ></textarea>
+    {touched.salesStrategies?.[index]?.impact && !strategy.impact.trim() && (
+      <span className="error-text">Impact description is required</span>
+    )}
+
+    {/* Remove Button */}
+    {index > 0 && (
+      <button className="remove-button-style"
+        onClick={() => removeField("salesStrategies", index)}
+      >
+        Remove Strategy
+      </button>
+    )}
+  </div>
+))}
+
       <button className="add-btn" onClick={() => addField("salesStrategies", { strategy: "", impact: "" })}>
         + Add Strategy
       </button>
@@ -931,35 +1231,74 @@ function ResumeBuilder() {
     <div className="section-container">
       <h4>Client Acquisition <span className="required">*</span></h4>
       {resumeData.clientAcquisition?.map((client, index) => (
-        <div key={index} className="input-group">
-          <label>Method <span className="required">*</span></label>
-          <input
-            type="text"
-            name="method"
-            placeholder="Enter Acquisition Method (e.g., Cold Calling, Networking)"
-            value={client.method}
-            onChange={(e) => handleChange(e, index, "clientAcquisition")}
-            onBlur={() => handleBlur(index, "method", "clientAcquisition")}
-            className={touched.clientAcquisition?.[index]?.method && !client.method.trim() ? "input-error" : ""}
-          />
-          {touched.clientAcquisition?.[index]?.method && !client.method.trim() && (
-            <span className="error-text">Acquisition method is required</span>
-          )}
+  <div
+    key={index}
+    className="input-group"
+    style={{
+      display: "flex",
+      flexDirection: "column",
+      gap: "10px",
+      marginBottom: "25px"
+    }}
+  >
+    <label>Method <span className="required">*</span></label>
+    <input
+      type="text"
+      name="method"
+      placeholder="Enter Acquisition Method (e.g., Cold Calling, Networking)"
+      value={client.method}
+      onChange={(e) => handleChange(e, index, "clientAcquisition")}
+      onBlur={() => handleBlur(index, "method", "clientAcquisition")}
+      className={
+        touched.clientAcquisition?.[index]?.method && !client.method.trim()
+          ? "input-error"
+          : ""
+      }
+      style={{
+        padding: "10px",
+        fontSize: "14px",
+        borderRadius: "6px",
+        border: "1px solid #ccc"
+      }}
+    />
+    {touched.clientAcquisition?.[index]?.method && !client.method.trim() && (
+      <span className="error-text">Acquisition method is required</span>
+    )}
 
-          <label>Success Rate <span className="required">*</span></label>
-          <textarea
-            name="successRate"
-            placeholder="Success Rate (e.g., Converted 30% leads)"
-            value={client.successRate}
-            onChange={(e) => handleChange(e, index, "clientAcquisition")}
-            onBlur={() => handleBlur(index, "successRate", "clientAcquisition")}
-            className={touched.clientAcquisition?.[index]?.successRate && !client.successRate.trim() ? "input-error" : ""}
-          ></textarea>
-          {touched.clientAcquisition?.[index]?.successRate && !client.successRate.trim() && (
-            <span className="error-text">Success rate is required</span>
-          )}
-        </div>
-      ))}
+    <label>Success Rate <span className="required">*</span></label>
+    <textarea
+      name="successRate"
+      placeholder="Success Rate (e.g., Converted 30% leads)"
+      value={client.successRate}
+      onChange={(e) => handleChange(e, index, "clientAcquisition")}
+      onBlur={() => handleBlur(index, "successRate", "clientAcquisition")}
+      className={
+        touched.clientAcquisition?.[index]?.successRate && !client.successRate.trim()
+          ? "input-error"
+          : ""
+      }
+      style={{
+        padding: "10px",
+        fontSize: "14px",
+        borderRadius: "6px",
+        border: "1px solid #ccc"
+      }}
+    ></textarea>
+    {touched.clientAcquisition?.[index]?.successRate && !client.successRate.trim() && (
+      <span className="error-text">Success rate is required</span>
+    )}
+
+    {/* Remove Button */}
+    {index > 0 && (
+      <button className="remove-button-style"
+        onClick={() => removeField("clientAcquisition", index)}
+      >
+        Remove Method
+      </button>
+    )}
+  </div>
+))}
+
       <button className="add-btn" onClick={() => addField("clientAcquisition", { method: "", successRate: "" })}>
         + Add Acquisition Method
       </button>
@@ -969,22 +1308,51 @@ function ResumeBuilder() {
     <div className="section-container">
       <h4>Revenue Growth Achievements <span className="required">*</span></h4>
       {resumeData.revenueGrowth?.map((growth, index) => (
-        <div key={index} className="input-group">
-          <label>Achievement <span className="required">*</span></label>
-          <input
-            type="text"
-            name="achievement"
-            placeholder="Enter Revenue Growth Achievement"
-            value={growth.achievement}
-            onChange={(e) => handleChange(e, index, "revenueGrowth")}
-            onBlur={() => handleBlur(index, "achievement", "revenueGrowth")}
-            className={touched.revenueGrowth?.[index]?.achievement && !growth.achievement.trim() ? "input-error" : ""}
-          />
-          {touched.revenueGrowth?.[index]?.achievement && !growth.achievement.trim() && (
-            <span className="error-text">Achievement is required</span>
-          )}
-        </div>
-      ))}
+  <div
+    key={index}
+    className="input-group"
+    style={{
+      display: "flex",
+      flexDirection: "column",
+      gap: "10px",
+      marginBottom: "25px"
+    }}
+  >
+    <label>Achievement <span className="required">*</span></label>
+    <input
+      type="text"
+      name="achievement"
+      placeholder="Enter Revenue Growth Achievement"
+      value={growth.achievement}
+      onChange={(e) => handleChange(e, index, "revenueGrowth")}
+      onBlur={() => handleBlur(index, "achievement", "revenueGrowth")}
+      className={
+        touched.revenueGrowth?.[index]?.achievement && !growth.achievement.trim()
+          ? "input-error"
+          : ""
+      }
+      style={{
+        padding: "10px",
+        fontSize: "14px",
+        borderRadius: "6px",
+        border: "1px solid #ccc"
+      }}
+    />
+    {touched.revenueGrowth?.[index]?.achievement && !growth.achievement.trim() && (
+      <span className="error-text">Achievement is required</span>
+    )}
+
+    {/* Remove Button */}
+    {index > 0 && (
+      <button className="remove-button-style"
+        onClick={() => removeField("revenueGrowth", index)}
+      >
+        Remove Achievement
+      </button>
+    )}
+  </div>
+))}
+
       <button className="add-btn" onClick={() => addField("revenueGrowth", { achievement: "" })}>
         + Add Revenue Achievement
       </button>
@@ -994,22 +1362,51 @@ function ResumeBuilder() {
     <div className="section-container">
       <h4>Sales Tools & Technologies <span className="required">*</span></h4>
       {resumeData.salesTools?.map((tool, index) => (
-        <div key={index} className="input-group">
-          <label>Tool Name <span className="required">*</span></label>
-          <input
-            type="text"
-            name="tool"
-            placeholder="Enter Sales Tool (e.g., Salesforce, HubSpot)"
-            value={tool.tool}
-            onChange={(e) => handleChange(e, index, "salesTools")}
-            onBlur={() => handleBlur(index, "tool", "salesTools")}
-            className={touched.salesTools?.[index]?.tool && !tool.tool.trim() ? "input-error" : ""}
-          />
-          {touched.salesTools?.[index]?.tool && !tool.tool.trim() && (
-            <span className="error-text">Tool name is required</span>
-          )}
-        </div>
-      ))}
+  <div
+    key={index}
+    className="input-group"
+    style={{
+      display: "flex",
+      flexDirection: "column",
+      gap: "10px",
+      marginBottom: "25px"
+    }}
+  >
+    <label>Tool Name <span className="required">*</span></label>
+    <input
+      type="text"
+      name="tool"
+      placeholder="Enter Sales Tool (e.g., Salesforce, HubSpot)"
+      value={tool.tool}
+      onChange={(e) => handleChange(e, index, "salesTools")}
+      onBlur={() => handleBlur(index, "tool", "salesTools")}
+      className={
+        touched.salesTools?.[index]?.tool && !tool.tool.trim()
+          ? "input-error"
+          : ""
+      }
+      style={{
+        padding: "10px",
+        fontSize: "14px",
+        borderRadius: "6px",
+        border: "1px solid #ccc"
+      }}
+    />
+    {touched.salesTools?.[index]?.tool && !tool.tool.trim() && (
+      <span className="error-text">Tool name is required</span>
+    )}
+
+    {/* Remove Button */}
+    {index > 0 && (
+      <button className="remove-button-style"
+        onClick={() => removeField("salesTools", index)}
+      >
+        Remove Tool
+      </button>
+    )}
+  </div>
+))}
+
       <button className="add-btn" onClick={() => addField("salesTools", { tool: "" })}>
         + Add Sales Tool
       </button>
@@ -1019,21 +1416,50 @@ function ResumeBuilder() {
     <div className="section-container">
       <h4>Negotiation Experience <span className="required">*</span></h4>
       {resumeData.negotiationExperience?.map((negotiation, index) => (
-        <div key={index} className="input-group">
-          <label>Scenario <span className="required">*</span></label>
-          <textarea
-            name="scenario"
-            placeholder="Describe a negotiation scenario"
-            value={negotiation.scenario}
-            onChange={(e) => handleChange(e, index, "negotiationExperience")}
-            onBlur={() => handleBlur(index, "scenario", "negotiationExperience")}
-            className={touched.negotiationExperience?.[index]?.scenario && !negotiation.scenario.trim() ? "input-error" : ""}
-          ></textarea>
-          {touched.negotiationExperience?.[index]?.scenario && !negotiation.scenario.trim() && (
-            <span className="error-text">Negotiation scenario is required</span>
-          )}
-        </div>
-      ))}
+  <div
+    key={index}
+    className="input-group"
+    style={{
+      display: "flex",
+      flexDirection: "column",
+      gap: "10px",
+      marginBottom: "25px"
+    }}
+  >
+    <label>Scenario <span className="required">*</span></label>
+    <textarea
+      name="scenario"
+      placeholder="Describe a negotiation scenario"
+      value={negotiation.scenario}
+      onChange={(e) => handleChange(e, index, "negotiationExperience")}
+      onBlur={() => handleBlur(index, "scenario", "negotiationExperience")}
+      className={
+        touched.negotiationExperience?.[index]?.scenario && !negotiation.scenario.trim()
+          ? "input-error"
+          : ""
+      }
+      style={{
+        padding: "10px",
+        fontSize: "14px",
+        borderRadius: "6px",
+        border: "1px solid #ccc"
+      }}
+    ></textarea>
+    {touched.negotiationExperience?.[index]?.scenario && !negotiation.scenario.trim() && (
+      <span className="error-text">Negotiation scenario is required</span>
+    )}
+
+    {/* Remove Button */}
+    {index > 0 && (
+      <button className="remove-button-style"
+        onClick={() => removeField("negotiationExperience", index)}
+      >
+        Remove Scenario
+      </button>
+    )}
+  </div>
+))}
+
       <button className="add-btn" onClick={() => addField("negotiationExperience", { scenario: "" })}>
         + Add Negotiation Experience
       </button>
@@ -1047,36 +1473,87 @@ function ResumeBuilder() {
 <div className="section-container">
   <h4>Languages <span className="required">*</span></h4>
   {resumeData.languages.map((lang, index) => (
-    <div key={index} className="input-group">
-      <label>Language <span className="required">*</span></label>
-      <input
-        type="text"
-        name="language"
-        placeholder="Language (e.g., English, Spanish)"
-        value={lang.language}
-        onChange={(e) => handleChange(e, index, "languages")}
-        onBlur={() => handleBlur(index, "language", "languages")}
-        className={touched.languages?.[index]?.language && !lang.language.trim() ? "input-error" : ""}
-      />
-      {touched.languages?.[index]?.language && !lang.language.trim() && (
-        <span className="error-text">Language is required</span>
-      )}
+  <div
+    key={index}
+    className="input-group"
+    style={{
+      display: "flex",
+      flexDirection: "column",
+      gap: "10px",
+      marginBottom: "25px"
+    }}
+  >
+    <label>Language <span className="required">*</span></label>
+    <input
+      type="text"
+      name="language"
+      placeholder="Language (e.g., English, Spanish)"
+      value={lang.language}
+      onChange={(e) => handleChange(e, index, "languages")}
+      onBlur={() => handleBlur(index, "language", "languages")}
+      className={
+        touched.languages?.[index]?.language && !lang.language.trim()
+          ? "input-error"
+          : ""
+      }
+      style={{
+        padding: "10px",
+        fontSize: "14px",
+        borderRadius: "6px",
+        border: "1px solid #ccc"
+      }}
+    />
+    {touched.languages?.[index]?.language && !lang.language.trim() && (
+      <span className="error-text">Language is required</span>
+    )}
 
-      <label>Proficiency Level <span className="required">*</span></label>
-      <input
-        type="text"
-        name="proficiency"
-        placeholder="Proficiency Level (e.g., Fluent, Beginner)"
-        value={lang.proficiency}
-        onChange={(e) => handleChange(e, index, "languages")}
-        onBlur={() => handleBlur(index, "proficiency", "languages")}
-        className={touched.languages?.[index]?.proficiency && !lang.proficiency.trim() ? "input-error" : ""}
-      />
-      {touched.languages?.[index]?.proficiency && !lang.proficiency.trim() && (
-        <span className="error-text">Proficiency is required</span>
-      )}
-    </div>
-  ))}
+    <label>Proficiency Level <span className="required">*</span></label>
+    <input
+      type="text"
+      name="proficiency"
+      placeholder="Proficiency Level (e.g., Fluent, Beginner)"
+      value={lang.proficiency}
+      onChange={(e) => handleChange(e, index, "languages")}
+      onBlur={() => handleBlur(index, "proficiency", "languages")}
+      className={
+        touched.languages?.[index]?.proficiency && !lang.proficiency.trim()
+          ? "input-error"
+          : ""
+      }
+      style={{
+        padding: "10px",
+        fontSize: "14px",
+        borderRadius: "6px",
+        border: "1px solid #ccc"
+      }}
+    />
+    {touched.languages?.[index]?.proficiency && !lang.proficiency.trim() && (
+      <span className="error-text">Proficiency is required</span>
+    )}
+
+    {/* Remove Button */}
+    {index > 0 && (
+      <button
+        style={{
+          backgroundColor: "#D32F2F",
+          color: "white",
+          border: "none",
+          padding: "10px",
+          fontSize: "14px",
+          fontWeight: "bold",
+          borderRadius: "6px",
+          cursor: "pointer",
+          width: "100%",
+          marginTop: "10px"
+        }}
+        onClick={() => removeField("languages", index)}
+      >
+        Remove Language
+      </button>
+    )}
+  </div>
+))}
+
   <button className="add-btn" onClick={() => addField("languages", { language: "", proficiency: "" })}>
     + Add Language
   </button>

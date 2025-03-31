@@ -151,3 +151,29 @@
         font-size: 0.85rem;
     }
 }
+.recent-badge {
+    float: right;
+    background-color: #d1f7d6;
+    color: #2e7d32;
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 15px;
+    font-weight: 500;
+    margin-left: auto;
+    margin-top: 4px;
+    display: inline-block;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+  }
+  .resume-updated {
+    font-size: 13px;
+    color: #6c757d;
+    margin-top: 4px;
+  }
+
+  .resume-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  

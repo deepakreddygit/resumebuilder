@@ -5,16 +5,21 @@ body {
     margin: 0;
     padding: 0;
   }
-  /* .resume-header {
-    display: flex;
+  .resume-header-builder {
+   
     justify-content: space-between;
     align-items: center;
     width: 100%;
-  } */
+  }
   
   .resume-title {
     font-size: 24px;
     font-weight: bold;
+  }
+  
+  .button-container {
+    display: flex;
+    justify-content: flex-end;
   }
   
   .autofill-btn {
@@ -311,4 +316,54 @@ body {
 
 .use-btn:hover {
   background: #218838;
+}
+.resume-builder-container .resume-inputs .remove-button-style{
+          background: #D32F2F;
+          color: white;
+          border: none;
+          padding: 10px;
+          font-size: 16px;
+          font-weight: bold;
+          border-radius: 6px;
+          cursor: pointer;
+          width: 100%;
+          margin-top: 10px;
+ }
+ .resume-builder-container .resume-inputs .remove-button-style:hover{
+  background: #D32F2F;
+  color: white;
+  border: none;
+  padding: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.progress-bar-container {
+  margin: 10px 0 20px;
+  width: 100%;
+}
+
+.progress-bar-track {
+  width: 100%;
+  height: 12px;
+  background-color: #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background-color: #007bff;
+  transition: width 0.4s ease;
+}
+
+.progress-bar-text {
+  font-size: 14px;
+  margin-top: 5px;
+  text-align: right;
+  font-weight: bold;
 }

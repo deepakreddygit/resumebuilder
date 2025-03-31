@@ -66,8 +66,8 @@ function AppContent() {
           <Route path="/" element={<Navigate replace to={isAuthenticated ? "/dashboard" : "/login"} />} />
           <Route path="/login" element={isAuthenticated ? <Navigate replace to="/dashboard" /> : <Login />} />
           <Route path="/signup" element={isAuthenticated ? <Navigate replace to="/dashboard" /> : <Signup />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/forgot-password" element={isAuthenticated ? <Navigate replace to="/login" /> : <ForgotPassword />} /> 
+          <Route path="/reset-password"  element={isAuthenticated ? <Navigate replace to="/login" /> : <ResetPassword />} />
 
 
           {/* 🔹 Protected Routes (Require Authentication) */}

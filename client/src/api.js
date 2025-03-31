@@ -185,7 +185,7 @@ export const updateResume = async (resumeId, updatedData) => {
 };
 
 
-// ✅ Improved Delete Resume API Call
+// Improved Delete Resume API Call
 export const deleteResume = async (resumeId, userId) => {
     console.log(`Deleting resume: ${resumeId}`);
     try {
@@ -203,7 +203,7 @@ export const deleteResume = async (resumeId, userId) => {
             return { error: result.error || "Failed to delete resume" };
         }
 
-        // ✅ If deletion is successful, fetch the latest user profile
+        //  If deletion is successful, fetch the latest user profile
         const updatedProfileResponse = await fetch(`${API_BASE_URL}/user/profile/${userId}?t=${new Date().getTime()}`);
         const updatedProfile = await updatedProfileResponse.json();
 
@@ -239,29 +239,27 @@ export const submitReview = async (userId, templateNumber, reviewText) => {
     }
 };
 
-
-
-// ✅ Fetch all reviews
+//  Fetch all reviews
 export const getAllReviews = async () => {
     console.log("Fetching all template reviews...");
     try {
-        const response = await fetch("http://localhost:5001/reviews");
+        const response = await fetch(`${API_BASE_URL}/reviews`);
         if (!response.ok) throw new Error("Failed to fetch reviews");
 
         const reviews = await response.json();
-        console.log("✅ Reviews Fetched:", reviews);
+        console.log(" Reviews Fetched:", reviews);
         return reviews;
     } catch (error) {
-        console.error("❌ Error fetching reviews:", error);
+        console.error(" Error fetching reviews:", error);
         return [];
     }
 };
 
-// ✅ Update a review
+//  Update a review
 export const updateReview = async (reviewId, userId, newText) => {
     console.log(`Updating review ${reviewId} for user ${userId}...`);
     try {
-        const response = await fetch(`http://localhost:5001/review/update/${reviewId}`, {
+        const response = await fetch(`${API_BASE_URL}/review/update/${reviewId}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ user_id: userId, reviewText: newText }),
@@ -276,12 +274,12 @@ export const updateReview = async (reviewId, userId, newText) => {
     }
 };
 
-// ✅ Delete a review
+// Delete a review
 export const deleteReview = async (reviewId, userId) => {
     console.log(`Deleting review ${reviewId} for user ${userId}...`);
 
     try {
-        const response = await fetch(`http://localhost:5001/review/delete/${reviewId}`, {
+        const response = await fetch(`${API_BASE_URL}/review/delete/${reviewId}`, {
             method: "DELETE",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ user_id: userId }),
@@ -321,5 +319,39 @@ export const changePassword = async (userId, currentPassword, newPassword, confi
     }
 };
 
+//send forgot password email
+export const sendForgotPasswordEmail = async (email) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/forgot-password`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
   
+      const result = await response.json();
+      return { ok: response.ok, data: result };
+    } catch (error) {
+      return { ok: false, error: "Server error. Please try again later." };
+    }
+  };
+  
+  // Reset Password API
+export const resetPassword = async (token, newPassword, confirmPassword) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/reset-password`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          token: token,
+          new_password: newPassword,
+          confirm_password: confirmPassword,
+        }),
+      });
+  
+      const result = await response.json();
+      return { ok: response.ok, data: result };
+    } catch (error) {
+      return { ok: false, error: "Server error. Please try again." };
+    }
+  };
 

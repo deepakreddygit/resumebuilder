@@ -138,8 +138,11 @@ function Profile() {
       return;
     }
   
-    if (newPassword.length < 8) {
-      toast.warn('New password must be at least 8 characters.');
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#^(){}[\]\\/+<>=~|_.,:;"'-]).{8,}$/;
+  
+    if (!passwordRegex.test(newPassword)) {
+      console.log("Invalid password entered:", newPassword); // ✅ For debugging
+      toast.warn('New password must be at least 8 characters and include uppercase, lowercase, number & special character.');
       return;
     }
   
@@ -153,12 +156,10 @@ function Profile() {
   
       if (result.message) {
         toast.success(result.message);
-  
-        // Reset form and close modal
         setCurrentPassword('');
         setNewPassword('');
         setConfirmNewPassword('');
-        setShowPasswordModal(false); // ✅ Use modal state here
+        setShowPasswordModal(false);
       } else {
         toast.error(result.error || 'Failed to change password.');
       }
@@ -166,6 +167,8 @@ function Profile() {
       toast.error('Something went wrong!');
     }
   };
+  
+  
   
   
 
