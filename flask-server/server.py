@@ -46,9 +46,8 @@ app.config.update(MAIL_SETTINGS)
 mail.init_app(app)
 
 # Enable CORS
-# CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}}, supports_credentials=True)
-
 CORS(app, origins=["http://localhost:3000"], supports_credentials=True)
+# CORS(app, resources={r"/*": {"origins": "http://cassini.cs.kent.edu:8008"}}, supports_credentials=True)
 
 # Register routes
 app.register_blueprint(auth_bp)
@@ -61,3 +60,4 @@ def serve_css(filename):
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=5001)
+    #  app.run(debug=True, host="0.0.0.0", port=8007)
