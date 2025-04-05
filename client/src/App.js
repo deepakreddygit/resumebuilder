@@ -16,6 +16,7 @@ import SavedResumes from "./pages/SavedResumes";
 import { AuthContext } from "./context/AuthContext";
 import { AuthProvider } from "./context/AuthContext";
 import NotFound from "./pages/NotFound"; 
+import Help from "./pages/Help";
 import "./App.css";
 
 function App() {
@@ -25,7 +26,7 @@ function App() {
     console.log("App.js - Loading Auth Data from localStorage...");
     setTimeout(() => {
       setLoading(false);
-    }, 500); // Simulate loading time (optional)
+    }, 500); //simulate loading time 
   }, []);
 
   if (loading) {
@@ -68,7 +69,7 @@ function AppContent() {
           <Route path="/signup" element={isAuthenticated ? <Navigate replace to="/dashboard" /> : <Signup />} />
           <Route path="/forgot-password" element={isAuthenticated ? <Navigate replace to="/login" /> : <ForgotPassword />} /> 
           <Route path="/reset-password"  element={isAuthenticated ? <Navigate replace to="/login" /> : <ResetPassword />} />
-
+          <Route path="/help" element={<Help />} />
 
           {/* 🔹 Protected Routes (Require Authentication) */}
           {isAuthenticated ? (

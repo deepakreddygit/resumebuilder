@@ -7,6 +7,39 @@ import { Modal, Button } from "react-bootstrap";
 import { FaEdit, FaTrashAlt, FaEye } from "react-icons/fa";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../styles/SavedResumes.css";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
+
+//templates import
+import Template1 from "../components/templates/Template1";
+import Template2 from "../components/templates/Template2";
+import Template3 from "../components/templates/Template3";
+import Template4 from "../components/templates/Template4";
+import Template5 from "../components/templates/Template5";
+import Template6 from "../components/templates/Template6";
+import Template7 from "../components/templates/Template7";
+import Template8 from "../components/templates/Template8";
+import Template9 from "../components/templates/Template9";
+import Template10 from "../components/templates/Template10";
+import Template11 from "../components/templates/Template11";
+import Template12 from "../components/templates/Template12";
+
+//templates component
+const templateComponents = {
+  "1": Template1,
+  "2": Template2,
+  "3": Template3,
+  "4": Template4,
+  "5": Template5,
+  "6": Template6,
+  "7": Template7,
+  "8": Template8,
+  "9": Template9,
+  "10": Template10,
+  "11": Template11,
+  "12": Template12,
+};
+
 
 
 const isRecentlyUpdated = (timestamp) => {
@@ -72,6 +105,9 @@ function SavedResumes() {
   const [showModal, setShowModal] = useState(false);
   const [selectedResumeId, setSelectedResumeId] = useState(null);
   const [savedBasicData, setSavedBasicData] = useState(null);
+  const [showDownloadModal, setShowDownloadModal] = useState(false);
+const [downloadedResumeId, setDownloadedResumeId] = useState(null);
+
 
   useEffect(() => {
     if (!userId) {
@@ -151,6 +187,48 @@ function SavedResumes() {
     });
   };
 
+  const handleDownload = (resume) => {
+    setSelectedResumeId(resume.resume_id);
+    setDownloadedResumeId(resume.resume_id);
+    toast.info("Downloading..");
+  
+    setTimeout(() => {
+      const element = document.getElementById("download-preview");
+      if (!element) return toast.error("Preview not ready.");
+  
+
+      const spacer = document.createElement("div");
+      spacer.style.height = "10px";
+      spacer.style.width = "100%";
+      element.appendChild(spacer);
+  
+      window.scrollTo(0, 0);
+  
+      html2canvas(element, { scale: 2, useCORS: true }).then((canvas) => {
+        const imgData = canvas.toDataURL("image/png");
+        const pdf = new jsPDF("p", "mm", "a4");
+        const pdfWidth = 210;
+        const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+  
+        pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+        pdf.save(`${resume.name || "resume"}.pdf`);
+  
+  
+        element.removeChild(spacer);
+  
+        setTimeout(() => {
+          setShowDownloadModal(true);
+          toast.dismiss();
+        }, 500);
+      });
+    }, 600);
+  };
+  
+  
+  
+  
+  
+
   // Role icons and names mapping
   const roleIcons = {
     "software-engineer": { icon: "💻", name: "Software Engineer" },
@@ -181,6 +259,7 @@ function SavedResumes() {
       <div className="saved-resumes-grid">
         {resumes.length > 0 ? (
           resumes.map((resume, index) => {
+            
             const roleData = roleIcons[resume.role] || { icon: "❓", name: "Unknown Role" };
             const templateName = templateNames[resume.templateNumber] || "Unknown Template";
 
@@ -225,6 +304,12 @@ function SavedResumes() {
                   <button className="small-btn delete-btn" onClick={() => handleShowModal(resume.resume_id)}>
                     <FaTrashAlt className="icon" /> Delete
                   </button>
+                  <button className="small-btn download-btn" onClick={() => handleDownload(resume)}>
+                   Download
+                  </button>
+
+
+                 
                 </div>
               </div>
             );
@@ -246,6 +331,10 @@ function SavedResumes() {
     transition: "opacity 0.3s ease-in-out"
   }}
 >
+
+
+
+
   {/* Modal Header */}
   <Modal.Header 
     closeButton 
@@ -327,8 +416,26 @@ function SavedResumes() {
     </Button>
   </Modal.Footer>
 </Modal>
+
+<div id="download-preview" style={{ position: "absolute", top: "-9999px", left: "-9999px", zIndex: -1 }}>
+  {selectedResumeId && resumes.length > 0 && (() => {
+    const resume = resumes.find(r => r.resume_id === selectedResumeId);
+    const TemplateComponent = templateComponents[resume.templateNumber] || Template1;
+    return <TemplateComponent resumeData={resume} />;
+  })()}
+</div>
+
+
     </div>
+
+    
+
+    
   );
+
+  
 }
 
 export default SavedResumes;
+
+

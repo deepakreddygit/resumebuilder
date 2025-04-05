@@ -38,7 +38,7 @@ function ForgotPassword() {
                   className="form-control"
                 />
               </div>
-              <button type="submit" className="btn btn-warning w-100 mt-3">
+              <button type="submit" className="btn btn-primary w-100 mt-3">
                 Send Reset Link
               </button>
             </form>

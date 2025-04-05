@@ -176,4 +176,29 @@
     justify-content: space-between;
     align-items: center;
   }
+  .download-btn {
+    background-color: #007bff;
+    color: white;
+    margin-left: 8px;
+    font-weight: 600;
+  }
+  .download-btn:hover {
+    background-color: #0056b3;
+  }
+  /* 🔍 Tiny Preview Mode */
+.tiny-preview-container {
+    width: 100%;
+    height: 120px;
+    overflow: hidden;
+    border-radius: 6px;
+    margin-top: 10px;
+    background: #f8f8f8;
+    box-shadow: 0 0 5px rgba(0,0,0,0.05);
+  }
+  
+  .tiny-preview-wrapper {
+    transform: scale(0.3);
+    transform-origin: top left;
+    width: 100%;
+  }
   

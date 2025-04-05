@@ -553,8 +553,8 @@ function Dashboard() {
                       onChange={(e) => setEditedReviewText(e.target.value)}
                     />
                     <div className="review-buttons">
-                      <button onClick={handleSaveReview}>Save</button>
-                      <button onClick={() => setEditingReview(null)}>Cancel</button>
+                      <button className="save-button" onClick={handleSaveReview}>Save</button>
+                      <button className="cancel-button" onClick={() => setEditingReview(null)}>Cancel</button>
                     </div>
                   </div>
                 ) : (

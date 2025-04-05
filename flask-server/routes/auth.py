@@ -200,35 +200,12 @@ def verify_reset_token(token):
             return jsonify({"error": "User not found"}), 404
 
         return redirect(f"http://localhost:3000/reset-password?token={token}")
+        # return redirect(f"http://cassini.cs.kent.edu/reset-password?token={token}")
     except Exception as e:
-        print("Token verification error:", e)  # 👈 See exact error in terminal
+        print("Token verification error:", e)  
         return jsonify({"error": "Invalid or expired token"}), 400
 
-# reset password
-# @auth_bp.route('/reset-password', methods=['POST'])
-# def reset_password():
-#     data = request.json
-#     user_id = data.get('user_id')
-#     new_password = data.get('new_password')
-#     confirm_password = data.get('confirm_password')
 
-#     if not user_id or not new_password or not confirm_password:
-#         return jsonify({"error": "All fields are required"}), 400
-
-#     if new_password != confirm_password:
-#         return jsonify({"error": "Passwords do not match"}), 400
-
-#     user = users_collection.find_one({"_id": ObjectId(user_id)})
-#     if not user:
-#         return jsonify({"error": "User not found"}), 404
-
-#     hashed_pw = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt())
-#     users_collection.update_one(
-#         {"_id": ObjectId(user_id)},
-#         {"$set": {"password": hashed_pw}}
-#     )
-
-#     return jsonify({"message": "Password reset successful!"}), 200
 
 serializer = URLSafeTimedSerializer(Config.SECRET_KEY)
 

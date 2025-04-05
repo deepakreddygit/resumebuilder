@@ -1,11 +1,13 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { AuthContext } from "../context/AuthContext";
 import { getResumeById, saveResume, updateResume } from "../api";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 import "../styles/ResumePreview.css";
 
-//all templates
+// Template components
 import Template1 from "../components/templates/Template1";
 import Template2 from "../components/templates/Template2";
 import Template3 from "../components/templates/Template3";
@@ -19,7 +21,7 @@ import Template10 from "../components/templates/Template10";
 import Template11 from "../components/templates/Template11";
 import Template12 from "../components/templates/Template12";
 
-//all css
+// CSS for templates
 import "../styles/Template1.css";
 import "../styles/Template2.css";
 import "../styles/Template3.css";
@@ -33,6 +35,20 @@ import "../styles/Template10.css";
 import "../styles/Template11.css";
 import "../styles/Template12.css";
 
+const templateComponents = {
+  "1": Template1,
+  "2": Template2,
+  "3": Template3,
+  "4": Template4,
+  "5": Template5,
+  "6": Template6,
+  "7": Template7,
+  "8": Template8,
+  "9": Template9,
+  "10": Template10,
+  "11": Template11,
+  "12": Template12,
+};
 
 function ResumePreview() {
   const { userId } = useContext(AuthContext);
@@ -44,12 +60,9 @@ function ResumePreview() {
   const [resumeData, setResumeData] = useState(null);
   const [selectedTemplate, setSelectedTemplate] = useState(templateNumber || "1");
 
-  console.log("🔵 Component Rendered | Current resumeId:", resumeId, "| Template:", selectedTemplate);
+  const resumeRef = useRef();
 
   useEffect(() => {
-    console.log("🟢 Component Mounted | Initial Resume ID:", resumeId);
-    console.log("🟢 useEffect: Page Loaded. Params:", { paramResumeId, templateNumber });
-
     if (!templateNumber) {
       toast.error("❌ Template number is missing!");
       navigate("/templates");
@@ -57,17 +70,12 @@ function ResumePreview() {
     }
 
     if (location.state?.resumeData) {
-      console.log("✅ Using Resume Data from Navigation State:", location.state.resumeData);
       setResumeData(location.state.resumeData);
       setResumeId(location.state.resumeData.resume_id);
     } else if (resumeId) {
-      console.log(`🔄 Fetching Resume from API for ID: ${resumeId}`);
       getResumeById(resumeId)
         .then((data) => {
           if (data) {
-            console.log("✅ API Response: Fetched Resume Data:", data);
-
-            // ✅ Ensure required fields exist (prevents crashes)
             const safeData = {
               ...data,
               experience: data.experience || [],
@@ -81,7 +89,6 @@ function ResumePreview() {
               role: data.role || "software-engineer",
               templateNumber: data.templateNumber || "1",
             };
-
             setResumeData(safeData);
             setResumeId(data.resume_id);
           } else {
@@ -101,7 +108,6 @@ function ResumePreview() {
     return <p>⏳ Loading Resume Data...</p>;
   }
 
-  // Define templates grouped by roles
   const templatesByRole = {
     "software-engineer": [
       { id: "1", name: "Modern Professional" },
@@ -125,31 +131,11 @@ function ResumePreview() {
     ],
   };
 
-  // Get templates based on the role in resumeData
   const userRole = resumeData.role || "software-engineer";
   const availableTemplates = templatesByRole[userRole] || [];
-
-  // Map template ID to component
-  const templateComponents = {
-    "1": Template1,
-    "2": Template2,
-    "3": Template3,
-    "4": Template4,
-    "5": Template5,
-    "6": Template6,
-    "7": Template7,
-    "8": Template8,
-    "9": Template9,
-    "10":Template10,
-    "11": Template11,
-    "12": Template12,
-  };
-
   const SelectedTemplate = templateComponents[selectedTemplate] || Template1;
 
   const handleSaveOrUpdate = async () => {
-    console.log("Save/Update Triggered | Resume Data:", resumeData);
-
     if (!resumeData) {
       toast.error(" No resume data found.");
       return;
@@ -159,11 +145,9 @@ function ResumePreview() {
       const updatedResume = { ...resumeData, templateNumber: selectedTemplate };
 
       if (resumeId && resumeId !== "new" && resumeId !== null) {
-        console.log(` Updating resume with ID: ${resumeId}`);
         await updateResume(resumeId, updatedResume);
         toast.success("Resume updated successfully!");
       } else {
-        console.log("💾 Saving new resume...");
         const savedResume = await saveResume(userId, updatedResume);
         toast.success("Resume saved successfully!");
 
@@ -173,33 +157,37 @@ function ResumePreview() {
         });
       }
 
-      console.log("🔀 Redirecting to Saved Resumes...");
       navigate("/saved-resumes");
-
     } catch (error) {
       console.error(" Save/Update Error:", error);
       toast.error("Failed to save/update resume.");
     }
   };
 
+  const handleDownload = async () => {
+    const element = resumeRef.current;
+
+    if (!element) {
+      toast.error("Resume preview not found.");
+      return;
+    }
+
+    window.scrollTo(0, 0);
+    const canvas = await html2canvas(element, { scale: 2, useCORS: true });
+    const imgData = canvas.toDataURL("image/png");
+    const pdf = new jsPDF("p", "mm", "a4");
+    const pdfWidth = 210;
+    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+    pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+    pdf.save(`${resumeData.name || "resume"}.pdf`);
+  };
+
   return (
     <div className="resume-preview-container">
-      <h2 
-  className="text-center" 
-  style={{
-    marginTop: "30px",  
-    marginBottom: "20px", 
-    fontWeight: "600", 
-    color: "#333",  
-    textTransform: "uppercase", 
-    letterSpacing: "1px" 
-  }}
->
-  LIVE RESUME PREVIEW
-</h2>
+      <h2 className="text-center" style={{ marginTop: "30px", marginBottom: "20px", fontWeight: "600", color: "#333", textTransform: "uppercase", letterSpacing: "1px" }}>
+        LIVE RESUME PREVIEW
+      </h2>
 
-
-      {/*Role-Based Template Dropdown */}
       <div className="template-selector">
         <p className="text-center"><strong>Choose a Template:</strong></p>
         <select
@@ -216,36 +204,25 @@ function ResumePreview() {
         </select>
       </div>
 
-      {/* Resume Preview */}
-      <div className="resume-preview">
+      <div className="resume-preview" ref={resumeRef}>
         <SelectedTemplate resumeData={resumeData} />
       </div>
 
       <div className="text-center mt-4">
-      <button
-  className="preview-page-save-btn"
-  onClick={handleSaveOrUpdate}
-  style={{
-    backgroundColor: "#007bff",
-    color: "white",
-    border: "none",
-    padding: "10px 20px",
-    fontSize: "16px",
-    fontWeight: "bold",
-    borderRadius: "6px",
-    cursor: "pointer",
-    transition: "all 0.3s ease-in-out",
-    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-    display: "inline-block",
-    textAlign: "center",
-    marginTop: "10px",
-  }}
-  onMouseOver={(e) => (e.target.style.backgroundColor = "#0056b3")}
-  onMouseOut={(e) => (e.target.style.backgroundColor = "#007bff")}
->
-  {resumeId && resumeId !== "new" && resumeId !== null ? "Update Resume" : "Save Resume"}
-</button>
+        <button
+          className="preview-page-save-btn"
+          onClick={handleSaveOrUpdate}
+          style={{ backgroundColor: "#007bff", color: "white", padding: "10px 20px", fontSize: "16px", fontWeight: "bold", borderRadius: "6px", cursor: "pointer", marginRight: "10px" }}
+        >
+          {resumeId && resumeId !== "new" && resumeId !== null ? "Update Resume" : "Save Resume"}
+        </button>
 
+        <button
+          onClick={handleDownload}
+          style={{ backgroundColor: "#28a745", color: "white", padding: "10px 20px", fontSize: "16px", fontWeight: "bold", borderRadius: "6px", cursor: "pointer" }}
+        >
+          Download PDF
+        </button>
       </div>
     </div>
   );
