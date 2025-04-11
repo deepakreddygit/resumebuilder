@@ -18,7 +18,7 @@ mail.init_app(app)
 
 # Enable CORS
 CORS(app, origins=["http://localhost:3000"], supports_credentials=True)
-# CORS(app, resources={r"/*": {"origins": "http://cassini.cs.kent.edu:8008"}}, supports_credentials=True)
+# CORS(app, resources={r"/*": {"origins": "http://proresume.kentcs.org:8316"}}, supports_credentials=True)
 
 # Register routes
 app.register_blueprint(auth_bp)

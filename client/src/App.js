@@ -17,12 +17,16 @@ import { AuthContext } from "./context/AuthContext";
 import { AuthProvider } from "./context/AuthContext";
 import NotFound from "./pages/NotFound"; 
 import Help from "./pages/Help";
+import About from "./pages/About";
 import "./App.css";
 
 function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    document.body.style.overflowY = "auto";
+    document.body.style.minHeight = "100vh";
+    document.body.style.backgroundColor = "#e6f2ff";
     console.log("App.js - Loading Auth Data from localStorage...");
     setTimeout(() => {
       setLoading(false);
@@ -70,6 +74,7 @@ function AppContent() {
           <Route path="/forgot-password" element={isAuthenticated ? <Navigate replace to="/login" /> : <ForgotPassword />} /> 
           <Route path="/reset-password"  element={isAuthenticated ? <Navigate replace to="/login" /> : <ResetPassword />} />
           <Route path="/help" element={<Help />} />
+          <Route path="/about" element={<About />} />
 
           {/* 🔹 Protected Routes (Require Authentication) */}
           {isAuthenticated ? (
@@ -102,5 +107,50 @@ function AppContent() {
     </div>
   );
 }
+
+// function AppContent() {
+//   const { isAuthenticated, userName } = useContext(AuthContext);
+//   const location = useLocation();
+
+//   if (isAuthenticated === null) return <div>Loading user data...</div>; // Wait for auth status
+
+//   return (
+//     <div className="app-container">
+//       {isAuthenticated && !["/login", "/signup"].includes(location.pathname) && <Sidebar />}
+//       <div className="content-container">
+//         <Navbar userName={userName} />
+//         <Routes>
+//           {/* 🔹 Public Routes */}
+//           <Route path="/" element={<Navigate replace to={isAuthenticated ? "/dashboard" : "/login"} />} />
+//           <Route path="/login" element={isAuthenticated ? <Navigate replace to="/dashboard" /> : <Login />} />
+//           <Route path="/signup" element={isAuthenticated ? <Navigate replace to="/dashboard" /> : <Signup />} />
+//           <Route path="/forgot-password" element={isAuthenticated ? <Navigate replace to="/dashboard" /> : <ForgotPassword />} />
+//           <Route path="/reset-password" element={isAuthenticated ? <Navigate replace to="/dashboard" /> : <ResetPassword />} />
+//           <Route path="/help" element={<Help />} />
+
+//           {/* 🔹 Protected Routes */}
+//           {isAuthenticated ? (
+//             <>
+//               <Route path="/dashboard" element={<Dashboard />} />
+//               <Route path="/templates" element={<Templates />} />
+//               <Route path="/profile/:userId" element={<Profile />} />
+//               <Route path="/resume-builder/:role/:templateNumber" element={<ResumeBuilder />} />
+//               <Route path="/resume/edit/:resumeId/:templateNumber?" element={<ResumeBuilder />} />
+//               <Route path="/resume-preview/:resumeId/:templateNumber?" element={<ResumePreview />} />
+//               <Route path="/saved-resumes" element={<SavedResumes />} />
+//             </>
+//           ) : (
+//             <Route path="*" element={<Navigate replace to="/login" />} />
+//           )}
+
+//           {/* 🔹 Catch-All */}
+//           <Route path="*" element={<NotFound />} />
+//         </Routes>
+//         <ToastContainer position="top-right" autoClose={3000} />
+//       </div>
+//     </div>
+//   );
+// }
+
 
 export default App;

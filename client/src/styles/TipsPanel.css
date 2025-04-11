@@ -1,0 +1,31 @@
+.tips-panel-form {
+    background-color: #f0f4ff;
+    padding: 1rem;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 300px;
+    margin-left: 2rem;
+    font-size: 0.9rem;
+  }
+  
+  .tips-panel-form h3 {
+    color: #1a1a1a;
+    margin-bottom: 0.8rem;
+  }
+  
+  .tips-panel-form h4 {
+    margin-top: 1rem;
+    font-size: 1rem;
+    color: #3a3a3a;
+  }
+  
+  .tips-panel-form ul {
+    padding-left: 1.2rem;
+    margin-top: 0.3rem;
+  }
+  
+  .tips-panel-form li {
+    margin-bottom: 0.5rem;
+    color: #333;
+  }
+  

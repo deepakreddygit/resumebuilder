@@ -6,6 +6,9 @@ import "react-toastify/dist/ReactToastify.css";
 import "../styles/ResumeBuilder.css";
 import { AuthContext } from "../context/AuthContext";
 import { FaMagic, FaTimes } from "react-icons/fa";
+import TipsPanel from "../components/TipsPanel";
+import { useLocation } from "react-router-dom";
+import { Modal, Button } from "react-bootstrap";
 
 function ResumeBuilder() {
   const { resumeId, templateNumber, role } = useParams();
@@ -16,6 +19,98 @@ function ResumeBuilder() {
   const [loading, setLoading] = useState(false);
   const [generatedText, setGeneratedText] = useState("");
   const [completionPercentage, setCompletionPercentage] = useState(0);
+  const [isDirty, setIsDirty] = useState(false);
+  const [showExitModal, setShowExitModal] = useState(false);
+  const [pendingNavigation, setPendingNavigation] = useState(false);
+  const location = useLocation();
+
+  const handleInputChange = () => {
+    if (!isDirty) {
+      console.log("[Change] User started typing");
+      setIsDirty(true);
+    }
+  };
+  
+  useEffect(() => {
+    const handleBeforeUnload = (e) => {
+      if (isDirty) {
+        console.log("Triggering beforeunload due to unsaved changes");
+        e.preventDefault();
+        e.returnValue = "";
+      }
+    };
+  
+    const handlePopState = () => {
+      if (isDirty) {
+        console.log("🔙 Back button detected with unsaved changes");
+        setShowExitModal(true);
+        setPendingNavigation(true);
+        window.history.pushState(null, "", location.pathname); // 👈 re-push current state
+      } else {
+        console.log("Back button pressed but no unsaved changes");
+      }
+    };
+  
+    // 👇 Required to enable popstate blocking
+    window.history.pushState(null, "", window.location.href);
+  
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    window.addEventListener("popstate", handlePopState);
+  
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, [isDirty, location.pathname]);
+  
+
+  // Confirmation Modal
+  const ExitConfirmationModal = () => (
+    <Modal
+      show={showExitModal}
+      onHide={() => {
+        console.log("Modal closed without action");
+        setShowExitModal(false);
+      }}
+      centered
+      backdrop="static"
+    >
+      <Modal.Header closeButton>
+        <Modal.Title>Unsaved Changes</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        You have unsaved changes. Are you sure you want to leave this page?
+      </Modal.Body>
+      <Modal.Footer>
+        <Button
+          variant="secondary"
+          onClick={() => {
+            console.log("User chose to stay on the page");
+            setShowExitModal(false);
+          }}
+        >
+          Stay on Page
+        </Button>
+        <Button
+          variant="danger"
+          onClick={() => {
+            console.log("User confirmed to leave page");
+            setShowExitModal(false);
+            setIsDirty(false);
+            navigate("/templates"); 
+            // if (pendingNavigation) {
+            //   navigate(-1);
+            // }
+          }}
+        >
+          Leave Anyway
+        </Button>
+      </Modal.Footer>
+    </Modal>
+  );
+  
+
+
 
 
 
@@ -222,25 +317,22 @@ function ResumeBuilder() {
   };
 
   const handleAutofillBasicDetails = () => {
-    // ✅ Dismiss any previous toasts before showing a new one
     toast.dismiss();
   
-    // ✅ Check if savedBasicData exists and has valid properties
     if (!savedBasicData || !savedBasicData.name?.trim() || !savedBasicData.email?.trim() || !savedBasicData.phone?.trim()) {
       toast.warning("No basic details found. Please create a resume first.", {
-        toastId: `no-basic-data-warning-${Math.random()}`, // ✅ Ensures unique toast every time
+        toastId: `no-basic-data-warning-${Math.random()}`,
         autoClose: 2500,
       });
   
-      // ✅ Ensure fields remain empty
       setResumeData((prevData) => ({
         ...prevData,
         name: "",
         email: "",
         phone: "",
         summary: "",
-        education: prevData.education, 
-        languages: prevData.languages, 
+        education: prevData.education,
+        languages: prevData.languages,
       }));
   
       return;
@@ -248,7 +340,6 @@ function ResumeBuilder() {
   
     console.log("🆕 Autofilling with saved basic details:", savedBasicData);
   
-
     setResumeData((prevData) => ({
       ...prevData,
       name: savedBasicData.name,
@@ -259,12 +350,15 @@ function ResumeBuilder() {
       languages: savedBasicData.languages.length > 0 ? savedBasicData.languages : prevData.languages,
     }));
   
-
+    // 👇 mark form as dirty since autofill changed values
+    handleInputChange();
+  
     toast.success("Basic details autofilled!", {
       autoClose: 2000,
       toastId: `autofill-success-${Math.random()}`,
     });
   };
+  
 
   const calculateProgress = () => {
     let filled = 0;
@@ -365,6 +459,7 @@ function ResumeBuilder() {
 
   return (
     <div className="resume-builder-container">
+       {ExitConfirmationModal()}
    <div className="resume-header-builder">
    <h2 className="resume-title" style={{ paddingTop: "10px" }}>Create Your Resume</h2>
    <div className="progress-bar-container">
@@ -384,6 +479,9 @@ function ResumeBuilder() {
   <button class="autofill-btn">Autofill</button>
 </div>
 
+
+
+
 </div>
 
 
@@ -398,10 +496,17 @@ function ResumeBuilder() {
     name="name"
     placeholder="Enter your full name"
     value={resumeData.name}
-    onChange={handleChange}
-    onBlur={() => handleBlur(0, "name", "personalInfo")} // Dynamic section handling
-    className={touched.personalInfo?.[0]?.name && resumeData.name.trim() === "" ? "input-error" : ""}
-/>
+    onChange={(e) => {
+      handleChange(e);
+      handleInputChange(); // 👈 Track unsaved changes
+    }}
+    onBlur={() => handleBlur(0, "name", "personalInfo")}
+    className={
+      touched.personalInfo?.[0]?.name && resumeData.name.trim() === ""
+        ? "input-error"
+        : ""
+    }
+  />
   {touched.personalInfo?.[0]?.name && resumeData.name.trim() === "" && (
     <span className="error-text">Full Name is required</span>
   )}
@@ -415,11 +520,18 @@ function ResumeBuilder() {
     name="email"
     placeholder="Enter your email"
     value={resumeData.email}
-    onChange={handleChange}
-    onBlur={() => handleBlur(null, "email")} // Fix: No index, no section
-    className={touched.email && resumeData.email.trim() === "" ? "input-error" : ""}
-/>
-  {touched.email && resumeData.email.trim() === "" && <span className="error-text">Email is required</span>}
+    onChange={(e) => {
+      handleChange(e);
+      handleInputChange();
+    }}
+    onBlur={() => handleBlur(null, "email")}
+    className={
+      touched.email && resumeData.email.trim() === "" ? "input-error" : ""
+    }
+  />
+  {touched.email && resumeData.email.trim() === "" && (
+    <span className="error-text">Email is required</span>
+  )}
 
   {/* Phone */}
   <label className="input-label">
@@ -430,82 +542,98 @@ function ResumeBuilder() {
     name="phone"
     placeholder="Enter your phone number"
     value={resumeData.phone}
-    onChange={handleChange}
-    onBlur={() => handleBlur(null, "phone")} // Fix: No index, no section
-    className={touched.phone && resumeData.phone.trim() === "" ? "input-error" : ""}
-/>
-  {touched.phone && resumeData.phone.trim() === "" && <span className="error-text">Phone number is required</span>}
+    onChange={(e) => {
+      handleChange(e);
+      handleInputChange();
+    }}
+    onBlur={() => handleBlur(null, "phone")}
+    className={
+      touched.phone && resumeData.phone.trim() === "" ? "input-error" : ""
+    }
+  />
+  {touched.phone && resumeData.phone.trim() === "" && (
+    <span className="error-text">Phone number is required</span>
+  )}
 
+  {/* Summary Section */}
   <div className="summary-container">
-      {/* Summary Label */}
-      <label className="input-label">
-        Summary <span className="required">*</span>
-      </label>
+    <label className="input-label">
+      Summary <span className="required">*</span>
+    </label>
+    <div className="summary-wrapper">
+      <textarea
+        name="summary"
+        placeholder="Enter a short summary"
+        value={resumeData.summary}
+        onChange={(e) => {
+          handleChange(e);
+          handleInputChange();
+        }}
+        onBlur={() => handleBlur(null, "summary")}
+        className={`summary-textarea ${
+          resumeData.summary.trim() === "" ? "input-error" : ""
+        }`}
+      />
 
-      {/* Summary Input Wrapper */}
-      <div className="summary-wrapper">
-        {/* Textarea for Summary */}
-        <textarea
-          name="summary"
-          placeholder="Enter a short summary"
-          value={resumeData.summary}
-          onChange={handleChange}
-          onBlur={() => handleBlur(null, "summary")}
-          className={`summary-textarea ${resumeData.summary.trim() === "" ? "input-error" : ""}`}
-        />
+      {/* AI Icon */}
+      <span className="ai-icon" onClick={() => setShowPopup(!showPopup)}>
+        <FaMagic />
+      </span>
 
-        {/* AI Icon in Bottom-Left */}
-        <span className="ai-icon" onClick={() => setShowPopup(!showPopup)}>
-          <FaMagic />
-        </span>
-
-        {/* AI Prompt Popup */}
-        {showPopup && (
-          <div className="ai-popup">
-            <div className="ai-popup-header">
-              <h4>Generate Summary</h4>
-              <FaTimes className="close-icon" onClick={() => setShowPopup(false)} />
-            </div>
-
-            {/* AI Input Field */}
-            <textarea
-              className="ai-input"
-              placeholder="Enter a prompt"
-              value={aiPrompt}
-              onChange={(e) => setAiPrompt(e.target.value)}
-            />
-
-            {/* AI Processing Message or Generate Button */}
-            {loading ? (
-              <button className="generate-btn" disabled>Generating...</button>
-            ) : (
-              <button className="generate-btn" onClick={handleGenerateSummary}>Generate</button>
-            )}
-
-            {/* Display AI Generated Summary */}
-            {generatedText && (
-              <div className="ai-response">
-                <p>{generatedText}</p>
-                <button className="use-btn" onClick={() => {
-         
-                  handleChange({ target: { name: "summary", value: generatedText } });
-                  setShowPopup(false);
-                }}>
-                  Use This
-                </button>
-              </div>
-            )}
+      {/* AI Popup */}
+      {showPopup && (
+        <div className="ai-popup">
+          <div className="ai-popup-header">
+            <h4>Generate Summary</h4>
+            <FaTimes className="close-icon" onClick={() => setShowPopup(false)} />
           </div>
-        )}
-      </div>
 
-      {/* Validation Error */}
-      {touched.summary && resumeData.summary.trim() === "" && (
-        <span className="error-text">Summary is required</span>
+          {/* Prompt */}
+          <textarea
+            className="ai-input"
+            placeholder="Enter a prompt"
+            value={aiPrompt}
+            onChange={(e) => setAiPrompt(e.target.value)}
+          />
+
+          {loading ? (
+            <button className="generate-btn" disabled>
+              Generating...
+            </button>
+          ) : (
+            <button className="generate-btn" onClick={handleGenerateSummary}>
+              Generate
+            </button>
+          )}
+
+          {/* Result */}
+          {generatedText && (
+            <div className="ai-response">
+              <p>{generatedText}</p>
+              <button
+                className="use-btn"
+                onClick={() => {
+                  handleChange({
+                    target: { name: "summary", value: generatedText },
+                  });
+                  handleInputChange();
+                  setShowPopup(false);
+                }}
+              >
+                Use This
+              </button>
+            </div>
+          )}
+        </div>
       )}
     </div>
 
-    </div>
+    {touched.summary && resumeData.summary.trim() === "" && (
+      <span className="error-text">Summary is required</span>
+    )}
+  </div>
+</div>
+
 
 
 {/* Work Experience Section */}
@@ -1611,7 +1739,11 @@ function ResumeBuilder() {
   </button>
 </div>
 
+
+
+
     </div>
+
   );
 }
 
