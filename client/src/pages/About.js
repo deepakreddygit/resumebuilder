@@ -6,7 +6,7 @@ import DeveloperCard from "../components/DeveloperCard";
 const teamMembers = [
   { name: "Deepak", image: "/assets/images/team/dev1.jpg", role: "Frontend Developer" },
   { name: "Monisha", image: "/assets/images/team/dev2.jpeg", role: "Backend Developer" },
-  { name: "Meenakshi", image: "/assets/images/team/dev1.jpg", role: "UI/UX Designer" },
+  { name: "Meenakshi", image: "/assets/images/team/dev3.JPG", role: "UI/UX Designer" },
   { name: "Varshini", image: "/assets/images/team/dev1.jpg", role: "AI Integration Lead" },
   { name: "Siva", image: "/assets/images/team/dev1.jpg", role: "Testing & QA" },
   { name: "Jaswini", image: "/assets/images/team/dev1.jpg", role: "Project Manager" },
