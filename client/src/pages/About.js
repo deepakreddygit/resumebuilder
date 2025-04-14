@@ -6,10 +6,10 @@ import DeveloperCard from "../components/DeveloperCard";
 const teamMembers = [
   { name: "Deepak", image: "/assets/images/team/dev1.jpg", role: "Frontend Developer" },
   { name: "Monisha", image: "/assets/images/team/dev2.jpeg", role: "Backend Developer" },
-  { name: "Meenakshi", image: "/assets/images/team/dev3.JPG", role: "UI/UX Designer" },
-  { name: "Varshini", image: "/assets/images/team/dev1.jpg", role: "AI Integration Lead" },
-  { name: "Siva", image: "/assets/images/team/dev1.jpg", role: "Testing & QA" },
-  { name: "Jaswini", image: "/assets/images/team/dev1.jpg", role: "Project Manager" },
+  { name: "Meenakshi", image: "/assets/images/team/dev3.png", role: "UI/UX Designer" },
+  { name: "Varshini", image: "/assets/images/team/dev4.JPG", role: "AI Integration Lead" },
+  { name: "Siva", image: "/assets/images/team/dev5.png", role: "Testing & QA" },
+  { name: "Jaswini", image: "/assets/images/team/dev6.jpeg", role: "Project Manager" },
 ];
 
 const About = () => {
@@ -108,12 +108,12 @@ const About = () => {
           <div className="col-md-4 text-center mb-4">
             <img src="/assets/images/team/professor1.jpg" alt="Professor 1" className="rounded-circle shadow" width="160" height="160" />
             <h5 className="mt-3 mb-1">Dr. Professor One</h5>
-            <p className="text-muted">Capstone Mentor</p>
+            {/* <p className="text-muted">Capstone Mentor</p> */}
           </div>
           <div className="col-md-4 text-center mb-4">
             <img src="/assets/images/team/professor2.jpg" alt="Professor 2" className="rounded-circle shadow" width="160" height="160" />
             <h5 className="mt-3 mb-1">Dr. Professor Two</h5>
-            <p className="text-muted">Technical Advisor</p>
+            {/* <p className="text-muted">Technical Advisor</p> */}
           </div>
         </div>
       </section>
