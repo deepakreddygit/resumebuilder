@@ -181,31 +181,37 @@ def save_resume(user_id):
     print(f"[SERVER] Resume saved for user: {user_id} with Resume ID: {resume_id}")
     return jsonify({"message": "Resume saved successfully!", "resume_id": resume_id}), 200
 
-
 @resume_bp.route("/user/profile/<user_id>", methods=["GET"])
 def get_user_profile(user_id):
-    # 🔹 Fetch Basic User Info from `user_profiles_collection`
-    user_profile = user_profiles_collection.find_one({"user_id": user_id}, {"_id": 0})
+    try:
+        # 🔹 Fetch Basic User Info
+        user_profile = user_profiles_collection.find_one({"user_id": user_id}, {"_id": 0})
 
-    # 🔹 Fetch Latest Resume Data from `resumes_collection`
-    latest_resume = resumes_collection.find_one({"user_id": user_id}, {"_id": 0})
+        if not user_profile:
+            return jsonify({"error": "No user profile found"}), 404
 
-    if not user_profile:
-        return jsonify({"error": "No user profile found"}), 404
+        # 🔹 Fetch Latest Resume (may be None)
+        latest_resume = resumes_collection.find_one({"user_id": user_id}, {"_id": 0})
 
-    # ✅ Ensure all user details are returned
-    user_profile["name"] = latest_resume.get("name", user_profile.get("name", ""))
-    user_profile["email"] = latest_resume.get("email", user_profile.get("email", ""))
-    user_profile["phone"] = latest_resume.get("phone", user_profile.get("phone", ""))
-    user_profile["summary"] = latest_resume.get("summary", user_profile.get("summary", ""))
-    user_profile["education"] = latest_resume.get("education", user_profile.get("education", []))
-    user_profile["languages"] = latest_resume.get("languages", user_profile.get("languages", []))
-#    for profile image
-    user_profile["profileImage"] = user_profile.get("profileImage", "")
+        # ✅ Ensure fallback values to prevent .get() on None
+        latest_resume = latest_resume or {}
 
+        # ✅ Merge resume info into user_profile safely
+        user_profile["name"] = latest_resume.get("name", user_profile.get("name", ""))
+        user_profile["email"] = latest_resume.get("email", user_profile.get("email", ""))
+        user_profile["phone"] = latest_resume.get("phone", user_profile.get("phone", ""))
+        user_profile["summary"] = latest_resume.get("summary", user_profile.get("summary", ""))
+        user_profile["education"] = latest_resume.get("education", user_profile.get("education", []))
+        user_profile["languages"] = latest_resume.get("languages", user_profile.get("languages", []))
+        user_profile["profileImage"] = user_profile.get("profileImage", "/assets/images/default_profile.jpg")
 
-    print(f"[SERVER] Sending Profile Data: {user_profile}")
-    return jsonify(user_profile), 200
+        print(f"[SERVER] Sending Profile Data: {user_profile}")
+        return jsonify(user_profile), 200
+
+    except Exception as e:
+        print(f"[SERVER ERROR] get_user_profile failed: {str(e)}")
+        return jsonify({"error": "Internal Server Error"}), 500
+
 
 
 # Fetch user details for profile page

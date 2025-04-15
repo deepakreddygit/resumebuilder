@@ -23,6 +23,8 @@ function ResumeBuilder() {
   const [showExitModal, setShowExitModal] = useState(false);
   const [pendingNavigation, setPendingNavigation] = useState(false);
   const location = useLocation();
+  const [hasAnyResume, setHasAnyResume] = useState(false);
+
 
   const handleInputChange = () => {
     if (!isDirty) {
@@ -205,14 +207,71 @@ function ResumeBuilder() {
     setGeneratedText(""); // Reset generated summary
   };
 
+  // useEffect(() => {
+  //   if (resumeId && resumeId !== "new") {
+  //     getResumeById(resumeId)
+  //       .then((data) => {
+  //         if (data) {
+  //           console.log("Resume Data Fetched:", data);
+            
+  //           // ✅ Directly update the resumeData state with fetched data
+  //           setResumeData((prevData) => ({
+  //             ...prevData,
+  //             ...data,
+  //             experience: Array.isArray(data.experience) ? data.experience : prevData.experience,
+  //             education: Array.isArray(data.education) ? data.education : prevData.education,
+  //             skills: Array.isArray(data.skills) ? data.skills : prevData.skills,
+  //             projects: Array.isArray(data.projects) ? data.projects : prevData.projects,
+  //             certifications: Array.isArray(data.certifications) ? data.certifications : prevData.certifications,
+  //             marketingStrategies: Array.isArray(data.marketingStrategies) ? data.marketingStrategies : prevData.marketingStrategies,
+  //             socialMedia: Array.isArray(data.socialMedia) ? data.socialMedia : prevData.socialMedia,
+  //             investments: Array.isArray(data.investments) ? data.investments : prevData.investments,
+  //             financialTools: Array.isArray(data.financialTools) ? data.financialTools : prevData.financialTools,
+  //             languages: Array.isArray(data.languages) ? data.languages : prevData.languages,
+  //             salesStrategies: Array.isArray(data.salesStrategies) ? data.salesStrategies : prevData.salesStrategies,
+  //             clientAcquisition: Array.isArray(data.clientAcquisition) ? data.clientAcquisition : prevData.clientAcquisition,
+  //             revenueGrowth: Array.isArray(data.revenueGrowth) ? data.revenueGrowth : prevData.revenueGrowth,
+  //             salesTools: Array.isArray(data.salesTools) ? data.salesTools : prevData.salesTools,
+  //             negotiationExperience: Array.isArray(data.negotiationExperience) ? data.negotiationExperience : prevData.negotiationExperience,
+  //             role: data.role || prevData.role,
+  //             templateNumber: data.templateNumber || prevData.templateNumber,
+  //           }));
+  //         } else {
+  //           toast.error("❌ Failed to load resume.");
+  //           navigate("/saved-resumes");
+  //         }
+  //       })
+  //       .catch(() => toast.error("❌ Error fetching resume."));
+  //   }
+  
+  //   // ✅ Fetch stored basic user details for autofill
+  //   getUserProfile(userId)
+  //     .then((profile) => {
+  //       if (profile) {
+  //         console.log("🔹 User Basic Info Fetched:", profile);
+  
+  //         // ✅ Store separately for autofill (without overriding resume editing)
+  //         setSavedBasicData({
+  //           name: profile.name || "",
+  //           email: profile.email || "",
+  //           phone: profile.phone || "",
+  //           summary: profile.summary || "",
+  //           education: Array.isArray(profile.education) ? profile.education : [],
+  //           languages: Array.isArray(profile.languages) ? profile.languages : [],
+  //         });
+  //       }
+  //     })
+  //     .catch(() => console.log("No stored user profile found. User will enter manually."));
+  // }, [resumeId, navigate, userId]);
+
   useEffect(() => {
+    // 🔹 Fetch resume if editing
     if (resumeId && resumeId !== "new") {
       getResumeById(resumeId)
         .then((data) => {
           if (data) {
             console.log("Resume Data Fetched:", data);
-            
-            // ✅ Directly update the resumeData state with fetched data
+  
             setResumeData((prevData) => ({
               ...prevData,
               ...data,
@@ -242,13 +301,12 @@ function ResumeBuilder() {
         .catch(() => toast.error("❌ Error fetching resume."));
     }
   
-    // ✅ Fetch stored basic user details for autofill
+    // ✅ Fetch stored user profile (for autofill)
     getUserProfile(userId)
       .then((profile) => {
         if (profile) {
           console.log("🔹 User Basic Info Fetched:", profile);
   
-          // ✅ Store separately for autofill (without overriding resume editing)
           setSavedBasicData({
             name: profile.name || "",
             email: profile.email || "",
@@ -259,8 +317,17 @@ function ResumeBuilder() {
           });
         }
       })
-      .catch(() => console.log("No stored user profile found. User will enter manually."));
+      .catch(() => {
+        console.log("No stored user profile found. User will enter manually.");
+      });
+  
+    // ✅ Check if user has any resumes at all
+    getUserResumes(userId).then((resumes) => {
+      setHasAnyResume(resumes.length > 0); // ← New flag for autofill check
+    });
+  
   }, [resumeId, navigate, userId]);
+  
 
   useEffect(() => {
     calculateProgress();
@@ -316,10 +383,59 @@ function ResumeBuilder() {
     });
   };
 
+  // const handleAutofillBasicDetails = () => {
+  //   toast.dismiss();
+  
+  //   if (!savedBasicData || !savedBasicData.name?.trim() || !savedBasicData.email?.trim() || !savedBasicData.phone?.trim()) {
+  //     toast.warning("No basic details found. Please create a resume first.", {
+  //       toastId: `no-basic-data-warning-${Math.random()}`,
+  //       autoClose: 2500,
+  //     });
+  
+  //     setResumeData((prevData) => ({
+  //       ...prevData,
+  //       name: "",
+  //       email: "",
+  //       phone: "",
+  //       summary: "",
+  //       education: prevData.education,
+  //       languages: prevData.languages,
+  //     }));
+  
+  //     return;
+  //   }
+  
+  //   console.log("🆕 Autofilling with saved basic details:", savedBasicData);
+  
+  //   setResumeData((prevData) => ({
+  //     ...prevData,
+  //     name: savedBasicData.name,
+  //     email: savedBasicData.email,
+  //     phone: savedBasicData.phone,
+  //     summary: savedBasicData.summary || "",
+  //     education: savedBasicData.education.length > 0 ? savedBasicData.education : prevData.education,
+  //     languages: savedBasicData.languages.length > 0 ? savedBasicData.languages : prevData.languages,
+  //   }));
+  
+  //   // 👇 mark form as dirty since autofill changed values
+  //   handleInputChange();
+  
+  //   toast.success("Basic details autofilled!", {
+  //     autoClose: 2000,
+  //     toastId: `autofill-success-${Math.random()}`,
+  //   });
+  // };
+
   const handleAutofillBasicDetails = () => {
     toast.dismiss();
   
-    if (!savedBasicData || !savedBasicData.name?.trim() || !savedBasicData.email?.trim() || !savedBasicData.phone?.trim()) {
+    if (
+      !hasAnyResume || // ✅ new condition
+      !savedBasicData ||
+      !savedBasicData.name?.trim() ||
+      !savedBasicData.email?.trim() ||
+      !savedBasicData.phone?.trim()
+    ) {
       toast.warning("No basic details found. Please create a resume first.", {
         toastId: `no-basic-data-warning-${Math.random()}`,
         autoClose: 2500,
@@ -338,8 +454,6 @@ function ResumeBuilder() {
       return;
     }
   
-    console.log("🆕 Autofilling with saved basic details:", savedBasicData);
-  
     setResumeData((prevData) => ({
       ...prevData,
       name: savedBasicData.name,
@@ -350,7 +464,6 @@ function ResumeBuilder() {
       languages: savedBasicData.languages.length > 0 ? savedBasicData.languages : prevData.languages,
     }));
   
-    // 👇 mark form as dirty since autofill changed values
     handleInputChange();
   
     toast.success("Basic details autofilled!", {
@@ -358,6 +471,7 @@ function ResumeBuilder() {
       toastId: `autofill-success-${Math.random()}`,
     });
   };
+  
   
 
   const calculateProgress = () => {

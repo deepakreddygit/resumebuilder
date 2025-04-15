@@ -40,7 +40,7 @@ export const loginUser = async (userData) => {
     }
 };
 
-// Fetch user profile information from backend
+//Fetch user profile information from backend
 export const getUserProfile = async (userId) => {
     try {
       const response = await axios.get(`${API_BASE_URL}/user/profile/${userId}`);
@@ -70,6 +70,8 @@ export const getUserProfile = async (userId) => {
       };
     }
   };
+
+
   
   // Upload profile image to Cloudinary via backend
   export const uploadProfileImage = async (userId, formData) => {
@@ -185,37 +187,63 @@ export const updateResume = async (resumeId, updatedData) => {
     }
 };
 
-
-// Improved Delete Resume API Call
 export const deleteResume = async (resumeId, userId) => {
-    console.log(`Deleting resume: ${resumeId}`);
+    console.log(`[CLIENT] Deleting resume: ${resumeId}`);
+  
     try {
-        const response = await fetch(`${API_BASE_URL}/resume/delete/${resumeId}`, {
-            method: "DELETE",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        });
-
-        const result = await response.json();
-        console.log("Resume Delete Response:", result);
-
-        if (!response.ok) {
-            return { error: result.error || "Failed to delete resume" };
-        }
-
-        //  If deletion is successful, fetch the latest user profile
-        const updatedProfileResponse = await fetch(`${API_BASE_URL}/user/profile/${userId}?t=${new Date().getTime()}`);
-        const updatedProfile = await updatedProfileResponse.json();
-
-        console.log("Updated Profile After Deletion:", updatedProfile);
-
-        return { ...result, updatedProfile }; // ✅ Return updated profile data along with the response
+      const response = await fetch(`${API_BASE_URL}/resume/delete/${resumeId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+  
+      console.log("[CLIENT] Resume delete raw response:", response);
+  
+      let result = {};
+      const contentType = response.headers.get("content-type");
+  
+      if (contentType && contentType.includes("application/json")) {
+        result = await response.json();
+      }
+  
+      if (!response.ok) {
+        console.error("[CLIENT] Resume deletion failed response:", result);
+        return { error: result.error || "Resume deletion failed." };
+      }
+  
+      // ✅ Now fetch updated user profile
+      const profileUrl = `${API_BASE_URL}/user/profile/${userId}`;
+      console.log(`[CLIENT] Fetching updated profile: ${profileUrl}`);
+  
+      const updatedProfileResponse = await fetch(profileUrl);
+      console.log("[CLIENT] Profile fetch raw response:", updatedProfileResponse);
+  
+      let updatedProfile = {};
+  
+      // ❗ Avoid JSON parsing crash if CORS blocks it
+      const profileContentType = updatedProfileResponse.headers.get("content-type");
+      if (profileContentType && profileContentType.includes("application/json")) {
+        updatedProfile = await updatedProfileResponse.json();
+      } else {
+        console.warn("[CLIENT] No valid JSON returned from profile endpoint");
+      }
+  
+      if (!updatedProfileResponse.ok) {
+        console.error("[CLIENT] Failed to fetch profile after deletion.");
+        return { success: true }; // ✅ Don't treat it as error
+      }
+  
+      return { ...result, updatedProfile };
+  
     } catch (error) {
-        console.error("Error deleting resume:", error);
-        return { error: "Failed to delete resume" };
+      console.error("[CLIENT] ERROR deleting resume or fetching profile:", error);
+      return { error: "Failed to delete resume" };
     }
-};
+  };
+  
+  
+
 
 // Submit a review for a template
 export const submitReview = async (userId, templateNumber, reviewText) => {

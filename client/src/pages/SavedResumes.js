@@ -142,24 +142,26 @@ const [downloadedResumeId, setDownloadedResumeId] = useState(null);
     setShowModal(false);
   
     try {
-     
       const result = await deleteResume(selectedResumeId, userId);
   
-      if (result.error) {
+      // If resume was already deleted, treat 404 as a success
+      if (result.error && result.error !== "Resume not found") {
         toast.error(`${result.error}`);
         return;
       }
   
       toast.success("Resume deleted successfully!", { autoClose: 3000 });
   
-
-      setResumes((prevResumes) => prevResumes.filter((r) => r.resume_id !== selectedResumeId));
+      // Clean local state
+      setResumes((prevResumes) =>
+        prevResumes.filter((r) => r.resume_id !== selectedResumeId)
+      );
+      setSelectedResumeId(null);
   
-
       if (result.updatedProfile) {
         setSavedBasicData(result.updatedProfile);
       } else {
-        setSavedBasicData(null); 
+        setSavedBasicData(null);
       }
   
     } catch (error) {
@@ -167,6 +169,8 @@ const [downloadedResumeId, setDownloadedResumeId] = useState(null);
       toast.error("Failed to delete resume.");
     }
   };
+  
+  
   
 
   const handleEdit = (resume) => {
@@ -268,7 +272,7 @@ const [downloadedResumeId, setDownloadedResumeId] = useState(null);
               <div key={resume.resume_id} className="resume-card">
                 <div className="resume-content">
                   {/* <h5 className="resume-name">{resume.name || `Resume ${index + 1}`}</h5> */}
-                  <div className="resume-header">
+                  <div>
   <h5 className="resume-name">{resume.name || `Resume ${index + 1}`}</h5>
   {resume.lastUpdated && (
     <span
@@ -420,10 +424,12 @@ const [downloadedResumeId, setDownloadedResumeId] = useState(null);
 <div id="download-preview" style={{ position: "absolute", top: "-9999px", left: "-9999px", zIndex: -1 }}>
   {selectedResumeId && resumes.length > 0 && (() => {
     const resume = resumes.find(r => r.resume_id === selectedResumeId);
+    if (!resume || !resume.templateNumber) return null;
     const TemplateComponent = templateComponents[resume.templateNumber] || Template1;
     return <TemplateComponent resumeData={resume} />;
   })()}
 </div>
+
 
 
     </div>
