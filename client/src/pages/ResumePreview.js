@@ -20,6 +20,14 @@ import Template9 from "../components/templates/Template9";
 import Template10 from "../components/templates/Template10";
 import Template11 from "../components/templates/Template11";
 import Template12 from "../components/templates/Template12";
+import Template13 from "../components/templates/Template13";
+import Template14 from "../components/templates/Template14";
+import Template15 from "../components/templates/Template15";
+import Template16 from "../components/templates/Template16";
+import Template17 from "../components/templates/Template17";
+import Template18 from "../components/templates/Template18";
+
+
 
 // CSS for templates
 import "../styles/Template1.css";
@@ -48,6 +56,13 @@ const templateComponents = {
   "10": Template10,
   "11": Template11,
   "12": Template12,
+  "13": Template13,
+  "14": Template14,
+  "15": Template15,
+  "16": Template16,
+  "17": Template17,
+  "18": Template18
+
 };
 
 function ResumePreview() {
@@ -86,6 +101,9 @@ function ResumePreview() {
               languages: data.languages || [],
               marketingStrategies: data.marketingStrategies || [],
               socialMedia: data.socialMedia || [],
+              writingSamples: data.writingSamples || [],       
+              genres: data.genres || [],                       
+              seoExperience: data.seoExperience || "",         
               role: data.role || "software-engineer",
               templateNumber: data.templateNumber || "1",
             };
@@ -129,7 +147,20 @@ function ResumePreview() {
       { id: "11", name: "Professional Sales Strategist Resume" },
       { id: "12", name: "Modern Sales Manager Resume" },
     ],
+    "healthcare-professional": [
+      { id: "13", name: "Modern Healthcare Resume" },
+      { id: "14", name: "Minimalist Medical Resume" },
+      { id: "15", name: "Professional Clinical Resume" },
+    ],
+    "content-writer": [
+      { id: "16", name: "Editorial Resume" },
+      { id: "17", name: "Creative Writing Resume" },
+      { id: "18", name: "Minimal Writer Resume" },
+    ]
+  
+
   };
+  
 
   const userRole = resumeData.role || "software-engineer";
   const availableTemplates = templatesByRole[userRole] || [];
@@ -166,21 +197,48 @@ function ResumePreview() {
 
   const handleDownload = async () => {
     const element = resumeRef.current;
-
+  
     if (!element) {
       toast.error("Resume preview not found.");
       return;
     }
-
+  
     window.scrollTo(0, 0);
-    const canvas = await html2canvas(element, { scale: 2, useCORS: true });
+  
+    // Generate high-res canvas of resume
+    const canvas = await html2canvas(element, {
+      scale: 2,
+      useCORS: true,
+      backgroundColor: "#ffffff",
+    });
+  
     const imgData = canvas.toDataURL("image/png");
+  
     const pdf = new jsPDF("p", "mm", "a4");
-    const pdfWidth = 210;
-    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-    pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = pdf.internal.pageSize.getHeight();
+  
+    const imgWidth = pdfWidth;
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+  
+    let heightLeft = imgHeight;
+    let position = 0;
+  
+    // First page
+    pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+    heightLeft -= pdfHeight;
+  
+    // Add more pages if needed
+    while (heightLeft > 0) {
+      position -= pdfHeight;
+      pdf.addPage();
+      pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+      heightLeft -= pdfHeight;
+    }
+  
     pdf.save(`${resumeData.name || "resume"}.pdf`);
   };
+  
 
   return (
     <div className="resume-preview-container">

@@ -173,6 +173,19 @@ def save_resume(user_id):
         new_resume["budgetExperience"] = data.get("budgetExperience", "")
         new_resume["leadershipExperience"] = data.get("leadershipExperience", "")
 
+    # ✅ Include Healthcare Professional Fields
+    if role == "healthcare-professional":
+        new_resume["healthcareExperience"] = data.get("healthcareExperience", [])
+        new_resume["clinicalSkills"] = data.get("clinicalSkills", [])
+        new_resume["certificationsHealthcare"] = data.get("certificationsHealthcare", [])
+
+    # ✅ Include Content Writer Fields
+    if role == "content-writer":
+        new_resume["writingSamples"] = data.get("writingSamples", [])
+        new_resume["genres"] = data.get("genres", [])
+        new_resume["seoExperience"] = data.get("seoExperience", "")    
+    
+
     # ✅ Save to MongoDB
     resumes_collection.insert_one(new_resume)
     print("Saved lastUpdated:", datetime.utcnow().isoformat())

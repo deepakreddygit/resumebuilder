@@ -23,6 +23,13 @@ import Template9 from "../components/templates/Template9";
 import Template10 from "../components/templates/Template10";
 import Template11 from "../components/templates/Template11";
 import Template12 from "../components/templates/Template12";
+import Template13 from "../components/templates/Template13";
+import Template14 from "../components/templates/Template14";
+import Template15 from "../components/templates/Template15";
+import Template16 from "../components/templates/Template16";
+import Template17 from "../components/templates/Template17";
+import Template18 from "../components/templates/Template18";
+
 
 //templates component
 const templateComponents = {
@@ -38,6 +45,13 @@ const templateComponents = {
   "10": Template10,
   "11": Template11,
   "12": Template12,
+  "13": Template13,
+  "14": Template14,
+  "15": Template15,
+  "16": Template16,
+  "17": Template17,
+  "18": Template18,
+
 };
 
 
@@ -239,6 +253,10 @@ const [downloadedResumeId, setDownloadedResumeId] = useState(null);
     "financial-manager": { icon: "📊", name: "Financial Manager" },
     "marketing-manager": { icon: "📢", name: "Marketing Manager" },
     "sales-manager": { icon: "📈", name: "Sales Manager" },
+    "healthcare-professional": { icon: "🩺", name: "Healthcare Professional" },
+    "content-writer": { icon: "✍️", name: "Content Writer" },
+   
+
   };
 
   // Template names mapping

@@ -55,7 +55,23 @@ function Navbar() {
       "Talk about how you improve processes — like reducing the sales cycle time, increasing team efficiency, or improving customer retention.",
       "Demonstrate your leadership by mentioning team size managed, coaching or onboarding practices, and how you’ve motivated your team to hit goals.",
       "Include awards, incentives, or recognition — like 'Top Sales Manager Q1 2024' or 'President’s Club achiever.' These validate performance."
-    ]
+    ],
+    "healthcare-professional": [
+    "Highlight your clinical skills (e.g., phlebotomy, patient care, medical charting, or EHR systems like Epic or Cerner). Be specific to your specialization.",
+    "Mention your healthcare certifications such as BLS, ACLS, CNA, or RN — and ensure you include issuing organizations and expiry dates if applicable.",
+    "Describe your experience in direct patient care, treatment planning, or administrative support — especially in hospital, clinic, or elder care settings.",
+    "Use metrics if possible: 'Assisted 50+ patients per shift' or 'Reduced patient intake time by 25% with streamlined documentation.'",
+    "Show soft skills too — compassion, adaptability, communication, and handling high-stress situations are key traits in healthcare."
+  ],
+  "content-writer": [
+    "Highlight your writing niches — e.g., marketing, wellness, tech, education — and the tone/style you excel in (technical, conversational, SEO, etc.).",
+    "Include links to published works — blogs, articles, or web content — on platforms like Medium, company blogs, or publications.",
+    "Showcase SEO experience: keyword research, meta descriptions, internal linking, and tools like SEMrush, Ahrefs, or Yoast.",
+    "Mention tools you’ve used: WordPress, Grammarly, Google Docs, Trello, or content calendars — and how you’ve collaborated with marketing/design teams.",
+    "Use quantifiable impact: 'Increased blog traffic by 40%' or 'Ranked top 3 on Google for 5 competitive keywords.' Results boost credibility."
+  ]
+
+
   };
   
 

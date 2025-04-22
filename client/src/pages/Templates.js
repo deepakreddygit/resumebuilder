@@ -14,7 +14,9 @@ function Templates() {
     { id: "software-engineer", name: "Software Engineer", icon: "💻" },
     { id: "financial-manager", name: "Financial Manager", icon: "📊" },
     { id: "marketing-manager", name: "Marketing Manager", icon: "📢" },
-    { id: "sales-manager", name: "Sales Manager", icon: "📈" }, // ✅ Sales Manager added
+    { id: "sales-manager", name: "Sales Manager", icon: "📈" },
+    { id: "healthcare-professional", name: "Healthcare Professional", icon: "🩺" },
+    { id: "content-writer", name: "Content Writer", icon: "✍️" },
   ];
 
   const templatesByRole = {
@@ -33,11 +35,21 @@ function Templates() {
       { id: 8, name: "Classic", image: "/assets/images/templates/template8.png" },
       { id: 9, name: "Trendy", image: "/assets/images/templates/template9.png" },
     ],
-    "sales-manager": [  // ✅ Templates for Sales Manager
+    "sales-manager": [
       { id: 10, name: "Dynamic", image: "/assets/images/templates/template10.png" },
       { id: 11, name: "Persuasive", image: "/assets/images/templates/template11.png" },
       { id: 12, name: "Strategic", image: "/assets/images/templates/template12.png" },
     ],
+    "healthcare-professional": [
+      { id: 13, name: "Clinical", image: "/assets/images/templates/template13.png" },
+      { id: 14, name: "Clean & Clear", image: "/assets/images/templates/template14.png" },
+      { id: 15, name: "Trustworthy", image: "/assets/images/templates/template15.png" },
+    ],
+  "content-writer": [
+    { id: 16, name: "Editorial", image: "/assets/images/templates/template16.png" },
+    { id: 17, name: "Narrative", image: "/assets/images/templates/template17.png" },
+    { id: 18, name: "Minimalistic", image: "/assets/images/templates/template18.png" },
+  ],
   };
 
   const [selectedRole, setSelectedRole] = useState(null);
@@ -116,14 +128,10 @@ function Templates() {
                     <img src={template.image} alt={template.name} className="card-img-top img-fluid rounded" />
                   </div>
 
-                  {/* Card Body */}
                   <div className="card-body d-flex justify-content-between align-items-center">
-                    {/* "Use this template" Button */}
                     <Link to={`/resume-builder/${selectedRole}/${template.id}`} className="btn btn-dark flex-grow-1">
                       Use this template
                     </Link>
-
-                    {/* Three Dots with Clickable Menu */}
                     <div className="position-relative d-flex align-items-center">
                       <span
                         style={{ cursor: "pointer", fontSize: "18px", padding: "5px" }}
@@ -142,7 +150,6 @@ function Templates() {
                             minWidth: "130px",
                             backgroundColor: "#343a40",
                             color: "#fff",
-                            boxShadow: "0 4px 10px rgba(0, 0, 0, 0.2)",
                             borderRadius: "8px",
                             textAlign: "center",
                             whiteSpace: "nowrap",
@@ -200,3 +207,4 @@ function Templates() {
 }
 
 export default Templates;
+

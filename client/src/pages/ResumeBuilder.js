@@ -140,6 +140,14 @@ function ResumeBuilder() {
     negotiationExperience: [{ scenario: "" }],
     languages: [{ language: "", proficiency: "" }], 
     role: role || "software-engineer",
+    healthcareExperience: [{ role: "", organization: "", duration: "", responsibilities: "" }],
+    clinicalSkills: [""],
+    certificationsHealthcare: [{ name: "", issuedBy: "", year: "" }],
+    writingStyles: [],
+    writingSamples: [{ title: "", link: "" }],
+    genres: [""],
+    seoExperience: "",
+
     templateNumber: templateNumber || "1",
   });
 
@@ -163,7 +171,17 @@ function ResumeBuilder() {
     budgetExperience: false,
     leadershipExperience: false,
     languages: [],
+  
+    // ✅ Healthcare Professional Fields
+    healthcareExperience: [],
+    clinicalSkills: [],
+    certificationsHealthcare: [],
+  
+    writingSamples: [],
+    genres: [],
+    seoExperience: false,
   });
+  
 
   const handleBlur = (index, field, section = null) => {
     setTouched((prevTouched) => {
@@ -290,6 +308,15 @@ function ResumeBuilder() {
               revenueGrowth: Array.isArray(data.revenueGrowth) ? data.revenueGrowth : prevData.revenueGrowth,
               salesTools: Array.isArray(data.salesTools) ? data.salesTools : prevData.salesTools,
               negotiationExperience: Array.isArray(data.negotiationExperience) ? data.negotiationExperience : prevData.negotiationExperience,
+                // ✅ Healthcare Fields
+            healthcareExperience: Array.isArray(data.healthcareExperience) ? data.healthcareExperience : prevData.healthcareExperience,
+            clinicalSkills: Array.isArray(data.clinicalSkills) ? data.clinicalSkills : prevData.clinicalSkills,
+            certificationsHealthcare: Array.isArray(data.certificationsHealthcare) ? data.certificationsHealthcare : prevData.certificationsHealthcare,
+
+            // ✅ Content Writer Fields
+            writingSamples: Array.isArray(data.writingSamples) ? data.writingSamples : [{ title: "", link: "" }],
+            genres: Array.isArray(data.genres) ? data.genres : [""],
+            seoExperience: data.seoExperience || "",
               role: data.role || prevData.role,
               templateNumber: data.templateNumber || prevData.templateNumber,
             }));
@@ -495,80 +522,74 @@ function ResumeBuilder() {
       if (checkFilled(field)) filled++;
     });
   
-    // ✅ Education
-    resumeData.education.forEach((edu) => {
-      total += 3;
-      if (checkFilled(edu.degree)) filled++;
-      if (checkFilled(edu.institution)) filled++;
-      if (checkFilled(edu.year)) filled++;
-    });
-  
-    // ✅ Skills
-    resumeData.skills.forEach((skill) => {
-      total++;
-      if (checkFilled(skill)) filled++;
-    });
-  
-    // ✅ Languages
-    resumeData.languages.forEach((lang) => {
-      total += 2;
-      if (checkFilled(lang.language)) filled++;
-      if (checkFilled(lang.proficiency)) filled++;
-    });
-  
-    // ✅ Software Engineer
-    if (resumeData.role === "software-engineer") {
-      resumeData.projects.forEach((proj) => {
-        total += 2;
-        if (checkFilled(proj.title)) filled++;
-        if (checkFilled(proj.description)) filled++;
-      });
-  
-      resumeData.certifications.forEach((cert) => {
-        total += 3;
-        if (checkFilled(cert.title)) filled++;
-        if (checkFilled(cert.issuer)) filled++;
-        if (checkFilled(cert.year)) filled++;
-      });
-    }
-  
-    // ✅ Marketing Manager
-    if (resumeData.role === "marketing-manager") {
-      resumeData.marketingStrategies.forEach((s) => {
-        total += 2;
-        if (checkFilled(s.strategy)) filled++;
-        if (checkFilled(s.impact)) filled++;
-      });
-  
-      resumeData.socialMedia.forEach((s) => {
-        total += 2;
-        if (checkFilled(s.platform)) filled++;
-        if (checkFilled(s.results)) filled++;
-      });
-    }
-  
-    // ✅ Financial Manager
-    if (resumeData.role === "financial-manager") {
-      resumeData.investments.forEach((inv) => {
-        total += 3;
-        if (checkFilled(inv.type)) filled++;
-        if (checkFilled(inv.amount)) filled++;
-        if (checkFilled(inv.years)) filled++;
-      });
-  
-      resumeData.financialTools.forEach((tool) => {
+    // Helper for array of strings
+    const countStringArray = (arr) => {
+      if (!Array.isArray(arr)) return;
+      arr.forEach((item) => {
         total++;
-        if (checkFilled(tool.name)) filled++;
+        if (checkFilled(item)) filled++;
       });
+    };
   
-      total += 2;
-      if (checkFilled(resumeData.budgetExperience)) filled++;
-      if (checkFilled(resumeData.leadershipExperience)) filled++;
+    // Helper for array of objects
+    const countObjectArray = (arr, fields) => {
+      if (!Array.isArray(arr)) return;
+      arr.forEach((obj) => {
+        fields.forEach((key) => {
+          total++;
+          if (checkFilled(obj[key])) filled++;
+        });
+      });
+    };
+  
+    // ✅ Core Arrays
+    countObjectArray(resumeData.education, ["degree", "institution", "year"]);
+    countStringArray(resumeData.skills);
+    countObjectArray(resumeData.languages, ["language", "proficiency"]);
+  
+    // ✅ Role-specific progress
+    switch (resumeData.role) {
+      case "software-engineer":
+        countObjectArray(resumeData.projects, ["title", "description"]);
+        countObjectArray(resumeData.certifications, ["title", "issuer", "year"]);
+        break;
+  
+      case "marketing-manager":
+        countObjectArray(resumeData.marketingStrategies, ["strategy", "impact"]);
+        countObjectArray(resumeData.socialMedia, ["platform", "results"]);
+        break;
+  
+      case "financial-manager":
+        countObjectArray(resumeData.investments, ["type", "amount", "years"]);
+        countObjectArray(resumeData.financialTools, ["name"]);
+        total += 2;
+        if (checkFilled(resumeData.budgetExperience)) filled++;
+        if (checkFilled(resumeData.leadershipExperience)) filled++;
+        break;
+  
+      case "healthcare-professional":
+        countObjectArray(resumeData.healthcareExperience, ["role", "organization", "duration", "responsibilities"]);
+        countStringArray(resumeData.clinicalSkills);
+        countObjectArray(resumeData.certificationsHealthcare, ["name", "issuedBy", "year"]);
+        break;
+  
+      case "content-writer":
+          countObjectArray(resumeData.writingSamples, ["title", "link"]);
+              countStringArray(resumeData.writingStyles);
+              total++;
+              if (checkFilled(resumeData.seoExperience)) filled++;
+              break
+        
+  
+      default:
+        break;
     }
   
-    const percentage = Math.round((filled / total) * 100);
+    const percentage = total === 0 ? 0 : Math.round((filled / total) * 100);
     setCompletionPercentage(percentage);
   };
+  
+  
   
 
   return (
@@ -671,13 +692,16 @@ function ResumeBuilder() {
 
   {/* Summary Section */}
   <div className="summary-container">
-    <label className="input-label">
-      Summary <span className="required">*</span>
-    </label>
-    <div className="summary-wrapper">
+  <label className="input-label">
+    Summary <span className="required">*</span>
+  </label>
+
+  <div className="summary-wrapper">
+    <div className="textarea-wrapper">
       <textarea
         name="summary"
         placeholder="Enter a short summary"
+        maxLength={300}
         value={resumeData.summary}
         onChange={(e) => {
           handleChange(e);
@@ -688,64 +712,18 @@ function ResumeBuilder() {
           resumeData.summary.trim() === "" ? "input-error" : ""
         }`}
       />
-
-      {/* AI Icon */}
-      <span className="ai-icon" onClick={() => setShowPopup(!showPopup)}>
-        <FaMagic />
+      <span className="char-count-inside">
+        {resumeData.summary.length} / 300
       </span>
-
-      {/* AI Popup */}
-      {showPopup && (
-        <div className="ai-popup">
-          <div className="ai-popup-header">
-            <h4>Generate Summary</h4>
-            <FaTimes className="close-icon" onClick={() => setShowPopup(false)} />
-          </div>
-
-          {/* Prompt */}
-          <textarea
-            className="ai-input"
-            placeholder="Enter a prompt"
-            value={aiPrompt}
-            onChange={(e) => setAiPrompt(e.target.value)}
-          />
-
-          {loading ? (
-            <button className="generate-btn" disabled>
-              Generating...
-            </button>
-          ) : (
-            <button className="generate-btn" onClick={handleGenerateSummary}>
-              Generate
-            </button>
-          )}
-
-          {/* Result */}
-          {generatedText && (
-            <div className="ai-response">
-              <p>{generatedText}</p>
-              <button
-                className="use-btn"
-                onClick={() => {
-                  handleChange({
-                    target: { name: "summary", value: generatedText },
-                  });
-                  handleInputChange();
-                  setShowPopup(false);
-                }}
-              >
-                Use This
-              </button>
-            </div>
-          )}
-        </div>
-      )}
     </div>
-
-    {touched.summary && resumeData.summary.trim() === "" && (
-      <span className="error-text">Summary is required</span>
-    )}
   </div>
+
+  {touched.summary && resumeData.summary.trim() === "" && (
+    <span className="error-text">Summary is required</span>
+  )}
+</div>
+
+
 </div>
 
 
@@ -1709,6 +1687,222 @@ function ResumeBuilder() {
   </>
 )}
 
+{/* ✅ Healthcare Professional Fields */}
+{resumeData.role === "healthcare-professional" && (
+  <>
+    {/* Healthcare Experience */}
+    <div className="section-container">
+      <h4>Healthcare Experience <span className="required">*</span></h4>
+      {resumeData.healthcareExperience.map((exp, index) => (
+        <div key={index} className="input-group">
+          <label>Role</label>
+          <input
+            type="text"
+            name="role"
+            placeholder="Enter Role (e.g., Nurse, Assistant)"
+            value={exp.role}
+            onChange={(e) => handleChange(e, index, "healthcareExperience")}
+          />
+          <label>Organization</label>
+          <input
+            type="text"
+            name="organization"
+            placeholder="Enter Organization"
+            value={exp.organization}
+            onChange={(e) => handleChange(e, index, "healthcareExperience")}
+          />
+          <label>Duration</label>
+          <input
+            type="text"
+            name="duration"
+            placeholder="e.g., Jan 2022 - Present"
+            value={exp.duration}
+            onChange={(e) => handleChange(e, index, "healthcareExperience")}
+          />
+          <label>Responsibilities</label>
+          <textarea
+            name="responsibilities"
+            placeholder="Describe responsibilities"
+            value={exp.responsibilities}
+            onChange={(e) => handleChange(e, index, "healthcareExperience")}
+          />
+          <button className="remove-button-style" onClick={() => removeField("healthcareExperience", index)}>
+            Remove
+          </button>
+        </div>
+      ))}
+      <button className="add-btn" onClick={() => addField("healthcareExperience", { role: "", organization: "", duration: "", responsibilities: "" })}>
+        + Add Healthcare Experience
+      </button>
+    </div>
+
+    {/* Clinical Skills */}
+    <div className="section-container">
+      <h4>Clinical Skills <span className="required">*</span></h4>
+      {resumeData.clinicalSkills.map((skill, index) => (
+        <div key={index}>
+          <input
+            type="text"
+            value={skill}
+            onChange={(e) => {
+              const updated = [...resumeData.clinicalSkills];
+              updated[index] = e.target.value;
+              setResumeData({ ...resumeData, clinicalSkills: updated });
+            }}
+          />
+          {index > 0 && (
+            <button className="remove-button-style" onClick={() => removeField("clinicalSkills", index)}>
+              Remove
+            </button>
+          )}
+        </div>
+      ))}
+      <button className="add-btn" onClick={() => addField("clinicalSkills", "")}>
+        + Add Skill
+      </button>
+    </div>
+
+    {/* Certifications */}
+    <div className="section-container">
+      <h4>Certifications <span className="required">*</span></h4>
+      {resumeData.certificationsHealthcare.map((cert, index) => (
+        <div key={index} className="input-group">
+          <label>Certification Name</label>
+          <input
+            type="text"
+            name="name"
+            value={cert.name}
+            onChange={(e) => handleChange(e, index, "certificationsHealthcare")}
+          />
+          <label>Issued By</label>
+          <input
+            type="text"
+            name="issuedBy"
+            value={cert.issuedBy}
+            onChange={(e) => handleChange(e, index, "certificationsHealthcare")}
+          />
+          <label>Year</label>
+          <input
+            type="text"
+            name="year"
+            value={cert.year}
+            onChange={(e) => handleChange(e, index, "certificationsHealthcare")}
+          />
+          {index > 0 && (
+            <button className="remove-button-style" onClick={() => removeField("certificationsHealthcare", index)}>
+              Remove
+            </button>
+          )}
+        </div>
+      ))}
+      <button className="add-btn" onClick={() => addField("certificationsHealthcare", { name: "", issuedBy: "", year: "" })}>
+        + Add Certification
+      </button>
+    </div>
+  </>
+)}
+
+
+{resumeData.role === "content-writer" && (
+  <>
+    {/* Published Works (writingSamples) */}
+    <div className="section-container">
+      <h4>Published Works <span className="required">*</span></h4>
+      {resumeData.writingSamples?.map((sample, index) => (
+        <div key={index} className="input-group">
+          <label>Title</label>
+          <input
+            type="text"
+            name="title"
+            placeholder="Enter Title"
+            value={sample.title}
+            onChange={(e) => handleChange(e, index, "writingSamples")}
+          />
+          <label>Platform</label>
+          <input
+            type="text"
+            name="link"
+            placeholder="Enter Platform (e.g., Medium, Blog)"
+            value={sample.link}
+            onChange={(e) => handleChange(e, index, "writingSamples")}
+          />
+          {index > 0 && (
+            <button
+              className="remove-button-style"
+              onClick={() => removeField("writingSamples", index)}
+            >
+              Remove Work
+            </button>
+          )}
+        </div>
+      ))}
+      <button
+        className="add-btn"
+        onClick={() => addField("writingSamples", { title: "", link: "" })}
+      >
+        + Add Published Work
+      </button>
+    </div>
+
+    {/* Writing Styles */}
+    <div className="section-container">
+      <h4>Writing Styles <span className="required">*</span></h4>
+      {resumeData.writingStyles.map((style, index) => (
+        <div key={index}>
+          <input
+            type="text"
+            placeholder="e.g., Technical, Narrative"
+            value={style}
+            onChange={(e) => {
+              const updated = [...resumeData.writingStyles];
+              updated[index] = e.target.value;
+              setResumeData({ ...resumeData, writingStyles: updated });
+            }}
+          />
+          {index > 0 && (
+            <button
+              className="remove-button-style"
+              onClick={() => removeField("writingStyles", index)}
+            >
+              Remove Style
+            </button>
+          )}
+        </div>
+      ))}
+      <button className="add-btn" onClick={() => addField("writingStyles", "")}>
+        + Add Writing Style
+      </button>
+    </div>
+
+    {/* SEO Experience */}
+    <div className="section-container">
+      <h4>SEO Knowledge <span className="required">*</span></h4>
+      <textarea
+        name="seoExperience"
+        placeholder="Describe your SEO experience"
+        value={resumeData.seoExperience}
+        onChange={handleChange}
+      />
+    </div>
+  </>
+)}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 {/* Languages (Common for All Roles) */}
@@ -1842,11 +2036,34 @@ function ResumeBuilder() {
         !resumeData.leadershipExperience?.trim()
       )) ||
       (resumeData.role === "marketing-manager" && (
+        !Array.isArray(resumeData.marketingStrategies) ||
         resumeData.marketingStrategies.length === 0 ||
-        resumeData.marketingStrategies.some(strategy => !strategy.strategy?.trim() || !strategy.impact?.trim()) ||
+        resumeData.marketingStrategies.some(s => !s.strategy?.trim() || !s.impact?.trim()) ||
+      
+        !Array.isArray(resumeData.socialMedia) ||
         resumeData.socialMedia.length === 0 ||
-        resumeData.socialMedia.some(campaign => !campaign.platform?.trim() || !campaign.results?.trim())
+        resumeData.socialMedia.some(c => !c.platform?.trim() || !c.results?.trim())
+      ))||
+      (resumeData.role === "healthcare-professional" && (
+        resumeData.healthcareExperience.length === 0 ||
+        resumeData.healthcareExperience.some(exp => 
+          !exp.role?.trim() || !exp.organization?.trim() || !exp.duration?.trim() || !exp.responsibilities?.trim()
+        ) ||
+        resumeData.clinicalSkills.length === 0 ||
+        resumeData.clinicalSkills.some(skill => !skill?.trim()) ||
+        resumeData.certificationsHealthcare.length === 0 ||
+        resumeData.certificationsHealthcare.some(cert => !cert.name?.trim() || !cert.issuedBy?.trim() || !cert.year?.trim())
+      ))||
+      (resumeData.role === "content-writer" && (
+        resumeData.writingSamples.length === 0 ||
+        resumeData.writingSamples.some(s => !s.title?.trim() || !s.link?.trim()) ||
+        resumeData.writingStyles.length === 0 || // ✅ CORRECT
+        resumeData.writingStyles.some(g => !g?.trim()) || // ✅ CORRECT
+        !resumeData.seoExperience?.trim() // ✅ CORRECT
       ))
+      
+
+      
     }
   >
     Preview Resume
