@@ -182,6 +182,12 @@ function ResumeBuilder() {
     seoExperience: false,
   });
   
+  // ✅ Email validation function
+const isValidEmail = (email) => {
+  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return regex.test(email);
+};
+
 
   const handleBlur = (index, field, section = null) => {
     setTouched((prevTouched) => {
@@ -224,64 +230,6 @@ function ResumeBuilder() {
     setAiPrompt(""); // Reset input
     setGeneratedText(""); // Reset generated summary
   };
-
-  // useEffect(() => {
-  //   if (resumeId && resumeId !== "new") {
-  //     getResumeById(resumeId)
-  //       .then((data) => {
-  //         if (data) {
-  //           console.log("Resume Data Fetched:", data);
-            
-  //           // ✅ Directly update the resumeData state with fetched data
-  //           setResumeData((prevData) => ({
-  //             ...prevData,
-  //             ...data,
-  //             experience: Array.isArray(data.experience) ? data.experience : prevData.experience,
-  //             education: Array.isArray(data.education) ? data.education : prevData.education,
-  //             skills: Array.isArray(data.skills) ? data.skills : prevData.skills,
-  //             projects: Array.isArray(data.projects) ? data.projects : prevData.projects,
-  //             certifications: Array.isArray(data.certifications) ? data.certifications : prevData.certifications,
-  //             marketingStrategies: Array.isArray(data.marketingStrategies) ? data.marketingStrategies : prevData.marketingStrategies,
-  //             socialMedia: Array.isArray(data.socialMedia) ? data.socialMedia : prevData.socialMedia,
-  //             investments: Array.isArray(data.investments) ? data.investments : prevData.investments,
-  //             financialTools: Array.isArray(data.financialTools) ? data.financialTools : prevData.financialTools,
-  //             languages: Array.isArray(data.languages) ? data.languages : prevData.languages,
-  //             salesStrategies: Array.isArray(data.salesStrategies) ? data.salesStrategies : prevData.salesStrategies,
-  //             clientAcquisition: Array.isArray(data.clientAcquisition) ? data.clientAcquisition : prevData.clientAcquisition,
-  //             revenueGrowth: Array.isArray(data.revenueGrowth) ? data.revenueGrowth : prevData.revenueGrowth,
-  //             salesTools: Array.isArray(data.salesTools) ? data.salesTools : prevData.salesTools,
-  //             negotiationExperience: Array.isArray(data.negotiationExperience) ? data.negotiationExperience : prevData.negotiationExperience,
-  //             role: data.role || prevData.role,
-  //             templateNumber: data.templateNumber || prevData.templateNumber,
-  //           }));
-  //         } else {
-  //           toast.error("❌ Failed to load resume.");
-  //           navigate("/saved-resumes");
-  //         }
-  //       })
-  //       .catch(() => toast.error("❌ Error fetching resume."));
-  //   }
-  
-  //   // ✅ Fetch stored basic user details for autofill
-  //   getUserProfile(userId)
-  //     .then((profile) => {
-  //       if (profile) {
-  //         console.log("🔹 User Basic Info Fetched:", profile);
-  
-  //         // ✅ Store separately for autofill (without overriding resume editing)
-  //         setSavedBasicData({
-  //           name: profile.name || "",
-  //           email: profile.email || "",
-  //           phone: profile.phone || "",
-  //           summary: profile.summary || "",
-  //           education: Array.isArray(profile.education) ? profile.education : [],
-  //           languages: Array.isArray(profile.languages) ? profile.languages : [],
-  //         });
-  //       }
-  //     })
-  //     .catch(() => console.log("No stored user profile found. User will enter manually."));
-  // }, [resumeId, navigate, userId]);
-
   useEffect(() => {
     // 🔹 Fetch resume if editing
     if (resumeId && resumeId !== "new") {
@@ -410,48 +358,6 @@ function ResumeBuilder() {
     });
   };
 
-  // const handleAutofillBasicDetails = () => {
-  //   toast.dismiss();
-  
-  //   if (!savedBasicData || !savedBasicData.name?.trim() || !savedBasicData.email?.trim() || !savedBasicData.phone?.trim()) {
-  //     toast.warning("No basic details found. Please create a resume first.", {
-  //       toastId: `no-basic-data-warning-${Math.random()}`,
-  //       autoClose: 2500,
-  //     });
-  
-  //     setResumeData((prevData) => ({
-  //       ...prevData,
-  //       name: "",
-  //       email: "",
-  //       phone: "",
-  //       summary: "",
-  //       education: prevData.education,
-  //       languages: prevData.languages,
-  //     }));
-  
-  //     return;
-  //   }
-  
-  //   console.log("🆕 Autofilling with saved basic details:", savedBasicData);
-  
-  //   setResumeData((prevData) => ({
-  //     ...prevData,
-  //     name: savedBasicData.name,
-  //     email: savedBasicData.email,
-  //     phone: savedBasicData.phone,
-  //     summary: savedBasicData.summary || "",
-  //     education: savedBasicData.education.length > 0 ? savedBasicData.education : prevData.education,
-  //     languages: savedBasicData.languages.length > 0 ? savedBasicData.languages : prevData.languages,
-  //   }));
-  
-  //   // 👇 mark form as dirty since autofill changed values
-  //   handleInputChange();
-  
-  //   toast.success("Basic details autofilled!", {
-  //     autoClose: 2000,
-  //     toastId: `autofill-success-${Math.random()}`,
-  //   });
-  // };
 
   const handleAutofillBasicDetails = () => {
     toast.dismiss();
@@ -541,6 +447,9 @@ function ResumeBuilder() {
         });
       });
     };
+
+
+    
   
     // ✅ Core Arrays
     countObjectArray(resumeData.education, ["degree", "institution", "year"]);
@@ -646,52 +555,75 @@ function ResumeBuilder() {
     <span className="error-text">Full Name is required</span>
   )}
 
-  {/* Email */}
-  <label className="input-label">
-    Email <span className="required">*</span>
-  </label>
-  <input
-    type="email"
-    name="email"
-    placeholder="Enter your email"
-    value={resumeData.email}
-    onChange={(e) => {
-      handleChange(e);
-      handleInputChange();
-    }}
-    onBlur={() => handleBlur(null, "email")}
-    className={
-      touched.email && resumeData.email.trim() === "" ? "input-error" : ""
-    }
-  />
-  {touched.email && resumeData.email.trim() === "" && (
-    <span className="error-text">Email is required</span>
-  )}
+{/* Email */}
+<label className="input-label">
+  Email <span className="required">*</span>
+</label>
+<input
+  type="email"
+  name="email"
+  placeholder="Enter your email"
+  value={resumeData.email}
+  onChange={(e) => {
+    handleChange(e);
+    handleInputChange();
+  }}
+  onBlur={() => {
+    handleBlur(null, "email");
+    
+  }}
+  className={
+    touched.email && (!resumeData.email.trim() || !isValidEmail(resumeData.email))
+      ? "input-error"
+      : ""
+  }
+/>
 
-  {/* Phone */}
-  <label className="input-label">
-    Phone <span className="required">*</span>
-  </label>
-  <input
-    type="text"
-    name="phone"
-    placeholder="Enter your phone number"
-    value={resumeData.phone}
-    onChange={(e) => {
-      handleChange(e);
-      handleInputChange();
-    }}
-    onBlur={() => handleBlur(null, "phone")}
-    className={
-      touched.phone && resumeData.phone.trim() === "" ? "input-error" : ""
-    }
-  />
-  {touched.phone && resumeData.phone.trim() === "" && (
-    <span className="error-text">Phone number is required</span>
-  )}
+{touched.email && resumeData.email.trim() === "" && (
+  <span className="error-text">Email is required</span>
+)}
 
-  {/* Summary Section */}
-  <div className="summary-container">
+{touched.email && resumeData.email.trim() !== "" && !isValidEmail(resumeData.email) && (
+  <span className="error-text">Enter a valid email address</span>
+)}
+
+
+{/* Phone */}
+<label className="input-label">
+  Phone <span className="required">*</span>
+</label>
+<input
+  type="text"
+  name="phone"
+  placeholder="Enter your phone number"
+  value={resumeData.phone}
+  maxLength={10} // ✅ Limit to 10 digits typing
+  onChange={(e) => {
+    // ✅ Allow only numbers
+    const value = e.target.value.replace(/\D/g, "");
+    handleChange({ target: { name: "phone", value } });
+    handleInputChange();
+  }}
+  onBlur={() => handleBlur(null, "phone")}
+  className={
+    touched.phone && (!/^\d{10}$/.test(resumeData.phone) || resumeData.phone.trim() === "")
+      ? "input-error"
+      : ""
+  }
+/>
+
+{/* Validation Errors */}
+{touched.phone && resumeData.phone.trim() === "" && (
+  <span className="error-text">Phone number is required</span>
+)}
+
+{touched.phone && resumeData.phone.trim() !== "" && !/^\d{10}$/.test(resumeData.phone) && (
+  <span className="error-text">Enter a valid 10-digit phone number</span>
+)}
+
+
+{/* Summary Section */}
+<div className="summary-container">
   <label className="input-label">
     Summary <span className="required">*</span>
   </label>
@@ -701,20 +633,20 @@ function ResumeBuilder() {
       <textarea
         name="summary"
         placeholder="Enter a short summary"
-        maxLength={300}
         value={resumeData.summary}
         onChange={(e) => {
-          handleChange(e);
+          const inputText = e.target.value.slice(0, 300); // Force trim manually
+          handleChange({ target: { name: "summary", value: inputText } });
           handleInputChange();
         }}
         onBlur={() => handleBlur(null, "summary")}
         className={`summary-textarea ${
-          resumeData.summary.trim() === "" ? "input-error" : ""
+          touched.summary && resumeData.summary.trim() === "" ? "input-error" : ""
         }`}
       />
-      <span className="char-count-inside">
-        {resumeData.summary.length} / 300
-      </span>
+      {/* <span className="char-count-inside">
+        {resumeData.summary.length} / 300 characters
+      </span> */}
     </div>
   </div>
 
@@ -722,6 +654,11 @@ function ResumeBuilder() {
     <span className="error-text">Summary is required</span>
   )}
 </div>
+
+
+
+
+
 
 
 </div>
@@ -768,16 +705,26 @@ function ResumeBuilder() {
           value={exp.company}
           onChange={(e) => handleChange(e, index, "experience")}
         />
+{/* Years of Experience */}
+<label>Years of Experience <span className="required">*</span></label>
+<input
+  type="text"
+  name="years"
+  placeholder="Years"
+  value={exp.years}
+  onChange={(e) => handleChange(e, index, "experience")}
+  onBlur={() => handleBlur(index, "years", "experience")}
+  className={
+    touched.experience?.[index]?.years && !exp.years.trim()
+      ? "input-error"
+      : ""
+  }
+/>
 
-        {/* Years of Experience */}
-        <label>Years of Experience</label>
-        <input
-          type="text"
-          name="years"
-          placeholder="Years"
-          value={exp.years}
-          onChange={(e) => handleChange(e, index, "experience")}
-        />
+{touched.experience?.[index]?.years && !exp.years.trim() && (
+  <span className="error-text">Years of Experience is required</span>
+)}
+
 
         {/* Responsibilities */}
         <label>Responsibilities</label>
@@ -848,19 +795,27 @@ function ResumeBuilder() {
       )}
 
       {/* Year of Completion */}
-      <label>Year of Completion <span className="required">*</span></label>
-      <input
-        type="text"
-        name="year"
-        placeholder="Enter Year"
-        value={edu.year}
-        onChange={(e) => handleChange(e, index, "education")}
-        onBlur={() => handleBlur(index, "year", "education")}
-        className={touched.education?.[index]?.year && !edu.year.trim() ? "input-error" : ""}
-      />
-      {touched.education?.[index]?.year && !edu.year.trim() && (
-        <span className="error-text">Year of Completion is required</span>
-      )}
+<label>Year of Completion <span className="required">*</span></label>
+<input
+  type="text"
+  name="year"
+  placeholder="Enter Year (e.g., 2023)"
+  value={edu.year}
+  onChange={(e) => handleChange(e, index, "education")}
+  onBlur={() => handleBlur(index, "year", "education")}
+  className={
+    touched.education?.[index]?.year && (!edu.year.trim() || !/^\d{4}$/.test(edu.year))
+      ? "input-error"
+      : ""
+  }
+/>
+{touched.education?.[index]?.year && edu.year.trim() === "" && (
+  <span className="error-text">Year of Completion is required</span>
+)}
+{touched.education?.[index]?.year && edu.year.trim() !== "" && !/^\d{4}$/.test(edu.year) && (
+  <span className="error-text">Enter a valid 4-digit year</span>
+)}
+
 
       {/* Remove Button (Only for Additional Entries) */}
       {index > 0 && (
@@ -1252,24 +1207,30 @@ function ResumeBuilder() {
       <span className="error-text">Amount is required</span>
     )}
 
-    <label>Years of Experience <span className="required">*</span></label>
-    <input
-      type="text"
-      name="years"
-      placeholder="Years of Experience"
-      value={inv.years}
-      onChange={(e) => handleChange(e, index, "investments")}
-      onBlur={() => handleBlur(index, "years", "investments")}
-      className={
-        touched.investments?.[index]?.years && !inv.years.trim()
-          ? "input-error"
-          : ""
-      }
-      style={{ padding: "10px", fontSize: "14px", borderRadius: "6px", border: "1px solid #ccc" }}
-    />
-    {touched.investments?.[index]?.years && !inv.years.trim() && (
-      <span className="error-text">Years of Experience is required</span>
-    )}
+<label>Years of Experience <span className="required">*</span></label>
+<input
+  type="text"
+  name="years"
+  placeholder="Years of Experience"
+  value={inv.years}
+  onChange={(e) => handleChange(e, index, "investments")}
+  onBlur={() => handleBlur(index, "years", "investments")}
+  className={
+    touched.investments?.[index]?.years && (!inv.years.trim() || !/^\d+$/.test(inv.years))
+      ? "input-error"
+      : ""
+  }
+  style={{ padding: "10px", fontSize: "14px", borderRadius: "6px", border: "1px solid #ccc" }}
+/>
+
+{touched.investments?.[index]?.years && inv.years.trim() === "" && (
+  <span className="error-text">Years of Experience is required</span>
+)}
+
+{touched.investments?.[index]?.years && inv.years.trim() !== "" && !/^\d+$/.test(inv.years) && (
+  <span className="error-text">Enter a valid number</span>
+)}
+
 
     {/* Remove Button */}
     {index > 0 && (
@@ -1781,13 +1742,29 @@ function ResumeBuilder() {
             value={cert.issuedBy}
             onChange={(e) => handleChange(e, index, "certificationsHealthcare")}
           />
-          <label>Year</label>
-          <input
-            type="text"
-            name="year"
-            value={cert.year}
-            onChange={(e) => handleChange(e, index, "certificationsHealthcare")}
-          />
+       <label>Year <span className="required">*</span></label>
+<input
+  type="text"
+  name="year"
+  placeholder="Enter Year"
+  value={cert.year}
+  onChange={(e) => handleChange(e, index, "certificationsHealthcare")}
+  onBlur={() => handleBlur(index, "year", "certificationsHealthcare")}
+  className={
+    touched.certificationsHealthcare?.[index]?.year && (!cert.year.trim() || !/^\d{4}$/.test(cert.year))
+      ? "input-error"
+      : ""
+  }
+/>
+
+{touched.certificationsHealthcare?.[index]?.year && cert.year.trim() === "" && (
+  <span className="error-text">Year is required</span>
+)}
+
+{touched.certificationsHealthcare?.[index]?.year && cert.year.trim() !== "" && !/^\d{4}$/.test(cert.year) && (
+  <span className="error-text">Enter a valid 4-digit year</span>
+)}
+
           {index > 0 && (
             <button className="remove-button-style" onClick={() => removeField("certificationsHealthcare", index)}>
               Remove
