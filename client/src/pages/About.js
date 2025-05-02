@@ -101,23 +101,6 @@ const About = () => {
         </div>
       </section>
 
-      {/* Professors */}
-      <section className="mb-5">
-        <h2 className="text-center mb-4">Our Professors</h2>
-        <div className="row justify-content-center">
-          <div className="col-md-4 text-center mb-4">
-            <img src="/assets/images/team/professor1.jpg" alt="Professor 1" className="rounded-circle shadow" width="160" height="160" />
-            <h5 className="mt-3 mb-1">Dr. Professor One</h5>
-            {/* <p className="text-muted">Capstone Mentor</p> */}
-          </div>
-          <div className="col-md-4 text-center mb-4">
-            <img src="/assets/images/team/professor2.jpg" alt="Professor 2" className="rounded-circle shadow" width="160" height="160" />
-            <h5 className="mt-3 mb-1">Dr. Professor Two</h5>
-            {/* <p className="text-muted">Technical Advisor</p> */}
-          </div>
-        </div>
-      </section>
-
       {/* Developers */}
       <section>
         <h2 className="text-center mb-4">Meet the Developers</h2>
