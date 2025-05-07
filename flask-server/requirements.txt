@@ -1,5 +1,8 @@
-pyjwt
 flask
 flask_cors
+flask_mail
+pyjwt
 pymongo
 bcrypt
+cloudinary
+python-dotenv
